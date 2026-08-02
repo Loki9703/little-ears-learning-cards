@@ -15,6 +15,7 @@ type CardItem = {
   effect: string;
   effectDuration: number;
   effectRepeats: number;
+  effectVolume?: number;
   lesson: string;
   color: string;
   accent: string;
@@ -31,6 +32,12 @@ const categories: Record<CategoryKey, { label: string; icon: string; items: Card
       { name: "小牛", pinyin: "xiǎo niú", emoji: "🐮", sound: "哞哞！", prompt: "小牛吃青草", audio: "/audio/cow.mp3", effect: "/audio/effects/cow.mp3", effectDuration: 2800, effectRepeats: 1, lesson: "/audio/lessons/cow.mp3", color: "#E0F4C8", accent: "#62A84A" },
       { name: "小羊", pinyin: "xiǎo yáng", emoji: "🐑", sound: "咩咩！", prompt: "小羊软绵绵", audio: "/audio/sheep.mp3", effect: "/audio/effects/sheep.mp3", effectDuration: 1800, effectRepeats: 2, lesson: "/audio/lessons/sheep.mp3", color: "#FFE1E4", accent: "#D86B78" },
       { name: "小鸟", pinyin: "xiǎo niǎo", emoji: "🐦", sound: "啾啾！", prompt: "小鸟飞上天", audio: "/audio/bird.mp3", effect: "/audio/effects/bird.mp3", effectDuration: 3200, effectRepeats: 1, lesson: "/audio/lessons/bird.mp3", color: "#DDEBFF", accent: "#577FCE" },
+      { name: "大公鸡", pinyin: "dà gōng jī", emoji: "🐓", sound: "喔喔喔！", prompt: "大公鸡叫早啦", audio: "/audio/rooster.mp3", effect: "/audio/effects/rooster.mp3", effectDuration: 4400, effectRepeats: 1, lesson: "/audio/lessons/rooster.mp3", color: "#FFE7C7", accent: "#D86A32" },
+      { name: "小猪", pinyin: "xiǎo zhū", emoji: "🐷", sound: "哼哼！", prompt: "小猪鼻子圆圆的", audio: "/audio/pig.mp3", effect: "/audio/effects/pig.mp3", effectDuration: 3200, effectRepeats: 1, lesson: "/audio/lessons/pig.mp3", color: "#FFDCE8", accent: "#D9698E" },
+      { name: "小马", pinyin: "xiǎo mǎ", emoji: "🐴", sound: "咴咴！", prompt: "小马跑得快", audio: "/audio/horse.mp3", effect: "/audio/effects/horse.mp3", effectDuration: 3000, effectRepeats: 1, lesson: "/audio/lessons/horse.mp3", color: "#F3DFC5", accent: "#A86D3D" },
+      { name: "小青蛙", pinyin: "xiǎo qīng wā", emoji: "🐸", sound: "呱呱！", prompt: "小青蛙跳得高", audio: "/audio/frog.mp3", effect: "/audio/effects/frog.mp3", effectDuration: 4800, effectRepeats: 1, lesson: "/audio/lessons/frog.mp3", color: "#DCF2C9", accent: "#579B4C" },
+      { name: "大象", pinyin: "dà xiàng", emoji: "🐘", sound: "昂——！", prompt: "大象鼻子长长的", audio: "/audio/elephant.mp3", effect: "/audio/effects/elephant.mp3", effectDuration: 3000, effectRepeats: 1, effectVolume: 0.46, lesson: "/audio/lessons/elephant.mp3", color: "#DDE7F2", accent: "#607D9D" },
+      { name: "狮子", pinyin: "shī zi", emoji: "🦁", sound: "吼——！", prompt: "狮子声音响亮", audio: "/audio/lion.mp3", effect: "/audio/effects/lion.mp3", effectDuration: 1900, effectRepeats: 1, effectVolume: 0.4, lesson: "/audio/lessons/lion.mp3", color: "#FFE6A9", accent: "#C98227" },
     ],
   },
   vehicles: {
@@ -43,6 +50,12 @@ const categories: Record<CategoryKey, { label: string; icon: string; items: Card
       { name: "火车", pinyin: "huǒ chē", emoji: "🚂", sound: "呜——呜——！", prompt: "火车钻山洞", audio: "/audio/train.mp3", effect: "/audio/effects/train.mp3", effectDuration: 2200, effectRepeats: 2, lesson: "/audio/lessons/train.mp3", color: "#DDF5FF", accent: "#328EAB" },
       { name: "挖掘机", pinyin: "wā jué jī", emoji: "🚜", sound: "轰隆隆！", prompt: "挖掘机挖呀挖", audio: "/audio/excavator.mp3", effect: "/audio/effects/excavator.mp3", effectDuration: 5200, effectRepeats: 1, lesson: "/audio/lessons/excavator.mp3", color: "#F5E2BB", accent: "#B47724" },
       { name: "飞机", pinyin: "fēi jī", emoji: "✈️", sound: "嗡嗡！", prompt: "飞机飞上云朵", audio: "/audio/airplane.mp3", effect: "/audio/effects/airplane.mp3", effectDuration: 5500, effectRepeats: 1, lesson: "/audio/lessons/airplane.mp3", color: "#DDEBFF", accent: "#557AC5" },
+      { name: "救护车", pinyin: "jiù hù chē", emoji: "🚑", sound: "呜哇呜哇！", prompt: "救护车去医院", audio: "/audio/ambulance.mp3", effect: "/audio/effects/ambulance.mp3", effectDuration: 4800, effectRepeats: 1, effectVolume: 0.46, lesson: "/audio/lessons/ambulance.mp3", color: "#E1F4ED", accent: "#3E9B78" },
+      { name: "警车", pinyin: "jǐng chē", emoji: "🚓", sound: "呜哩呜哩！", prompt: "警车赶去帮忙", audio: "/audio/policecar.mp3", effect: "/audio/effects/policecar.mp3", effectDuration: 4500, effectRepeats: 1, effectVolume: 0.46, lesson: "/audio/lessons/policecar.mp3", color: "#DCE9F7", accent: "#3D72A8" },
+      { name: "摩托车", pinyin: "mó tuō chē", emoji: "🏍️", sound: "突突突！", prompt: "骑车要戴头盔", audio: "/audio/motorcycle.mp3", effect: "/audio/effects/motorcycle.mp3", effectDuration: 4200, effectRepeats: 1, effectVolume: 0.48, lesson: "/audio/lessons/motorcycle.mp3", color: "#E6E1F4", accent: "#7465A8" },
+      { name: "自行车", pinyin: "zì xíng chē", emoji: "🚲", sound: "叮铃铃！", prompt: "小脚踩一踩", audio: "/audio/bicycle.mp3", effect: "/audio/effects/bicycle.mp3", effectDuration: 1700, effectRepeats: 2, lesson: "/audio/lessons/bicycle.mp3", color: "#DDF3E6", accent: "#4A9A69" },
+      { name: "轮船", pinyin: "lún chuán", emoji: "🚢", sound: "呜——！", prompt: "轮船水上走", audio: "/audio/ship.mp3", effect: "/audio/effects/ship.mp3", effectDuration: 5200, effectRepeats: 1, effectVolume: 0.45, lesson: "/audio/lessons/ship.mp3", color: "#DDF1FA", accent: "#3E8EAD" },
+      { name: "直升机", pinyin: "zhí shēng jī", emoji: "🚁", sound: "哒哒哒！", prompt: "旋翼转呀转", audio: "/audio/helicopter.mp3", effect: "/audio/effects/helicopter.mp3", effectDuration: 5200, effectRepeats: 1, effectVolume: 0.45, lesson: "/audio/lessons/helicopter.mp3", color: "#F0E6D6", accent: "#9A7145" },
     ],
   },
 };
@@ -130,7 +143,7 @@ export default function Home() {
 
     setPlayStage("sound");
     for (let repeat = 0; repeat < item.effectRepeats; repeat += 1) {
-      await playClip(item.effect, 0.58, session, item.effectDuration);
+      await playClip(item.effect, item.effectVolume ?? 0.55, session, item.effectDuration);
       if (session !== playbackSession.current) return;
     }
 

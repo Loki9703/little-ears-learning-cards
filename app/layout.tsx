@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import "./globals.css";
 
 const title = "小耳朵点点乐｜宝宝认知点读卡";
-const description = "专为一岁半到两岁宝宝设计的动物与车辆认知点读卡。点图片听温柔童趣声音，左右滑动换一张。";
+const description = "专为一岁半到两岁宝宝设计的认知点读卡，包含 12 种动物与 12 种交通工具。点图片听童趣称呼、真实声音和温柔小知识。";
 
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers();
