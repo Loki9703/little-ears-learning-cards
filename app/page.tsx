@@ -10,6 +10,7 @@ type CardItem = {
   emoji: string;
   sound: string;
   prompt: string;
+  audio: string;
   color: string;
   accent: string;
 };
@@ -19,24 +20,24 @@ const categories: Record<CategoryKey, { label: string; icon: string; items: Card
     label: "动物",
     icon: "🐾",
     items: [
-      { name: "小狗", pinyin: "xiǎo gǒu", emoji: "🐶", sound: "汪汪！", prompt: "小狗怎么叫？", color: "#FFF0BA", accent: "#ED8B3A" },
-      { name: "小猫", pinyin: "xiǎo māo", emoji: "🐱", sound: "喵喵！", prompt: "小猫怎么叫？", color: "#E8DBFF", accent: "#8C6CCF" },
-      { name: "小鸭", pinyin: "xiǎo yā", emoji: "🦆", sound: "嘎嘎！", prompt: "小鸭在游泳", color: "#DDF5FF", accent: "#3BA5C6" },
-      { name: "小牛", pinyin: "xiǎo niú", emoji: "🐮", sound: "哞哞！", prompt: "小牛吃青草", color: "#E0F4C8", accent: "#62A84A" },
-      { name: "小羊", pinyin: "xiǎo yáng", emoji: "🐑", sound: "咩咩！", prompt: "小羊软绵绵", color: "#FFE1E4", accent: "#D86B78" },
-      { name: "小鸟", pinyin: "xiǎo niǎo", emoji: "🐦", sound: "啾啾！", prompt: "小鸟飞上天", color: "#DDEBFF", accent: "#577FCE" },
+      { name: "小狗", pinyin: "xiǎo gǒu", emoji: "🐶", sound: "汪汪！", prompt: "小狗怎么叫？", audio: "/audio/dog.mp3", color: "#FFF0BA", accent: "#ED8B3A" },
+      { name: "小猫", pinyin: "xiǎo māo", emoji: "🐱", sound: "喵喵！", prompt: "小猫怎么叫？", audio: "/audio/cat.mp3", color: "#E8DBFF", accent: "#8C6CCF" },
+      { name: "小鸭", pinyin: "xiǎo yā", emoji: "🦆", sound: "嘎嘎！", prompt: "小鸭在游泳", audio: "/audio/duck.mp3", color: "#DDF5FF", accent: "#3BA5C6" },
+      { name: "小牛", pinyin: "xiǎo niú", emoji: "🐮", sound: "哞哞！", prompt: "小牛吃青草", audio: "/audio/cow.mp3", color: "#E0F4C8", accent: "#62A84A" },
+      { name: "小羊", pinyin: "xiǎo yáng", emoji: "🐑", sound: "咩咩！", prompt: "小羊软绵绵", audio: "/audio/sheep.mp3", color: "#FFE1E4", accent: "#D86B78" },
+      { name: "小鸟", pinyin: "xiǎo niǎo", emoji: "🐦", sound: "啾啾！", prompt: "小鸟飞上天", audio: "/audio/bird.mp3", color: "#DDEBFF", accent: "#577FCE" },
     ],
   },
   vehicles: {
     label: "车辆",
     icon: "🛞",
     items: [
-      { name: "小汽车", pinyin: "xiǎo qì chē", emoji: "🚗", sound: "嘀嘀！", prompt: "小汽车开走啦", color: "#FFE0D7", accent: "#E85D45" },
-      { name: "公交车", pinyin: "gōng jiāo chē", emoji: "🚌", sound: "嘟嘟！", prompt: "大家一起坐公交", color: "#FFF0BA", accent: "#D69024" },
-      { name: "消防车", pinyin: "xiāo fáng chē", emoji: "🚒", sound: "呜哇呜哇！", prompt: "消防车去帮忙", color: "#FFDCDD", accent: "#DC4E50" },
-      { name: "火车", pinyin: "huǒ chē", emoji: "🚂", sound: "呜——呜——！", prompt: "火车钻山洞", color: "#DDF5FF", accent: "#328EAB" },
-      { name: "挖掘机", pinyin: "wā jué jī", emoji: "🚜", sound: "轰隆隆！", prompt: "挖掘机挖呀挖", color: "#F5E2BB", accent: "#B47724" },
-      { name: "飞机", pinyin: "fēi jī", emoji: "✈️", sound: "嗡嗡！", prompt: "飞机飞上云朵", color: "#DDEBFF", accent: "#557AC5" },
+      { name: "小汽车", pinyin: "xiǎo qì chē", emoji: "🚗", sound: "嘀嘀！", prompt: "小汽车开走啦", audio: "/audio/car.mp3", color: "#FFE0D7", accent: "#E85D45" },
+      { name: "公交车", pinyin: "gōng jiāo chē", emoji: "🚌", sound: "嘟嘟！", prompt: "大家一起坐公交", audio: "/audio/bus.mp3", color: "#FFF0BA", accent: "#D69024" },
+      { name: "消防车", pinyin: "xiāo fáng chē", emoji: "🚒", sound: "呜哇呜哇！", prompt: "消防车去帮忙", audio: "/audio/firetruck.mp3", color: "#FFDCDD", accent: "#DC4E50" },
+      { name: "火车", pinyin: "huǒ chē", emoji: "🚂", sound: "呜——呜——！", prompt: "火车钻山洞", audio: "/audio/train.mp3", color: "#DDF5FF", accent: "#328EAB" },
+      { name: "挖掘机", pinyin: "wā jué jī", emoji: "🚜", sound: "轰隆隆！", prompt: "挖掘机挖呀挖", audio: "/audio/excavator.mp3", color: "#F5E2BB", accent: "#B47724" },
+      { name: "飞机", pinyin: "fēi jī", emoji: "✈️", sound: "嗡嗡！", prompt: "飞机飞上云朵", audio: "/audio/airplane.mp3", color: "#DDEBFF", accent: "#557AC5" },
     ],
   },
 };
@@ -50,6 +51,7 @@ export default function Home() {
   const pointerStart = useRef<number | null>(null);
   const didSwipe = useRef(false);
   const speakingTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const audioPlayer = useRef<HTMLAudioElement | null>(null);
 
   const items = categories[category].items;
   const item = items[index];
@@ -57,36 +59,36 @@ export default function Home() {
   useEffect(() => {
     return () => {
       if (speakingTimer.current) clearTimeout(speakingTimer.current);
-      if (typeof window !== "undefined") window.speechSynthesis?.cancel();
+      audioPlayer.current?.pause();
     };
   }, []);
 
   const changeCard = (direction: number) => {
+    audioPlayer.current?.pause();
     setIndex((current) => (current + direction + items.length) % items.length);
     setIsSpeaking(false);
     window.navigator.vibrate?.(18);
   };
 
-  const speak = () => {
-    if (!speakerOn || typeof window === "undefined" || !("speechSynthesis" in window)) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(`${item.name}。${item.sound}`);
-    utterance.lang = "zh-CN";
-    utterance.rate = 0.72;
-    utterance.pitch = 1.12;
-    const chineseVoice = window.speechSynthesis.getVoices().find((voice) => voice.lang.toLowerCase().startsWith("zh"));
-    if (chineseVoice) utterance.voice = chineseVoice;
-    utterance.onend = () => setIsSpeaking(false);
+  const playAudio = () => {
+    if (!speakerOn || typeof window === "undefined") return;
+    audioPlayer.current?.pause();
+    const audio = new Audio(item.audio);
+    audio.preload = "auto";
+    audio.volume = 0.92;
+    audio.onended = () => setIsSpeaking(false);
+    audio.onerror = () => setIsSpeaking(false);
+    audioPlayer.current = audio;
     setIsSpeaking(true);
     setShowHint(false);
     window.navigator.vibrate?.(28);
-    window.speechSynthesis.speak(utterance);
+    void audio.play().catch(() => setIsSpeaking(false));
     if (speakingTimer.current) clearTimeout(speakingTimer.current);
-    speakingTimer.current = setTimeout(() => setIsSpeaking(false), 2400);
+    speakingTimer.current = setTimeout(() => setIsSpeaking(false), 6000);
   };
 
   const selectCategory = (nextCategory: CategoryKey) => {
-    window.speechSynthesis?.cancel();
+    audioPlayer.current?.pause();
     setCategory(nextCategory);
     setIndex(0);
     setIsSpeaking(false);
@@ -114,7 +116,7 @@ export default function Home() {
       didSwipe.current = false;
       return;
     }
-    speak();
+    playAudio();
   };
 
   const cardStyle = {
@@ -142,7 +144,7 @@ export default function Home() {
           aria-label={speakerOn ? "关闭声音" : "打开声音"}
           aria-pressed={speakerOn}
           onClick={() => {
-            window.speechSynthesis?.cancel();
+            audioPlayer.current?.pause();
             setSpeakerOn((current) => !current);
             setIsSpeaking(false);
           }}
