@@ -131,7 +131,7 @@ button {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 7px;
   margin: 14px 0 12px;
   padding: 5px;
@@ -475,6 +475,12 @@ button {
   margin-right: 5px;
   color: var(--green);
   font-size: 16px;
+}
+
+@media (max-width: 400px) {
+  .progress-dots { gap: 5px; }
+  .dot { width: 7px; height: 7px; }
+  .dot.active { width: 20px; }
 }
 
 @keyframes happy-bounce {

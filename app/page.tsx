@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 
-type CategoryKey = "animals" | "vehicles";
+type CategoryKey = "animals" | "vehicles" | "fruits";
 type PlayStage = "name" | "sound" | "lesson";
 
 type CardItem = {
@@ -58,6 +58,26 @@ const categories: Record<CategoryKey, { label: string; icon: string; items: Card
       { name: "直升机", pinyin: "zhí shēng jī", emoji: "🚁", sound: "哒哒哒！", prompt: "旋翼转呀转", audio: "/audio/helicopter.mp3", effect: "/audio/effects/helicopter.mp3", effectDuration: 5200, effectRepeats: 1, effectVolume: 0.45, lesson: "/audio/lessons/helicopter.mp3", color: "#F0E6D6", accent: "#9A7145" },
     ],
   },
+  fruits: {
+    label: "水果",
+    icon: "🍎",
+    items: [
+      { name: "苹果", pinyin: "píng guǒ", emoji: "🍎", sound: "红红圆圆", prompt: "咬一口，咔嚓咔嚓", audio: "/audio/apple.mp3", effect: "/audio/features/apple.mp3", effectDuration: 6000, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/apple.mp3", color: "#FFE0DA", accent: "#D9574F" },
+      { name: "香蕉", pinyin: "xiāng jiāo", emoji: "🍌", sound: "弯弯软软", prompt: "像一弯小月亮", audio: "/audio/banana.mp3", effect: "/audio/features/banana.mp3", effectDuration: 6000, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/banana.mp3", color: "#FFF1B8", accent: "#C89418" },
+      { name: "橙子", pinyin: "chéng zi", emoji: "🍊", sound: "橙橙圆圆", prompt: "里面藏着小橘瓣", audio: "/audio/orange.mp3", effect: "/audio/features/orange.mp3", effectDuration: 6000, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/orange.mp3", color: "#FFE1B8", accent: "#D97722" },
+      { name: "西瓜", pinyin: "xī guā", emoji: "🍉", sound: "绿皮红瓤", prompt: "夏天吃一口真清甜", audio: "/audio/watermelon.mp3", effect: "/audio/features/watermelon.mp3", effectDuration: 6000, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/watermelon.mp3", color: "#DDF2CE", accent: "#4C9854" },
+      { name: "草莓", pinyin: "cǎo méi", emoji: "🍓", sound: "红红尖尖", prompt: "身上有好多小点点", audio: "/audio/strawberry.mp3", effect: "/audio/features/strawberry.mp3", effectDuration: 6000, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/strawberry.mp3", color: "#FFDCE1", accent: "#D64E67" },
+      { name: "葡萄", pinyin: "pú tao", emoji: "🍇", sound: "一颗一颗", prompt: "好多小圆球抱成团", audio: "/audio/grape.mp3", effect: "/audio/features/grape.mp3", effectDuration: 6000, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/grape.mp3", color: "#E9DDFC", accent: "#7D5AB5" },
+      { name: "梨", pinyin: "lí", emoji: "🍐", sound: "脆脆多汁", prompt: "肚子圆圆，头儿小小", audio: "/audio/pear.mp3", effect: "/audio/features/pear.mp3", effectDuration: 6000, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/pear.mp3", color: "#EEF2BF", accent: "#839638" },
+      { name: "桃子", pinyin: "táo zi", emoji: "🍑", sound: "粉粉香香", prompt: "中间藏着硬果核", audio: "/audio/peach.mp3", effect: "/audio/features/peach.mp3", effectDuration: 6000, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/peach.mp3", color: "#FFE0D8", accent: "#D97568" },
+      { name: "菠萝", pinyin: "bō luó", emoji: "🍍", sound: "外衣刺刺", prompt: "头顶戴着绿叶冠", audio: "/audio/pineapple.mp3", effect: "/audio/features/pineapple.mp3", effectDuration: 6000, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/pineapple.mp3", color: "#FFF0B8", accent: "#B98320" },
+      { name: "芒果", pinyin: "máng guǒ", emoji: "🥭", sound: "黄黄香香", prompt: "果肉软软又甜甜", audio: "/audio/mango.mp3", effect: "/audio/features/mango.mp3", effectDuration: 6000, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/mango.mp3", color: "#FFE8A8", accent: "#C98225" },
+      { name: "猕猴桃", pinyin: "mí hóu táo", emoji: "🥝", sound: "外棕内绿", prompt: "里面有一圈小黑籽", audio: "/audio/kiwi.mp3", effect: "/audio/features/kiwi.mp3", effectDuration: 6000, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/kiwi.mp3", color: "#E2EDC8", accent: "#64883F" },
+      { name: "樱桃", pinyin: "yīng táo", emoji: "🍒", sound: "小小红红", prompt: "两颗樱桃手牵手", audio: "/audio/cherry.mp3", effect: "/audio/features/cherry.mp3", effectDuration: 6000, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/cherry.mp3", color: "#FFD9DE", accent: "#BD3F54" },
+      { name: "蓝莓", pinyin: "lán méi", emoji: "🫐", sound: "蓝蓝小小", prompt: "一颗小小蓝宝石", audio: "/audio/blueberry.mp3", effect: "/audio/features/blueberry.mp3", effectDuration: 6000, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/blueberry.mp3", color: "#DEE3FA", accent: "#526BB0" },
+      { name: "柠檬", pinyin: "níng méng", emoji: "🍋", sound: "黄黄酸酸", prompt: "闻一闻，清香扑鼻", audio: "/audio/lemon.mp3", effect: "/audio/features/lemon.mp3", effectDuration: 6000, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/lemon.mp3", color: "#FFF4B8", accent: "#AE9120" },
+    ],
+  },
 };
 
 export default function Home() {
@@ -75,6 +95,7 @@ export default function Home() {
 
   const items = categories[category].items;
   const item = items[index];
+  const isFruit = category === "fruits";
 
   useEffect(() => {
     return () => {
@@ -260,11 +281,11 @@ export default function Home() {
           <span className="tiny-prompt">{item.prompt}</span>
           <span className={showHint ? "tap-hint" : "tap-hint subtle"}>
             <span className={isSpeaking ? "stage-icon" : "tap-icon"} aria-hidden="true">{isSpeaking ? "♪" : "☝️"}</span>
-            {playStage === "name" ? "正在认识名称" : playStage === "sound" ? "正在听真实声音" : playStage === "lesson" ? "正在学小知识" : "点一点，完整学一遍"}
+            {playStage === "name" ? "正在认识名称" : playStage === "sound" ? (isFruit ? "正在认识水果特征" : "正在听真实声音") : playStage === "lesson" ? "正在学小知识" : "点一点，完整学一遍"}
           </span>
           <span className="lesson-steps" aria-hidden="true">
             <span className={playStage === "name" ? "active" : ""}>① 名称</span>
-            <span className={playStage === "sound" ? "active" : ""}>② 声音</span>
+            <span className={playStage === "sound" ? "active" : ""}>② {isFruit ? "特征" : "声音"}</span>
             <span className={playStage === "lesson" ? "active" : ""}>③ 小知识</span>
           </span>
         </button>
