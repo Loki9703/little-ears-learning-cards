@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 
 type CategoryKey = "animals" | "vehicles";
+type PlayStage = "name" | "sound" | "lesson";
 
 type CardItem = {
   name: string;
@@ -13,6 +14,8 @@ type CardItem = {
   audio: string;
   effect: string;
   effectDuration: number;
+  effectRepeats: number;
+  lesson: string;
   color: string;
   accent: string;
 };
@@ -22,24 +25,24 @@ const categories: Record<CategoryKey, { label: string; icon: string; items: Card
     label: "动物",
     icon: "🐾",
     items: [
-      { name: "小狗", pinyin: "xiǎo gǒu", emoji: "🐶", sound: "汪汪！", prompt: "小狗怎么叫？", audio: "/audio/dog.mp3", effect: "/audio/effects/dog.mp3", effectDuration: 1800, color: "#FFF0BA", accent: "#ED8B3A" },
-      { name: "小猫", pinyin: "xiǎo māo", emoji: "🐱", sound: "喵喵！", prompt: "小猫怎么叫？", audio: "/audio/cat.mp3", effect: "/audio/effects/cat.mp3", effectDuration: 1500, color: "#E8DBFF", accent: "#8C6CCF" },
-      { name: "小鸭", pinyin: "xiǎo yā", emoji: "🦆", sound: "嘎嘎！", prompt: "小鸭在游泳", audio: "/audio/duck.mp3", effect: "/audio/effects/duck.mp3", effectDuration: 1900, color: "#DDF5FF", accent: "#3BA5C6" },
-      { name: "小牛", pinyin: "xiǎo niú", emoji: "🐮", sound: "哞哞！", prompt: "小牛吃青草", audio: "/audio/cow.mp3", effect: "/audio/effects/cow.mp3", effectDuration: 2100, color: "#E0F4C8", accent: "#62A84A" },
-      { name: "小羊", pinyin: "xiǎo yáng", emoji: "🐑", sound: "咩咩！", prompt: "小羊软绵绵", audio: "/audio/sheep.mp3", effect: "/audio/effects/sheep.mp3", effectDuration: 1600, color: "#FFE1E4", accent: "#D86B78" },
-      { name: "小鸟", pinyin: "xiǎo niǎo", emoji: "🐦", sound: "啾啾！", prompt: "小鸟飞上天", audio: "/audio/bird.mp3", effect: "/audio/effects/bird.mp3", effectDuration: 1900, color: "#DDEBFF", accent: "#577FCE" },
+      { name: "小狗", pinyin: "xiǎo gǒu", emoji: "🐶", sound: "汪汪！", prompt: "小狗怎么叫？", audio: "/audio/dog.mp3", effect: "/audio/effects/dog.mp3", effectDuration: 1800, effectRepeats: 2, lesson: "/audio/lessons/dog.mp3", color: "#FFF0BA", accent: "#ED8B3A" },
+      { name: "小猫", pinyin: "xiǎo māo", emoji: "🐱", sound: "喵喵！", prompt: "小猫怎么叫？", audio: "/audio/cat.mp3", effect: "/audio/effects/cat.mp3", effectDuration: 1600, effectRepeats: 2, lesson: "/audio/lessons/cat.mp3", color: "#E8DBFF", accent: "#8C6CCF" },
+      { name: "小鸭", pinyin: "xiǎo yā", emoji: "🦆", sound: "嘎嘎！", prompt: "小鸭在游泳", audio: "/audio/duck.mp3", effect: "/audio/effects/duck.mp3", effectDuration: 5000, effectRepeats: 1, lesson: "/audio/lessons/duck.mp3", color: "#DDF5FF", accent: "#3BA5C6" },
+      { name: "小牛", pinyin: "xiǎo niú", emoji: "🐮", sound: "哞哞！", prompt: "小牛吃青草", audio: "/audio/cow.mp3", effect: "/audio/effects/cow.mp3", effectDuration: 2800, effectRepeats: 1, lesson: "/audio/lessons/cow.mp3", color: "#E0F4C8", accent: "#62A84A" },
+      { name: "小羊", pinyin: "xiǎo yáng", emoji: "🐑", sound: "咩咩！", prompt: "小羊软绵绵", audio: "/audio/sheep.mp3", effect: "/audio/effects/sheep.mp3", effectDuration: 1800, effectRepeats: 2, lesson: "/audio/lessons/sheep.mp3", color: "#FFE1E4", accent: "#D86B78" },
+      { name: "小鸟", pinyin: "xiǎo niǎo", emoji: "🐦", sound: "啾啾！", prompt: "小鸟飞上天", audio: "/audio/bird.mp3", effect: "/audio/effects/bird.mp3", effectDuration: 3200, effectRepeats: 1, lesson: "/audio/lessons/bird.mp3", color: "#DDEBFF", accent: "#577FCE" },
     ],
   },
   vehicles: {
     label: "车辆",
     icon: "🛞",
     items: [
-      { name: "小汽车", pinyin: "xiǎo qì chē", emoji: "🚗", sound: "嘀嘀！", prompt: "小汽车开走啦", audio: "/audio/car.mp3", effect: "/audio/effects/car.mp3", effectDuration: 1300, color: "#FFE0D7", accent: "#E85D45" },
-      { name: "公交车", pinyin: "gōng jiāo chē", emoji: "🚌", sound: "嘟嘟！", prompt: "大家一起坐公交", audio: "/audio/bus.mp3", effect: "/audio/effects/bus.mp3", effectDuration: 1300, color: "#FFF0BA", accent: "#D69024" },
-      { name: "消防车", pinyin: "xiāo fáng chē", emoji: "🚒", sound: "呜哇呜哇！", prompt: "消防车去帮忙", audio: "/audio/firetruck.mp3", effect: "/audio/effects/firetruck.mp3", effectDuration: 2300, color: "#FFDCDD", accent: "#DC4E50" },
-      { name: "火车", pinyin: "huǒ chē", emoji: "🚂", sound: "呜——呜——！", prompt: "火车钻山洞", audio: "/audio/train.mp3", effect: "/audio/effects/train.mp3", effectDuration: 1500, color: "#DDF5FF", accent: "#328EAB" },
-      { name: "挖掘机", pinyin: "wā jué jī", emoji: "🚜", sound: "轰隆隆！", prompt: "挖掘机挖呀挖", audio: "/audio/excavator.mp3", effect: "/audio/effects/excavator.mp3", effectDuration: 2200, color: "#F5E2BB", accent: "#B47724" },
-      { name: "飞机", pinyin: "fēi jī", emoji: "✈️", sound: "嗡嗡！", prompt: "飞机飞上云朵", audio: "/audio/airplane.mp3", effect: "/audio/effects/airplane.mp3", effectDuration: 2200, color: "#DDEBFF", accent: "#557AC5" },
+      { name: "小汽车", pinyin: "xiǎo qì chē", emoji: "🚗", sound: "嘀嘀！", prompt: "小汽车开走啦", audio: "/audio/car.mp3", effect: "/audio/effects/car.mp3", effectDuration: 1500, effectRepeats: 2, lesson: "/audio/lessons/car.mp3", color: "#FFE0D7", accent: "#E85D45" },
+      { name: "公交车", pinyin: "gōng jiāo chē", emoji: "🚌", sound: "嘟嘟！", prompt: "大家一起坐公交", audio: "/audio/bus.mp3", effect: "/audio/effects/bus.mp3", effectDuration: 2000, effectRepeats: 1, lesson: "/audio/lessons/bus.mp3", color: "#FFF0BA", accent: "#D69024" },
+      { name: "消防车", pinyin: "xiāo fáng chē", emoji: "🚒", sound: "呜哇呜哇！", prompt: "消防车去帮忙", audio: "/audio/firetruck.mp3", effect: "/audio/effects/firetruck.mp3", effectDuration: 4800, effectRepeats: 1, lesson: "/audio/lessons/firetruck.mp3", color: "#FFDCDD", accent: "#DC4E50" },
+      { name: "火车", pinyin: "huǒ chē", emoji: "🚂", sound: "呜——呜——！", prompt: "火车钻山洞", audio: "/audio/train.mp3", effect: "/audio/effects/train.mp3", effectDuration: 2200, effectRepeats: 2, lesson: "/audio/lessons/train.mp3", color: "#DDF5FF", accent: "#328EAB" },
+      { name: "挖掘机", pinyin: "wā jué jī", emoji: "🚜", sound: "轰隆隆！", prompt: "挖掘机挖呀挖", audio: "/audio/excavator.mp3", effect: "/audio/effects/excavator.mp3", effectDuration: 5200, effectRepeats: 1, lesson: "/audio/lessons/excavator.mp3", color: "#F5E2BB", accent: "#B47724" },
+      { name: "飞机", pinyin: "fēi jī", emoji: "✈️", sound: "嗡嗡！", prompt: "飞机飞上云朵", audio: "/audio/airplane.mp3", effect: "/audio/effects/airplane.mp3", effectDuration: 5500, effectRepeats: 1, lesson: "/audio/lessons/airplane.mp3", color: "#DDEBFF", accent: "#557AC5" },
     ],
   },
 };
@@ -49,11 +52,13 @@ export default function Home() {
   const [index, setIndex] = useState(0);
   const [speakerOn, setSpeakerOn] = useState(true);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [playStage, setPlayStage] = useState<PlayStage | null>(null);
   const [showHint, setShowHint] = useState(true);
   const pointerStart = useRef<number | null>(null);
   const didSwipe = useRef(false);
   const speakingTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const audioPlayer = useRef<HTMLAudioElement | null>(null);
+  const playbackSession = useRef(0);
 
   const items = categories[category].items;
   const item = items[index];
@@ -61,57 +66,86 @@ export default function Home() {
   useEffect(() => {
     return () => {
       if (speakingTimer.current) clearTimeout(speakingTimer.current);
+      playbackSession.current += 1;
       audioPlayer.current?.pause();
     };
   }, []);
 
-  const changeCard = (direction: number) => {
+  const cancelPlayback = () => {
+    playbackSession.current += 1;
     audioPlayer.current?.pause();
     if (speakingTimer.current) clearTimeout(speakingTimer.current);
-    setIndex((current) => (current + direction + items.length) % items.length);
     setIsSpeaking(false);
+    setPlayStage(null);
+  };
+
+  const changeCard = (direction: number) => {
+    cancelPlayback();
+    setIndex((current) => (current + direction + items.length) % items.length);
     window.navigator.vibrate?.(18);
   };
 
-  const playAudio = () => {
+  const playClip = (src: string, volume: number, session: number, maxDuration?: number) => (
+    new Promise<void>((resolve) => {
+      if (session !== playbackSession.current) {
+        resolve();
+        return;
+      }
+
+      const audio = new Audio(src);
+      let finished = false;
+      const finishClip = () => {
+        if (finished) return;
+        finished = true;
+        if (speakingTimer.current) clearTimeout(speakingTimer.current);
+        resolve();
+      };
+
+      audio.preload = "auto";
+      audio.volume = volume;
+      audio.onended = finishClip;
+      audio.onerror = finishClip;
+      audioPlayer.current = audio;
+      if (maxDuration) {
+        speakingTimer.current = setTimeout(() => {
+          audio.pause();
+          finishClip();
+        }, maxDuration);
+      }
+      void audio.play().catch(finishClip);
+    })
+  );
+
+  const playAudio = async () => {
     if (!speakerOn || typeof window === "undefined") return;
-    audioPlayer.current?.pause();
-    if (speakingTimer.current) clearTimeout(speakingTimer.current);
-
-    const finish = () => {
-      audioPlayer.current?.pause();
-      setIsSpeaking(false);
-    };
-
-    const playEffect = () => {
-      const effect = new Audio(item.effect);
-      effect.preload = "auto";
-      effect.volume = 0.58;
-      effect.onended = finish;
-      effect.onerror = finish;
-      audioPlayer.current = effect;
-      void effect.play().catch(finish);
-      speakingTimer.current = setTimeout(finish, item.effectDuration);
-    };
-
-    const voice = new Audio(item.audio);
-    voice.preload = "auto";
-    voice.volume = 0.9;
-    voice.onended = playEffect;
-    voice.onerror = playEffect;
-    audioPlayer.current = voice;
+    cancelPlayback();
+    const session = playbackSession.current;
     setIsSpeaking(true);
     setShowHint(false);
     window.navigator.vibrate?.(28);
-    void voice.play().catch(playEffect);
+
+    setPlayStage("name");
+    await playClip(item.audio, 0.9, session);
+    if (session !== playbackSession.current) return;
+
+    setPlayStage("sound");
+    for (let repeat = 0; repeat < item.effectRepeats; repeat += 1) {
+      await playClip(item.effect, 0.58, session, item.effectDuration);
+      if (session !== playbackSession.current) return;
+    }
+
+    setPlayStage("lesson");
+    await playClip(item.lesson, 0.88, session);
+    if (session !== playbackSession.current) return;
+
+    setIsSpeaking(false);
+    setPlayStage(null);
   };
 
   const selectCategory = (nextCategory: CategoryKey) => {
-    audioPlayer.current?.pause();
-    if (speakingTimer.current) clearTimeout(speakingTimer.current);
+    cancelPlayback();
     setCategory(nextCategory);
     setIndex(0);
-    setIsSpeaking(false);
     setShowHint(true);
   };
 
@@ -164,10 +198,8 @@ export default function Home() {
           aria-label={speakerOn ? "关闭声音" : "打开声音"}
           aria-pressed={speakerOn}
           onClick={() => {
-            audioPlayer.current?.pause();
-            if (speakingTimer.current) clearTimeout(speakingTimer.current);
+            cancelPlayback();
             setSpeakerOn((current) => !current);
-            setIsSpeaking(false);
           }}
         >
           <span aria-hidden="true">{speakerOn ? "🔊" : "🔇"}</span>
@@ -198,7 +230,7 @@ export default function Home() {
           onPointerUp={handlePointerUp}
           onPointerCancel={() => { pointerStart.current = null; }}
           onClick={handleCardClick}
-          aria-label={`${item.name}，点一下听声音，左右滑动换卡片`}
+          aria-label={`${item.name}，点一下听完整教学，左右滑动换卡片`}
         >
           <span className="card-number">{String(index + 1).padStart(2, "0")}</span>
           <span className="scene-cloud cloud-one" aria-hidden="true" />
@@ -206,7 +238,7 @@ export default function Home() {
           <span className="scene-ground" aria-hidden="true" />
           <span className="main-emoji" aria-hidden="true">{item.emoji}</span>
           <span className={isSpeaking ? "sound-bubble visible" : "sound-bubble"} aria-hidden="true">
-            {item.sound}
+            {playStage === "name" ? "听名字" : playStage === "lesson" ? "小知识" : item.sound}
           </span>
           <span className="word-group">
             <strong>{item.name}</strong>
@@ -214,8 +246,13 @@ export default function Home() {
           </span>
           <span className="tiny-prompt">{item.prompt}</span>
           <span className={showHint ? "tap-hint" : "tap-hint subtle"}>
-            <span className="tap-icon" aria-hidden="true">☝️</span>
-            点一点，听声音
+            <span className={isSpeaking ? "stage-icon" : "tap-icon"} aria-hidden="true">{isSpeaking ? "♪" : "☝️"}</span>
+            {playStage === "name" ? "正在认识名称" : playStage === "sound" ? "正在听真实声音" : playStage === "lesson" ? "正在学小知识" : "点一点，完整学一遍"}
+          </span>
+          <span className="lesson-steps" aria-hidden="true">
+            <span className={playStage === "name" ? "active" : ""}>① 名称</span>
+            <span className={playStage === "sound" ? "active" : ""}>② 声音</span>
+            <span className={playStage === "lesson" ? "active" : ""}>③ 小知识</span>
           </span>
         </button>
       </section>
@@ -228,7 +265,11 @@ export default function Home() {
               key={dotItem.name}
               type="button"
               className={dotIndex === index ? "dot active" : "dot"}
-              onClick={() => setIndex(dotIndex)}
+              onClick={() => {
+                cancelPlayback();
+                setIndex(dotIndex);
+                setShowHint(true);
+              }}
               aria-label={`查看${dotItem.name}`}
               aria-current={dotIndex === index ? "true" : undefined}
             />
