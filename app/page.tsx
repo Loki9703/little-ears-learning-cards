@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
+import ThreeLearningModel from "./ThreeLearningModel";
 
 type CategoryKey = "animals" | "vehicles" | "fruits";
 type PlayStage = "name" | "sound" | "lesson";
@@ -121,31 +122,6 @@ const motionByName: Record<string, MotionKey> = {
   蓝莓: "pop",
   柠檬: "roll",
 };
-
-function MotionEffects({ motion }: { motion: MotionKey }) {
-  const hasDust = ["run", "gallop", "drive", "zip", "pedal"].includes(motion);
-  const hasAir = ["fly", "soar", "hover"].includes(motion);
-  const hasSparkles = ["bounce", "roll", "split", "jiggle", "sway", "pop", "peel"].includes(motion);
-
-  return (
-    <span className="motion-effects" aria-hidden="true">
-      {motion === "spray" && <span className="water-stream"><i /><i /><i /></span>}
-      {motion === "siren" && <span className="siren-lights"><i /><i /></span>}
-      {motion === "chug" && <span className="smoke-puffs"><i /><i /><i /></span>}
-      {motion === "dig" && <span className="dirt-puffs"><i /><i /><i /></span>}
-      {motion === "peel" && (
-        <>
-          <span className="banana-shell" />
-          <span className="banana-peel peel-left" />
-          <span className="banana-peel peel-right" />
-        </>
-      )}
-      {hasDust && <span className="dust-puffs"><i /><i /><i /></span>}
-      {hasAir && <span className="air-lines"><i /><i /><i /></span>}
-      {hasSparkles && <span className="motion-sparkles"><i>✦</i><i>✦</i><i>✦</i></span>}
-    </span>
-  );
-}
 
 export default function Home() {
   const [category, setCategory] = useState<CategoryKey>("animals");
@@ -357,10 +333,14 @@ export default function Home() {
           <span className="scene-cloud cloud-one" aria-hidden="true" />
           <span className="scene-cloud cloud-two" aria-hidden="true" />
           <span className="scene-ground" aria-hidden="true" />
-          <span key={`${item.name}-${motionCycle}`} className="motion-stage" aria-hidden="true">
-            <span className="main-emoji">{item.emoji}</span>
-            <MotionEffects motion={motion} />
-          </span>
+          <ThreeLearningModel
+            category={category}
+            name={item.name}
+            fallbackEmoji={item.emoji}
+            motion={motion}
+            isActive={isAnimating}
+            motionCycle={motionCycle}
+          />
           <span className={isSpeaking ? "sound-bubble visible" : "sound-bubble"} aria-hidden="true">
             {playStage === "name" ? "听名字" : playStage === "lesson" ? "小知识" : item.sound}
           </span>
@@ -371,7 +351,7 @@ export default function Home() {
           <span className="tiny-prompt">{item.prompt}</span>
           <span className={showHint ? "tap-hint" : "tap-hint subtle"}>
             <span className={isSpeaking ? "stage-icon" : "tap-icon"} aria-hidden="true">{isSpeaking ? "♪" : "☝️"}</span>
-            {playStage === "name" ? "正在认识名称" : playStage === "sound" ? (isFruit ? "正在认识水果特征" : "正在听真实声音") : playStage === "lesson" ? "正在学小知识" : isAnimating ? "看，它动起来啦！" : "点一点，看一看、听一听"}
+            {playStage === "name" ? "正在认识名称" : playStage === "sound" ? (isFruit ? "正在认识水果特征" : "正在听真实声音") : playStage === "lesson" ? "正在学小知识" : isAnimating ? "看，3D 模型动起来啦！" : "点一点，看 3D 动画、听讲解"}
           </span>
           <span className="lesson-steps" aria-hidden="true">
             <span className={playStage === "name" ? "active" : ""}>① 名称</span>
