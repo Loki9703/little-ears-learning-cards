@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
-import ThreeLearningModel from "./ThreeLearningModel";
+import AnimatedLearningScene from "./AnimatedLearningScene";
 
 type CategoryKey = "animals" | "vehicles" | "fruits";
 type PlayStage = "name" | "sound" | "lesson";
@@ -333,7 +333,7 @@ export default function Home() {
           <span className="scene-cloud cloud-one" aria-hidden="true" />
           <span className="scene-cloud cloud-two" aria-hidden="true" />
           <span className="scene-ground" aria-hidden="true" />
-          <ThreeLearningModel
+          <AnimatedLearningScene
             category={category}
             name={item.name}
             fallbackEmoji={item.emoji}
@@ -351,7 +351,7 @@ export default function Home() {
           <span className="tiny-prompt">{item.prompt}</span>
           <span className={showHint ? "tap-hint" : "tap-hint subtle"}>
             <span className={isSpeaking ? "stage-icon" : "tap-icon"} aria-hidden="true">{isSpeaking ? "♪" : "☝️"}</span>
-            {playStage === "name" ? "正在认识名称" : playStage === "sound" ? (isFruit ? "正在认识水果特征" : "正在听真实声音") : playStage === "lesson" ? "正在学小知识" : isAnimating ? "看，3D 模型动起来啦！" : "点一点，看 3D 动画、听讲解"}
+            {playStage === "name" ? "正在认识名称" : playStage === "sound" ? (isFruit ? "正在认识水果特征" : "正在听真实声音") : playStage === "lesson" ? "正在学小知识" : isAnimating ? "看，小动画动起来啦！" : "点一点，看动画、听讲解"}
           </span>
           <span className="lesson-steps" aria-hidden="true">
             <span className={playStage === "name" ? "active" : ""}>① 名称</span>
@@ -383,7 +383,7 @@ export default function Home() {
         <button className="round-button" type="button" onClick={() => changeCard(1)} aria-label="下一张">›</button>
       </footer>
       <p className="swipe-tip"><span aria-hidden="true">↔</span> 左右滑动换一张</p>
-      <a className="model-credit-link" href="/credits" target="_blank" rel="noreferrer">3D 模型来源与许可</a>
+      <a className="model-credit-link" href="/credits" target="_blank" rel="noreferrer">2D 插画来源与许可</a>
     </main>
   );
 }
