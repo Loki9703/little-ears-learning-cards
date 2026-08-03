@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } fr
 
 type CategoryKey = "animals" | "vehicles" | "fruits";
 type PlayStage = "name" | "sound" | "lesson";
+type MotionKey = "run" | "jump" | "waddle" | "nod" | "bounce" | "fly" | "flap" | "sniff" | "gallop" | "leap" | "spray" | "roar" | "drive" | "siren" | "chug" | "dig" | "soar" | "zip" | "pedal" | "sail" | "hover" | "roll" | "peel" | "split" | "jiggle" | "sway" | "pop";
 
 type CardItem = {
   name: string;
@@ -80,26 +81,97 @@ const categories: Record<CategoryKey, { label: string; icon: string; items: Card
   },
 };
 
+const motionByName: Record<string, MotionKey> = {
+  小狗: "run",
+  小猫: "jump",
+  小鸭: "waddle",
+  小牛: "nod",
+  小羊: "bounce",
+  小鸟: "fly",
+  大公鸡: "flap",
+  小猪: "sniff",
+  小马: "gallop",
+  小青蛙: "leap",
+  大象: "spray",
+  狮子: "roar",
+  小汽车: "drive",
+  公交车: "drive",
+  消防车: "spray",
+  火车: "chug",
+  挖掘机: "dig",
+  飞机: "soar",
+  救护车: "siren",
+  警车: "siren",
+  摩托车: "zip",
+  自行车: "pedal",
+  轮船: "sail",
+  直升机: "hover",
+  苹果: "roll",
+  香蕉: "peel",
+  橙子: "roll",
+  西瓜: "split",
+  草莓: "bounce",
+  葡萄: "jiggle",
+  梨: "sway",
+  桃子: "bounce",
+  菠萝: "sway",
+  芒果: "roll",
+  猕猴桃: "split",
+  樱桃: "jiggle",
+  蓝莓: "pop",
+  柠檬: "roll",
+};
+
+function MotionEffects({ motion }: { motion: MotionKey }) {
+  const hasDust = ["run", "gallop", "drive", "zip", "pedal"].includes(motion);
+  const hasAir = ["fly", "soar", "hover"].includes(motion);
+  const hasSparkles = ["bounce", "roll", "split", "jiggle", "sway", "pop", "peel"].includes(motion);
+
+  return (
+    <span className="motion-effects" aria-hidden="true">
+      {motion === "spray" && <span className="water-stream"><i /><i /><i /></span>}
+      {motion === "siren" && <span className="siren-lights"><i /><i /></span>}
+      {motion === "chug" && <span className="smoke-puffs"><i /><i /><i /></span>}
+      {motion === "dig" && <span className="dirt-puffs"><i /><i /><i /></span>}
+      {motion === "peel" && (
+        <>
+          <span className="banana-shell" />
+          <span className="banana-peel peel-left" />
+          <span className="banana-peel peel-right" />
+        </>
+      )}
+      {hasDust && <span className="dust-puffs"><i /><i /><i /></span>}
+      {hasAir && <span className="air-lines"><i /><i /><i /></span>}
+      {hasSparkles && <span className="motion-sparkles"><i>✦</i><i>✦</i><i>✦</i></span>}
+    </span>
+  );
+}
+
 export default function Home() {
   const [category, setCategory] = useState<CategoryKey>("animals");
   const [index, setIndex] = useState(0);
   const [speakerOn, setSpeakerOn] = useState(true);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [motionCycle, setMotionCycle] = useState(0);
   const [playStage, setPlayStage] = useState<PlayStage | null>(null);
   const [showHint, setShowHint] = useState(true);
   const pointerStart = useRef<number | null>(null);
   const didSwipe = useRef(false);
   const speakingTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const motionTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const audioPlayer = useRef<HTMLAudioElement | null>(null);
   const playbackSession = useRef(0);
 
   const items = categories[category].items;
   const item = items[index];
   const isFruit = category === "fruits";
+  const motion = motionByName[item.name] ?? "bounce";
 
   useEffect(() => {
     return () => {
       if (speakingTimer.current) clearTimeout(speakingTimer.current);
+      if (motionTimer.current) clearTimeout(motionTimer.current);
       playbackSession.current += 1;
       audioPlayer.current?.pause();
     };
@@ -113,8 +185,23 @@ export default function Home() {
     setPlayStage(null);
   };
 
+  const stopMotion = () => {
+    if (motionTimer.current) clearTimeout(motionTimer.current);
+    setIsAnimating(false);
+  };
+
+  const triggerMotion = () => {
+    if (motionTimer.current) clearTimeout(motionTimer.current);
+    setMotionCycle((current) => current + 1);
+    setIsAnimating(true);
+    setShowHint(false);
+    window.navigator.vibrate?.(28);
+    motionTimer.current = setTimeout(() => setIsAnimating(false), 3600);
+  };
+
   const changeCard = (direction: number) => {
     cancelPlayback();
+    stopMotion();
     setIndex((current) => (current + direction + items.length) % items.length);
     window.navigator.vibrate?.(18);
   };
@@ -155,8 +242,6 @@ export default function Home() {
     cancelPlayback();
     const session = playbackSession.current;
     setIsSpeaking(true);
-    setShowHint(false);
-    window.navigator.vibrate?.(28);
 
     setPlayStage("name");
     await playClip(item.audio, 0.9, session);
@@ -178,6 +263,7 @@ export default function Home() {
 
   const selectCategory = (nextCategory: CategoryKey) => {
     cancelPlayback();
+    stopMotion();
     setCategory(nextCategory);
     setIndex(0);
     setShowHint(true);
@@ -204,7 +290,8 @@ export default function Home() {
       didSwipe.current = false;
       return;
     }
-    playAudio();
+    triggerMotion();
+    void playAudio();
   };
 
   const cardStyle = {
@@ -258,19 +345,22 @@ export default function Home() {
       <section className="learning-area" aria-live="polite">
         <button
           type="button"
-          className={isSpeaking ? "learning-card is-speaking" : "learning-card"}
+          className={`learning-card motion-${motion}${isSpeaking ? " is-speaking" : ""}${isAnimating ? " is-animating" : ""}`}
           style={cardStyle}
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
           onPointerCancel={() => { pointerStart.current = null; }}
           onClick={handleCardClick}
-          aria-label={`${item.name}，点一下听完整教学，左右滑动换卡片`}
+          aria-label={`${item.name}，点一下看动画并听完整教学，左右滑动换卡片`}
         >
           <span className="card-number">{String(index + 1).padStart(2, "0")}</span>
           <span className="scene-cloud cloud-one" aria-hidden="true" />
           <span className="scene-cloud cloud-two" aria-hidden="true" />
           <span className="scene-ground" aria-hidden="true" />
-          <span className="main-emoji" aria-hidden="true">{item.emoji}</span>
+          <span key={`${item.name}-${motionCycle}`} className="motion-stage" aria-hidden="true">
+            <span className="main-emoji">{item.emoji}</span>
+            <MotionEffects motion={motion} />
+          </span>
           <span className={isSpeaking ? "sound-bubble visible" : "sound-bubble"} aria-hidden="true">
             {playStage === "name" ? "听名字" : playStage === "lesson" ? "小知识" : item.sound}
           </span>
@@ -281,7 +371,7 @@ export default function Home() {
           <span className="tiny-prompt">{item.prompt}</span>
           <span className={showHint ? "tap-hint" : "tap-hint subtle"}>
             <span className={isSpeaking ? "stage-icon" : "tap-icon"} aria-hidden="true">{isSpeaking ? "♪" : "☝️"}</span>
-            {playStage === "name" ? "正在认识名称" : playStage === "sound" ? (isFruit ? "正在认识水果特征" : "正在听真实声音") : playStage === "lesson" ? "正在学小知识" : "点一点，完整学一遍"}
+            {playStage === "name" ? "正在认识名称" : playStage === "sound" ? (isFruit ? "正在认识水果特征" : "正在听真实声音") : playStage === "lesson" ? "正在学小知识" : isAnimating ? "看，它动起来啦！" : "点一点，看一看、听一听"}
           </span>
           <span className="lesson-steps" aria-hidden="true">
             <span className={playStage === "name" ? "active" : ""}>① 名称</span>
@@ -301,6 +391,7 @@ export default function Home() {
               className={dotIndex === index ? "dot active" : "dot"}
               onClick={() => {
                 cancelPlayback();
+                stopMotion();
                 setIndex(dotIndex);
                 setShowHint(true);
               }}
