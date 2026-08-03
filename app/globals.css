@@ -315,6 +315,46 @@ button {
   filter: drop-shadow(0 13px 9px rgba(72, 56, 31, .12));
 }
 
+.three-loading {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  justify-content: center;
+}
+
+.three-loading i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent-color) 74%, #fff);
+  animation: model-loading .9s ease-in-out infinite alternate;
+}
+
+.three-loading i:nth-child(2) { animation-delay: .16s; }
+.three-loading i:nth-child(3) { animation-delay: .32s; }
+
+@keyframes model-loading {
+  from { transform: translateY(5px) scale(.82); opacity: .48; }
+  to { transform: translateY(-5px) scale(1); opacity: 1; }
+}
+
+.model-credit-link {
+  display: block;
+  width: fit-content;
+  margin: 5px auto 0;
+  color: rgba(89, 75, 55, .5);
+  font-size: 10px;
+  text-decoration: none;
+}
+
+.model-credit-link:hover,
+.model-credit-link:focus-visible {
+  color: rgba(89, 75, 55, .78);
+  text-decoration: underline;
+}
+
 .model-fallback {
   position: relative;
   z-index: 1;

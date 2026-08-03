@@ -383,6 +383,7 @@ export default function Home() {
         <button className="round-button" type="button" onClick={() => changeCard(1)} aria-label="下一张">›</button>
       </footer>
       <p className="swipe-tip"><span aria-hidden="true">↔</span> 左右滑动换一张</p>
+      <a className="model-credit-link" href="/credits" target="_blank" rel="noreferrer">3D 模型来源与许可</a>
     </main>
   );
 }
