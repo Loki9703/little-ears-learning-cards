@@ -64,15 +64,30 @@ function Dots({ className }: { className: string }) {
 export default function AnimatedLearningScene({ category, name, fallbackEmoji, motion, isActive, motionCycle }: Props) {
   const illustration = illustrationByName[name];
   const src = illustration ? `/illustrations/${illustration}.svg` : "";
+  const isDog = name === "小狗";
+  const isTrain = name === "火车";
   const isBanana = name === "香蕉";
   const isSplitFruit = motion === "split";
   const isElephant = name === "大象";
   const isHelicopter = name === "直升机";
 
   return (
-    <div className={`flat-scene flat-scene-${category}${isActive ? " is-active" : ""}`} aria-label={`${name}的二维卡通动画`}>
+    <div className={`flat-scene flat-scene-${category} scene-${illustration ?? "fallback"}${isActive ? " is-active" : ""}`} aria-label={`${name}的二维卡通动画`}>
       <span className="flat-halo" aria-hidden="true" />
       <span className="flat-shadow" aria-hidden="true" />
+      {isDog && (
+        <span className="dog-meadow" aria-hidden="true">
+          <i className="grass grass-one" /><i className="grass grass-two" /><i className="grass grass-three" />
+          <i className="dog-ball" />
+        </span>
+      )}
+      {isTrain && (
+        <span className="train-world" aria-hidden="true">
+          <i className="train-hill hill-one" /><i className="train-hill hill-two" />
+          <i className="train-tree tree-one" /><i className="train-tree tree-two" />
+          <i className="train-track" />
+        </span>
+      )}
       <span className="flat-animation-set" key={`${name}-${motionCycle}-${isActive ? "play" : "rest"}`}>
         <span className={`main-emoji flat-art art-${illustration ?? "fallback"}`} aria-hidden="true">
           {src ? <img className="flat-illustration" src={src} alt="" draggable={false} /> : <span className="flat-fallback">{fallbackEmoji}</span>}
@@ -85,7 +100,7 @@ export default function AnimatedLearningScene({ category, name, fallbackEmoji, m
           {motion === "chug" && <Dots className="smoke-puffs" />}
           {motion === "dig" && <Dots className="dirt-puffs" />}
           {airyMotions.has(motion) && <Dots className="air-lines" />}
-          {(fruityMotions.has(motion) || ["jump", "bounce", "flap"].includes(motion)) && (
+          {(fruityMotions.has(motion) || ["play", "jump", "bounce", "flap"].includes(motion)) && (
             <span className="motion-sparkles"><i>✦</i><i>✦</i><i>✦</i></span>
           )}
           {name === "小狗" && <span className="paw-trail"><i>●</i><i>●</i><i>●</i></span>}

@@ -5,7 +5,7 @@ import AnimatedLearningScene from "./AnimatedLearningScene";
 
 type CategoryKey = "animals" | "vehicles" | "fruits";
 type PlayStage = "name" | "sound" | "lesson";
-type MotionKey = "run" | "jump" | "waddle" | "nod" | "bounce" | "fly" | "flap" | "sniff" | "gallop" | "leap" | "spray" | "roar" | "drive" | "siren" | "chug" | "dig" | "soar" | "zip" | "pedal" | "sail" | "hover" | "roll" | "peel" | "split" | "jiggle" | "sway" | "pop";
+type MotionKey = "play" | "run" | "jump" | "waddle" | "nod" | "bounce" | "fly" | "flap" | "sniff" | "gallop" | "leap" | "spray" | "roar" | "drive" | "siren" | "chug" | "dig" | "soar" | "zip" | "pedal" | "sail" | "hover" | "roll" | "peel" | "split" | "jiggle" | "sway" | "pop";
 
 type CardItem = {
   name: string;
@@ -83,7 +83,7 @@ const categories: Record<CategoryKey, { label: string; icon: string; items: Card
 };
 
 const motionByName: Record<string, MotionKey> = {
-  小狗: "run",
+  小狗: "play",
   小猫: "jump",
   小鸭: "waddle",
   小牛: "nod",
