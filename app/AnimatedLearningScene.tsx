@@ -9,6 +9,8 @@ type Props = {
   motion: string;
   isActive: boolean;
   motionCycle: number;
+  motionVariant: number;
+  playStage: "name" | "sound" | "lesson" | null;
 };
 
 const illustrationByName: Record<string, string> = {
@@ -61,18 +63,21 @@ function Dots({ className }: { className: string }) {
   return <span className={className} aria-hidden="true"><i /><i /><i /></span>;
 }
 
-export default function AnimatedLearningScene({ category, name, fallbackEmoji, motion, isActive, motionCycle }: Props) {
+export default function AnimatedLearningScene({ category, name, fallbackEmoji, motion, isActive, motionCycle, motionVariant, playStage }: Props) {
   const illustration = illustrationByName[name];
   const src = illustration ? `/illustrations/${illustration}.svg` : "";
   const isDog = name === "小狗";
+  const isCat = name === "小猫";
   const isTrain = name === "火车";
+  const isFiretruck = name === "消防车";
   const isBanana = name === "香蕉";
+  const isWatermelon = name === "西瓜";
   const isSplitFruit = motion === "split";
   const isElephant = name === "大象";
   const isHelicopter = name === "直升机";
 
   return (
-    <div className={`flat-scene flat-scene-${category} scene-${illustration ?? "fallback"}${isActive ? " is-active" : ""}`} aria-label={`${name}的二维卡通动画`}>
+    <div className={`flat-scene flat-scene-${category} scene-${illustration ?? "fallback"} variant-${motionVariant} stage-${playStage ?? (isActive ? "action" : "idle")}${isActive ? " is-active" : ""}`} aria-label={`${name}的二维卡通动画`}>
       <span className="flat-halo" aria-hidden="true" />
       <span className="flat-shadow" aria-hidden="true" />
       {isDog && (
@@ -81,11 +86,33 @@ export default function AnimatedLearningScene({ category, name, fallbackEmoji, m
           <i className="dog-ball" />
         </span>
       )}
+      {isCat && (
+        <span className="cat-playground" aria-hidden="true">
+          <i className="cat-cushion" />
+          <i className="yarn-ball"><b /><b /></i>
+          <i className="cat-butterfly"><b /><b /></i>
+        </span>
+      )}
       {isTrain && (
         <span className="train-world" aria-hidden="true">
           <i className="train-hill hill-one" /><i className="train-hill hill-two" />
           <i className="train-tree tree-one" /><i className="train-tree tree-two" />
           <i className="train-track" />
+          <i className="train-tunnel" />
+        </span>
+      )}
+      {isFiretruck && (
+        <span className="rescue-scene" aria-hidden="true">
+          <i className="rescue-road" />
+          <i className="rescue-building"><b /><b /></i>
+          <span className="rescue-flames"><i /><i /><i /></span>
+          <span className="rescue-splash"><i /><i /><i /></span>
+        </span>
+      )}
+      {(isBanana || isWatermelon) && (
+        <span className="fruit-table" aria-hidden="true">
+          <i className="fruit-plate" />
+          <i className="fruit-leaf" />
         </span>
       )}
       <span className="flat-animation-set" key={`${name}-${motionCycle}-${isActive ? "play" : "rest"}`}>
@@ -116,7 +143,13 @@ export default function AnimatedLearningScene({ category, name, fallbackEmoji, m
               <i className="banana-peel banana-peel-three" />
             </span>
           )}
-          {isSplitFruit && src && (
+          {isWatermelon && (
+            <span className="watermelon-open">
+              <i className="melon-half melon-left"><b /><b /><b /></i>
+              <i className="melon-half melon-right"><b /><b /><b /></i>
+            </span>
+          )}
+          {isSplitFruit && src && !isWatermelon && (
             <span className="split-reveal">
               <img className="split-copy split-left" src={src} alt="" draggable={false} />
               <img className="split-copy split-right" src={src} alt="" draggable={false} />

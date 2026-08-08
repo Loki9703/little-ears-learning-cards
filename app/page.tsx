@@ -340,6 +340,8 @@ export default function Home() {
             motion={motion}
             isActive={isAnimating}
             motionCycle={motionCycle}
+            motionVariant={motionCycle % 3}
+            playStage={playStage}
           />
           <span className={isSpeaking ? "sound-bubble visible" : "sound-bubble"} aria-hidden="true">
             {playStage === "name" ? "听名字" : playStage === "lesson" ? "小知识" : item.sound}
