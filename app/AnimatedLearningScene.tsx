@@ -90,6 +90,24 @@ const airyMotions = new Set(["fly", "soar", "hover"]);
 const wateryMotions = new Set(["waddle", "leap", "sail"]);
 const fruityMotions = new Set(["roll", "peel", "split", "jiggle", "sway", "pop", "bounce"]);
 
+const animalContextByName: Record<string, "garden" | "farm" | "pond" | "savanna"> = {
+  小鸟: "garden",
+  大公鸡: "farm",
+  小猪: "farm",
+  小马: "farm",
+  小青蛙: "pond",
+  狮子: "savanna",
+};
+
+const vehicleContextByName: Record<string, "road" | "construction" | "sky"> = {
+  小汽车: "road",
+  公交车: "road",
+  摩托车: "road",
+  自行车: "road",
+  挖掘机: "construction",
+  飞机: "sky",
+};
+
 function Dots({ className }: { className: string }) {
   return <span className={className} aria-hidden="true"><i /><i /><i /></span>;
 }
@@ -99,6 +117,8 @@ export default function AnimatedLearningScene({ category, name, fallbackEmoji, m
   const src = illustration ? `/illustrations/${illustration}.svg` : "";
   const notoAnimation = notoAnimationByName[name];
   const animatedSrc = notoAnimation ? `/animations/noto/${notoAnimation}.json` : "";
+  const animalContext = animalContextByName[name];
+  const vehicleContext = vehicleContextByName[name];
   const isDog = name === "小狗";
   const isCat = name === "小猫";
   const isTrain = name === "火车";
@@ -142,10 +162,28 @@ export default function AnimatedLearningScene({ category, name, fallbackEmoji, m
           <span className="rescue-splash"><i /><i /><i /></span>
         </span>
       )}
-      {(isBanana || isWatermelon) && (
+      {animatedSrc && animalContext && (
+        <span className={`noto-context animal-context context-${animalContext}`} aria-hidden="true">
+          <i className="context-ground" />
+          <i className="context-prop context-prop-one" />
+          <i className="context-prop context-prop-two" />
+          <span className="context-particles"><i /><i /><i /></span>
+        </span>
+      )}
+      {animatedSrc && vehicleContext && (
+        <span className={`noto-context vehicle-context context-${vehicleContext}`} aria-hidden="true">
+          <i className="context-ground" />
+          <i className="context-prop context-prop-one" />
+          <i className="context-prop context-prop-two" />
+          <span className="context-particles"><i /><i /><i /></span>
+        </span>
+      )}
+      {category === "fruits" && (
         <span className="fruit-table" aria-hidden="true">
           <i className="fruit-plate" />
           <i className="fruit-leaf" />
+          <i className="fruit-napkin" />
+          <span className="fruit-glints"><i>✦</i><i>✦</i><i>✦</i></span>
         </span>
       )}
       <span className="flat-animation-set" key={`${name}-${motionCycle}-${isActive ? "play" : "rest"}`}>
@@ -185,7 +223,7 @@ export default function AnimatedLearningScene({ category, name, fallbackEmoji, m
               <i className="banana-peel banana-peel-three" />
             </span>
           )}
-          {isWatermelon && (
+          {isWatermelon && !animatedSrc && (
             <span className="watermelon-open">
               <i className="melon-half melon-left"><b /><b /><b /></i>
               <i className="melon-half melon-right"><b /><b /><b /></i>

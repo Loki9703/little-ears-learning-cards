@@ -709,6 +709,329 @@ button {
   transform-origin: left bottom;
 }
 
+.noto-context {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 28px;
+}
+
+.noto-context .context-ground,
+.noto-context .context-prop,
+.noto-context .context-particles,
+.noto-context .context-particles i {
+  position: absolute;
+  display: block;
+}
+
+.noto-context .context-ground {
+  width: 90%;
+  height: 32px;
+  left: 5%;
+  bottom: 9px;
+  border-radius: 50%;
+}
+
+.noto-context .context-particles {
+  inset: 0;
+}
+
+.noto-context .context-particles i {
+  width: 9px;
+  height: 9px;
+  left: 15%;
+  top: 33%;
+  border: 3px solid rgba(255,255,255,.78);
+  border-radius: 50% 0 50% 50%;
+  opacity: 0;
+  transform: rotate(-28deg);
+}
+
+.noto-context .context-particles i:nth-child(2) { left: auto; right: 13%; top: 24%; transform: rotate(32deg) scale(.75); }
+.noto-context .context-particles i:nth-child(3) { left: 22%; top: 64%; transform: rotate(12deg) scale(.56); }
+
+.context-farm .context-ground,
+.context-garden .context-ground { background: rgba(100, 171, 87, .2); }
+
+.context-farm .context-prop-one {
+  width: 108px;
+  height: 37px;
+  left: 1%;
+  bottom: 34px;
+  border-top: 5px solid #c09260;
+  border-bottom: 5px solid #c09260;
+  background: repeating-linear-gradient(90deg, #a8794b 0 7px, transparent 8px 31px);
+  opacity: .72;
+  transform: rotate(-2deg) scale(.8);
+  transform-origin: left bottom;
+}
+
+.context-farm .context-prop-two,
+.context-garden .context-prop-two {
+  width: 9px;
+  height: 24px;
+  right: 10%;
+  bottom: 29px;
+  border-radius: 99px;
+  background: #6ca768;
+  transform: rotate(7deg);
+}
+
+.context-farm .context-prop-two::before,
+.context-garden .context-prop-two::before {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  left: -8px;
+  top: -12px;
+  border: 6px dotted #f5b86d;
+  border-radius: 50%;
+  background: #fff1a5;
+}
+
+.context-garden .context-prop-one {
+  width: 92px;
+  height: 9px;
+  left: 5%;
+  bottom: 46px;
+  border-radius: 999px;
+  background: #9f7248;
+  box-shadow: 0 5px 0 rgba(100,71,44,.08);
+  transform: rotate(-7deg);
+}
+
+.context-garden .context-prop-one::before {
+  content: "";
+  position: absolute;
+  width: 35px;
+  height: 18px;
+  left: 12px;
+  top: -13px;
+  border-radius: 100% 0 100% 0;
+  background: #77b777;
+  transform: rotate(13deg);
+}
+
+.context-pond .context-ground {
+  height: 37px;
+  background: rgba(81, 177, 206, .28);
+  border: 3px solid rgba(255,255,255,.42);
+  box-shadow: inset 0 5px 0 rgba(255,255,255,.2);
+}
+
+.context-pond .context-prop-one {
+  width: 6px;
+  height: 45px;
+  left: 10%;
+  bottom: 29px;
+  border-radius: 99px;
+  background: #6aa160;
+  box-shadow: 12px 6px 0 #7db36f, 23px -2px 0 #5e9558;
+  transform: rotate(-5deg);
+}
+
+.context-pond .context-prop-two {
+  width: 51px;
+  height: 18px;
+  right: 7%;
+  bottom: 24px;
+  border-radius: 50%;
+  background: #75b66d;
+  transform: rotate(7deg);
+}
+
+.context-pond .context-prop-two::after {
+  content: "";
+  position: absolute;
+  right: 3px;
+  top: -12px;
+  border: 10px solid transparent;
+  border-top-color: rgba(255,255,255,.5);
+  transform: rotate(30deg);
+}
+
+.context-savanna .context-ground { background: rgba(210, 158, 73, .2); }
+
+.context-savanna .context-prop-one {
+  width: 65px;
+  height: 28px;
+  left: 4%;
+  bottom: 28px;
+  border-radius: 65% 42% 32% 48%;
+  background: #b68a5d;
+  box-shadow: inset -10px -5px 0 rgba(104,71,46,.12);
+  transform: rotate(-4deg) scale(.8);
+}
+
+.context-savanna .context-prop-two {
+  width: 5px;
+  height: 33px;
+  right: 10%;
+  bottom: 27px;
+  border-radius: 99px;
+  background: #859a52;
+  box-shadow: 10px 8px 0 #92a55b, -9px 12px 0 #758c49;
+  transform: rotate(8deg);
+}
+
+.context-road .context-ground {
+  width: 108%;
+  height: 39px;
+  left: -4%;
+  bottom: 5px;
+  background: #a6a6a2;
+  box-shadow: inset 0 7px 0 rgba(255,255,255,.2), 0 7px 0 rgba(73,66,58,.07);
+}
+
+.context-road .context-ground::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 5px;
+  left: 0;
+  top: 17px;
+  background: repeating-linear-gradient(90deg, transparent 0 18px, rgba(255,245,173,.9) 19px 41px, transparent 42px 64px);
+}
+
+.context-road .context-prop-one {
+  width: 7px;
+  height: 38px;
+  left: 8%;
+  bottom: 38px;
+  border-radius: 99px;
+  background: #91775c;
+}
+
+.context-road .context-prop-one::before {
+  content: "";
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  left: -13px;
+  top: -27px;
+  border: 4px solid rgba(255,255,255,.72);
+  border-radius: 50%;
+  background: #73aa70;
+}
+
+.context-road .context-prop-two {
+  width: 48px;
+  height: 24px;
+  right: 4%;
+  bottom: 36px;
+  border-radius: 70% 70% 25% 25%;
+  background: #7caf70;
+  opacity: .72;
+}
+
+.context-construction .context-ground {
+  height: 39px;
+  background: rgba(178, 127, 69, .25);
+}
+
+.context-construction .context-prop-one {
+  width: 82px;
+  height: 38px;
+  right: 2%;
+  bottom: 27px;
+  border-radius: 70% 60% 30% 20%;
+  background: #b9824d;
+  box-shadow: inset -12px -6px 0 rgba(98,64,39,.1);
+}
+
+.context-construction .context-prop-two {
+  width: 24px;
+  height: 42px;
+  left: 8%;
+  bottom: 28px;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  background: repeating-linear-gradient(0deg, #fff 0 7px, #ed8a38 8px 16px);
+  filter: drop-shadow(0 5px 3px rgba(81,57,34,.12));
+}
+
+.context-sky .context-ground { display: none; }
+
+.context-sky .context-prop-one,
+.context-sky .context-prop-two {
+  width: 72px;
+  height: 23px;
+  left: 2%;
+  top: 31%;
+  border-radius: 999px;
+  background: rgba(255,255,255,.67);
+}
+
+.context-sky .context-prop-two { left: auto; right: 1%; top: 62%; transform: scale(.7); opacity: .75; }
+
+.context-sky .context-prop-one::before,
+.context-sky .context-prop-two::before {
+  content: "";
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  left: 14px;
+  bottom: 7px;
+  border-radius: 50%;
+  background: inherit;
+  box-shadow: 25px 7px 0 rgba(255,255,255,.67);
+}
+
+.fruit-table {
+  overflow: visible;
+  z-index: auto;
+}
+
+.fruit-table::before { z-index: 0; }
+.fruit-plate,
+.fruit-leaf { z-index: 1; }
+
+.fruit-napkin {
+  position: absolute;
+  z-index: 0;
+  width: 82px;
+  height: 47px;
+  left: 13%;
+  bottom: 16px;
+  border-radius: 12px;
+  background: repeating-linear-gradient(45deg, rgba(255,255,255,.6) 0 8px, rgba(235,178,177,.45) 9px 17px);
+  transform: rotate(8deg);
+}
+
+.fruit-glints {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+}
+
+.fruit-glints i {
+  position: absolute;
+  left: 15%;
+  top: 28%;
+  color: rgba(255,255,255,.92);
+  font-size: 22px;
+  font-style: normal;
+  opacity: 0;
+  text-shadow: 0 3px 8px rgba(117,83,42,.12);
+}
+
+.fruit-glints i:nth-child(2) { left: auto; right: 14%; top: 21%; font-size: 17px; }
+.fruit-glints i:nth-child(3) { left: auto; right: 20%; top: 64%; font-size: 13px; }
+
+.is-animating .has-noto-animation .context-particles i { animation: context-particle-pop .75s ease-in-out .35s 3 alternate; }
+.is-animating .has-noto-animation .context-particles i:nth-child(2) { animation-delay: .62s; }
+.is-animating .has-noto-animation .context-particles i:nth-child(3) { animation-delay: .88s; }
+.is-animating .has-noto-animation .context-road .context-ground::after { animation: context-road-flow .42s linear .1s 8; }
+.is-animating .has-noto-animation .context-sky .context-prop-one { animation: context-cloud-left 3.1s ease-in-out both; }
+.is-animating .has-noto-animation .context-sky .context-prop-two { animation: context-cloud-right 3.1s ease-in-out both; }
+.is-animating .has-noto-animation .context-pond .context-ground { animation: context-pond-ripple 1.3s ease-in-out .25s 2; }
+.is-animating .has-noto-animation .context-construction .context-prop-one { animation: context-dirt-settle 1.1s ease-out .55s 2 alternate; }
+.is-animating .has-noto-animation .fruit-leaf { animation: leaf-reaction 1.8s ease-in-out .45s both; }
+.is-animating .has-noto-animation .fruit-glints i { animation: fruit-glint-pop .7s ease-in-out .35s 3 alternate; }
+.is-animating .has-noto-animation .fruit-glints i:nth-child(2) { animation-delay: .62s; }
+.is-animating .has-noto-animation .fruit-glints i:nth-child(3) { animation-delay: .88s; }
+
 .flat-art {
   width: clamp(142px, 43vw, 205px);
   height: clamp(134px, 38vw, 184px);
@@ -1503,6 +1826,43 @@ button {
   .progress-dots { gap: 5px; }
   .dot { width: 7px; height: 7px; }
   .dot.active { width: 20px; }
+}
+
+@keyframes context-particle-pop {
+  0% { opacity: 0; transform: translateY(8px) rotate(-28deg) scale(.45); }
+  55% { opacity: .9; }
+  100% { opacity: 0; transform: translateY(-17px) rotate(24deg) scale(1.08); }
+}
+
+@keyframes context-road-flow {
+  from { background-position-x: 0; }
+  to { background-position-x: -64px; }
+}
+
+@keyframes context-cloud-left {
+  0%, 100% { transform: translateX(0) scale(1); opacity: .68; }
+  55% { transform: translateX(42px) scale(.9); opacity: .45; }
+}
+
+@keyframes context-cloud-right {
+  0%, 100% { transform: translateX(0) scale(.7); opacity: .75; }
+  55% { transform: translateX(-48px) scale(.62); opacity: .42; }
+}
+
+@keyframes context-pond-ripple {
+  0%, 100% { transform: scaleX(1); opacity: 1; }
+  50% { transform: scaleX(1.08); opacity: .72; }
+}
+
+@keyframes context-dirt-settle {
+  from { transform: translateY(0) scale(1); }
+  to { transform: translateY(3px) scale(1.05,.92); }
+}
+
+@keyframes fruit-glint-pop {
+  0% { opacity: 0; transform: translateY(6px) rotate(-14deg) scale(.45); }
+  58% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-9px) rotate(11deg) scale(1.18); }
 }
 
 @keyframes idle-breathe {
