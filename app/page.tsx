@@ -40,6 +40,14 @@ const categories: Record<CategoryKey, { label: string; icon: string; items: Card
       { name: "小青蛙", pinyin: "xiǎo qīng wā", emoji: "🐸", sound: "呱呱！", prompt: "小青蛙跳得高", audio: "/audio/frog.mp3", effect: "/audio/effects/frog.mp3", effectDuration: 4800, effectRepeats: 1, lesson: "/audio/lessons/frog.mp3", color: "#DCF2C9", accent: "#579B4C" },
       { name: "大象", pinyin: "dà xiàng", emoji: "🐘", sound: "昂——！", prompt: "大象鼻子长长的", audio: "/audio/elephant.mp3", effect: "/audio/effects/elephant.mp3", effectDuration: 3000, effectRepeats: 1, effectVolume: 0.46, lesson: "/audio/lessons/elephant.mp3", color: "#DDE7F2", accent: "#607D9D" },
       { name: "狮子", pinyin: "shī zi", emoji: "🦁", sound: "吼——！", prompt: "狮子声音响亮", audio: "/audio/lion.mp3", effect: "/audio/effects/lion.mp3", effectDuration: 1900, effectRepeats: 1, effectVolume: 0.4, lesson: "/audio/lessons/lion.mp3", color: "#FFE6A9", accent: "#C98227" },
+      { name: "小兔子", pinyin: "xiǎo tù zi", emoji: "🐇", sound: "蹦蹦跳！", prompt: "长耳朵轻轻摆", audio: "/audio/rabbit.mp3", effect: "/audio/effects/rabbit.mp3", effectDuration: 3600, effectRepeats: 1, lesson: "/audio/lessons/rabbit.mp3", color: "#F6E9E4", accent: "#B66F68" },
+      { name: "小乌龟", pinyin: "xiǎo wū guī", emoji: "🐢", sound: "慢慢爬！", prompt: "背着硬硬的小房子", audio: "/audio/turtle.mp3", effect: "/audio/effects/turtle.mp3", effectDuration: 4200, effectRepeats: 1, lesson: "/audio/lessons/turtle.mp3", color: "#DCEFD8", accent: "#568A54" },
+      { name: "小鱼", pinyin: "xiǎo yú", emoji: "🐟", sound: "游呀游！", prompt: "尾巴摇一摇", audio: "/audio/fish.mp3", effect: "/audio/effects/fish.mp3", effectDuration: 3600, effectRepeats: 1, lesson: "/audio/lessons/fish.mp3", color: "#DCEFFA", accent: "#3B8DA8" },
+      { name: "小猴子", pinyin: "xiǎo hóu zi", emoji: "🐒", sound: "吱吱！", prompt: "长尾巴会帮忙", audio: "/audio/monkey.mp3", effect: "/audio/effects/monkey.mp3", effectDuration: 3200, effectRepeats: 1, lesson: "/audio/lessons/monkey.mp3", color: "#F3DFC8", accent: "#9D673B" },
+      { name: "小熊", pinyin: "xiǎo xióng", emoji: "🐻", sound: "咚咚走！", prompt: "厚厚的毛真暖和", audio: "/audio/bear.mp3", effect: "/audio/effects/bear.mp3", effectDuration: 3800, effectRepeats: 1, lesson: "/audio/lessons/bear.mp3", color: "#EEDCC8", accent: "#90613E" },
+      { name: "大熊猫", pinyin: "dà xióng māo", emoji: "🐼", sound: "咔嚓咔嚓！", prompt: "最爱吃绿竹子", audio: "/audio/panda.mp3", effect: "/audio/effects/panda.mp3", effectDuration: 4200, effectRepeats: 1, lesson: "/audio/lessons/panda.mp3", color: "#E6EFDB", accent: "#58774E" },
+      { name: "蝴蝶", pinyin: "hú dié", emoji: "🦋", sound: "扑扇扑扇！", prompt: "花间飞来飞去", audio: "/audio/butterfly.mp3", effect: "/audio/effects/butterfly.mp3", effectDuration: 3600, effectRepeats: 1, lesson: "/audio/lessons/butterfly.mp3", color: "#E9DFFC", accent: "#7A61B7" },
+      { name: "小蜜蜂", pinyin: "xiǎo mì fēng", emoji: "🐝", sound: "嗡嗡！", prompt: "忙着采花蜜", audio: "/audio/bee.mp3", effect: "/audio/effects/bee.mp3", effectDuration: 3600, effectRepeats: 1, lesson: "/audio/lessons/bee.mp3", color: "#FFF0B8", accent: "#B48118" },
     ],
   },
   vehicles: {
@@ -58,6 +66,14 @@ const categories: Record<CategoryKey, { label: string; icon: string; items: Card
       { name: "自行车", pinyin: "zì xíng chē", emoji: "🚲", sound: "叮铃铃！", prompt: "小脚踩一踩", audio: "/audio/bicycle.mp3", effect: "/audio/effects/bicycle.mp3", effectDuration: 1700, effectRepeats: 2, lesson: "/audio/lessons/bicycle.mp3", color: "#DDF3E6", accent: "#4A9A69" },
       { name: "轮船", pinyin: "lún chuán", emoji: "🚢", sound: "呜——！", prompt: "轮船水上走", audio: "/audio/ship.mp3", effect: "/audio/effects/ship.mp3", effectDuration: 5200, effectRepeats: 1, effectVolume: 0.45, lesson: "/audio/lessons/ship.mp3", color: "#DDF1FA", accent: "#3E8EAD" },
       { name: "直升机", pinyin: "zhí shēng jī", emoji: "🚁", sound: "哒哒哒！", prompt: "旋翼转呀转", audio: "/audio/helicopter.mp3", effect: "/audio/effects/helicopter.mp3", effectDuration: 5200, effectRepeats: 1, effectVolume: 0.45, lesson: "/audio/lessons/helicopter.mp3", color: "#F0E6D6", accent: "#9A7145" },
+      { name: "出租车", pinyin: "chū zū chē", emoji: "🚕", sound: "嘀嘀！", prompt: "招招手就来啦", audio: "/audio/taxi.mp3", effect: "/audio/effects/taxi.mp3", effectDuration: 3600, effectRepeats: 1, lesson: "/audio/lessons/taxi.mp3", color: "#FFF0B6", accent: "#BD8518" },
+      { name: "货车", pinyin: "huò chē", emoji: "🚚", sound: "轰隆隆！", prompt: "帮大家运东西", audio: "/audio/truck.mp3", effect: "/audio/effects/truck.mp3", effectDuration: 3800, effectRepeats: 1, lesson: "/audio/lessons/truck.mp3", color: "#DDECF4", accent: "#477D98" },
+      { name: "火箭", pinyin: "huǒ jiàn", emoji: "🚀", sound: "轰——！", prompt: "飞向高高的天空", audio: "/audio/rocket.mp3", effect: "/audio/effects/rocket.mp3", effectDuration: 4200, effectRepeats: 1, effectVolume: 0.48, lesson: "/audio/lessons/rocket.mp3", color: "#E5E6FA", accent: "#676DB1" },
+      { name: "滑板", pinyin: "huá bǎn", emoji: "🛹", sound: "咕噜咕噜！", prompt: "站稳才能向前滑", audio: "/audio/skateboard.mp3", effect: "/audio/effects/skateboard.mp3", effectDuration: 3600, effectRepeats: 1, lesson: "/audio/lessons/skateboard.mp3", color: "#F2DFD3", accent: "#A96845" },
+      { name: "蒸汽火车", pinyin: "zhēng qì huǒ chē", emoji: "🚂", sound: "呜——！", prompt: "烟囱冒出白白的气", audio: "/audio/locomotive.mp3", effect: "/audio/effects/locomotive.mp3", effectDuration: 4200, effectRepeats: 1, lesson: "/audio/lessons/locomotive.mp3", color: "#E3E4EA", accent: "#626A78" },
+      { name: "拖拉机", pinyin: "tuō lā jī", emoji: "🚜", sound: "突突突！", prompt: "田野里的好帮手", audio: "/audio/tractor.mp3", effect: "/audio/effects/tractor.mp3", effectDuration: 4200, effectRepeats: 1, lesson: "/audio/lessons/tractor.mp3", color: "#E2EEC8", accent: "#6F8E36" },
+      { name: "赛车", pinyin: "sài chē", emoji: "🏎️", sound: "嗖——！", prompt: "安全赛道上跑得快", audio: "/audio/racecar.mp3", effect: "/audio/effects/racecar.mp3", effectDuration: 3400, effectRepeats: 1, lesson: "/audio/lessons/racecar.mp3", color: "#FFE0DD", accent: "#C95049" },
+      { name: "帆船", pinyin: "fān chuán", emoji: "⛵", sound: "呼啦呼啦！", prompt: "风儿推着帆船走", audio: "/audio/sailboat.mp3", effect: "/audio/effects/sailboat.mp3", effectDuration: 4200, effectRepeats: 1, lesson: "/audio/lessons/sailboat.mp3", color: "#DBEFF8", accent: "#3B86A4" },
     ],
   },
   fruits: {
@@ -78,6 +94,8 @@ const categories: Record<CategoryKey, { label: string; icon: string; items: Card
       { name: "樱桃", pinyin: "yīng táo", emoji: "🍒", sound: "小小红红", prompt: "两颗樱桃手牵手", audio: "/audio/cherry.mp3", effect: "/audio/features/cherry.mp3", effectDuration: 6000, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/cherry.mp3", color: "#FFD9DE", accent: "#BD3F54" },
       { name: "蓝莓", pinyin: "lán méi", emoji: "🫐", sound: "蓝蓝小小", prompt: "一颗小小蓝宝石", audio: "/audio/blueberry.mp3", effect: "/audio/features/blueberry.mp3", effectDuration: 6000, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/blueberry.mp3", color: "#DEE3FA", accent: "#526BB0" },
       { name: "柠檬", pinyin: "níng méng", emoji: "🍋", sound: "黄黄酸酸", prompt: "闻一闻，清香扑鼻", audio: "/audio/lemon.mp3", effect: "/audio/features/lemon.mp3", effectDuration: 6000, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/lemon.mp3", color: "#FFF4B8", accent: "#AE9120" },
+      { name: "甜瓜", pinyin: "tián guā", emoji: "🍈", sound: "香香甜甜", prompt: "里面藏着许多小种子", audio: "/audio/melon.mp3", effect: "/audio/features/melon.mp3", effectDuration: 6200, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/melon.mp3", color: "#EAF1C9", accent: "#788E3D" },
+      { name: "牛油果", pinyin: "niú yóu guǒ", emoji: "🥑", sound: "绿绿软软", prompt: "中间有一颗大果核", audio: "/audio/avocado.mp3", effect: "/audio/features/avocado.mp3", effectDuration: 6200, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/avocado.mp3", color: "#DFEBC8", accent: "#5F823D" },
     ],
   },
 };
@@ -95,6 +113,14 @@ const motionByName: Record<string, MotionKey> = {
   小青蛙: "leap",
   大象: "spray",
   狮子: "roar",
+  小兔子: "leap",
+  小乌龟: "waddle",
+  小鱼: "sail",
+  小猴子: "bounce",
+  小熊: "nod",
+  大熊猫: "bounce",
+  蝴蝶: "fly",
+  小蜜蜂: "fly",
   小汽车: "drive",
   公交车: "drive",
   消防车: "spray",
@@ -107,6 +133,14 @@ const motionByName: Record<string, MotionKey> = {
   自行车: "pedal",
   轮船: "sail",
   直升机: "hover",
+  出租车: "drive",
+  货车: "drive",
+  火箭: "soar",
+  滑板: "zip",
+  蒸汽火车: "chug",
+  拖拉机: "drive",
+  赛车: "zip",
+  帆船: "sail",
   苹果: "roll",
   香蕉: "peel",
   橙子: "roll",
@@ -121,6 +155,8 @@ const motionByName: Record<string, MotionKey> = {
   樱桃: "jiggle",
   蓝莓: "pop",
   柠檬: "roll",
+  甜瓜: "split",
+  牛油果: "sway",
 };
 
 export default function Home() {
@@ -365,22 +401,11 @@ export default function Home() {
 
       <footer className="controls">
         <button className="round-button" type="button" onClick={() => changeCard(-1)} aria-label="上一张">‹</button>
-        <div className="progress-dots" aria-label={`第 ${index + 1} 张，共 ${items.length} 张`}>
-          {items.map((dotItem, dotIndex) => (
-            <button
-              key={dotItem.name}
-              type="button"
-              className={dotIndex === index ? "dot active" : "dot"}
-              onClick={() => {
-                cancelPlayback();
-                stopMotion();
-                setIndex(dotIndex);
-                setShowHint(true);
-              }}
-              aria-label={`查看${dotItem.name}`}
-              aria-current={dotIndex === index ? "true" : undefined}
-            />
-          ))}
+        <div className="progress-overview" aria-label={`第 ${index + 1} 张，共 ${items.length} 张`}>
+          <span className="progress-track" aria-hidden="true">
+            <i style={{ width: `${((index + 1) / items.length) * 100}%` }} />
+          </span>
+          <span className="progress-count"><strong>{index + 1}</strong><span>/ {items.length}</span></span>
         </div>
         <button className="round-button" type="button" onClick={() => changeCard(1)} aria-label="下一张">›</button>
       </footer>

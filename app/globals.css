@@ -1784,27 +1784,44 @@ button {
   cursor: pointer;
 }
 
-.progress-dots {
+.progress-overview {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
+  min-width: 146px;
 }
 
-.dot {
-  width: 9px;
+.progress-track {
+  position: relative;
+  width: clamp(82px, 26vw, 130px);
   height: 9px;
-  padding: 0;
-  border: 0;
+  overflow: hidden;
   border-radius: 999px;
-  background: #d3c7b3;
-  cursor: pointer;
-  transition: width .2s ease, background .2s ease;
+  background: #ded5c6;
 }
 
-.dot.active {
-  width: 25px;
+.progress-track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
   background: var(--green);
+  transition: width .28s ease;
+}
+
+.progress-count {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  min-width: 39px;
+  color: #9a8d7b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.progress-count strong {
+  color: var(--green);
+  font-size: 17px;
 }
 
 .swipe-tip {
@@ -1820,12 +1837,6 @@ button {
   margin-right: 5px;
   color: var(--green);
   font-size: 16px;
-}
-
-@media (max-width: 400px) {
-  .progress-dots { gap: 5px; }
-  .dot { width: 7px; height: 7px; }
-  .dot.active { width: 20px; }
 }
 
 @keyframes context-particle-pop {

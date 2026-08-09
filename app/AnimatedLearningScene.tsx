@@ -28,6 +28,14 @@ const illustrationByName: Record<string, string> = {
   小青蛙: "frog",
   大象: "elephant",
   狮子: "lion",
+  小兔子: "rabbit",
+  小乌龟: "turtle",
+  小鱼: "fish",
+  小猴子: "monkey",
+  小熊: "bear",
+  大熊猫: "panda",
+  蝴蝶: "butterfly",
+  小蜜蜂: "bee",
   小汽车: "car",
   公交车: "bus",
   消防车: "firetruck",
@@ -40,6 +48,14 @@ const illustrationByName: Record<string, string> = {
   自行车: "bicycle",
   轮船: "ship",
   直升机: "helicopter",
+  出租车: "taxi",
+  货车: "truck",
+  火箭: "rocket",
+  滑板: "skateboard",
+  蒸汽火车: "locomotive",
+  拖拉机: "tractor",
+  赛车: "racecar",
+  帆船: "sailboat",
   苹果: "apple",
   香蕉: "banana",
   橙子: "orange",
@@ -54,6 +70,8 @@ const illustrationByName: Record<string, string> = {
   樱桃: "cherry",
   蓝莓: "blueberry",
   柠檬: "lemon",
+  甜瓜: "melon",
+  牛油果: "avocado",
 };
 
 const notoAnimationByName: Record<string, string> = {
@@ -64,6 +82,14 @@ const notoAnimationByName: Record<string, string> = {
   小马: "horse",
   小青蛙: "frog",
   狮子: "lion",
+  小兔子: "rabbit",
+  小乌龟: "turtle",
+  小鱼: "fish",
+  小猴子: "monkey",
+  小熊: "bear",
+  大熊猫: "panda",
+  蝴蝶: "butterfly",
+  小蜜蜂: "bee",
   小汽车: "car",
   公交车: "bus",
   火车: "train",
@@ -71,6 +97,14 @@ const notoAnimationByName: Record<string, string> = {
   飞机: "airplane",
   摩托车: "motorcycle",
   自行车: "bicycle",
+  出租车: "taxi",
+  货车: "truck",
+  火箭: "rocket",
+  滑板: "skateboard",
+  蒸汽火车: "locomotive",
+  拖拉机: "tractor",
+  赛车: "racecar",
+  帆船: "sailboat",
   苹果: "apple",
   橙子: "orange",
   西瓜: "watermelon",
@@ -83,6 +117,8 @@ const notoAnimationByName: Record<string, string> = {
   樱桃: "cherry",
   蓝莓: "blueberry",
   柠檬: "lemon",
+  甜瓜: "melon",
+  牛油果: "avocado",
 };
 
 const dustyMotions = new Set(["run", "gallop", "drive", "zip", "pedal"]);
@@ -97,6 +133,14 @@ const animalContextByName: Record<string, "garden" | "farm" | "pond" | "savanna"
   小马: "farm",
   小青蛙: "pond",
   狮子: "savanna",
+  小兔子: "garden",
+  小乌龟: "pond",
+  小鱼: "pond",
+  小猴子: "garden",
+  小熊: "savanna",
+  大熊猫: "garden",
+  蝴蝶: "garden",
+  小蜜蜂: "garden",
 };
 
 const vehicleContextByName: Record<string, "road" | "construction" | "sky"> = {
@@ -106,6 +150,12 @@ const vehicleContextByName: Record<string, "road" | "construction" | "sky"> = {
   自行车: "road",
   挖掘机: "construction",
   飞机: "sky",
+  出租车: "road",
+  货车: "road",
+  火箭: "sky",
+  滑板: "road",
+  拖拉机: "construction",
+  赛车: "road",
 };
 
 function Dots({ className }: { className: string }) {
@@ -121,7 +171,7 @@ export default function AnimatedLearningScene({ category, name, fallbackEmoji, m
   const vehicleContext = vehicleContextByName[name];
   const isDog = name === "小狗";
   const isCat = name === "小猫";
-  const isTrain = name === "火车";
+  const isTrain = name === "火车" || name === "蒸汽火车";
   const isFiretruck = name === "消防车";
   const isBanana = name === "香蕉";
   const isWatermelon = name === "西瓜";
