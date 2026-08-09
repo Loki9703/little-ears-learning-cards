@@ -1,5 +1,7 @@
 "use client";
 
+import NotoLottieAnimation from "./NotoLottieAnimation";
+
 type ModelCategory = "animals" | "vehicles" | "fruits";
 
 type Props = {
@@ -54,6 +56,35 @@ const illustrationByName: Record<string, string> = {
   柠檬: "lemon",
 };
 
+const notoAnimationByName: Record<string, string> = {
+  小狗: "dog",
+  小鸟: "bird",
+  大公鸡: "rooster",
+  小猪: "pig",
+  小马: "horse",
+  小青蛙: "frog",
+  狮子: "lion",
+  小汽车: "car",
+  公交车: "bus",
+  火车: "train",
+  挖掘机: "excavator",
+  飞机: "airplane",
+  摩托车: "motorcycle",
+  自行车: "bicycle",
+  苹果: "apple",
+  橙子: "orange",
+  西瓜: "watermelon",
+  草莓: "strawberry",
+  葡萄: "grape",
+  梨: "pear",
+  菠萝: "pineapple",
+  芒果: "mango",
+  猕猴桃: "kiwi",
+  樱桃: "cherry",
+  蓝莓: "blueberry",
+  柠檬: "lemon",
+};
+
 const dustyMotions = new Set(["run", "gallop", "drive", "zip", "pedal"]);
 const airyMotions = new Set(["fly", "soar", "hover"]);
 const wateryMotions = new Set(["waddle", "leap", "sail"]);
@@ -66,6 +97,8 @@ function Dots({ className }: { className: string }) {
 export default function AnimatedLearningScene({ category, name, fallbackEmoji, motion, isActive, motionCycle, motionVariant, playStage }: Props) {
   const illustration = illustrationByName[name];
   const src = illustration ? `/illustrations/${illustration}.svg` : "";
+  const notoAnimation = notoAnimationByName[name];
+  const animatedSrc = notoAnimation ? `/animations/noto/${notoAnimation}.json` : "";
   const isDog = name === "小狗";
   const isCat = name === "小猫";
   const isTrain = name === "火车";
@@ -77,7 +110,7 @@ export default function AnimatedLearningScene({ category, name, fallbackEmoji, m
   const isHelicopter = name === "直升机";
 
   return (
-    <div className={`flat-scene flat-scene-${category} scene-${illustration ?? "fallback"} variant-${motionVariant} stage-${playStage ?? (isActive ? "action" : "idle")}${isActive ? " is-active" : ""}`} aria-label={`${name}的二维卡通动画`}>
+    <div className={`flat-scene flat-scene-${category} scene-${illustration ?? "fallback"} variant-${motionVariant} stage-${playStage ?? (isActive ? "action" : "idle")}${animatedSrc ? " has-noto-animation" : ""}${isActive ? " is-active" : ""}`} aria-label={`${name}的二维卡通动画`}>
       <span className="flat-halo" aria-hidden="true" />
       <span className="flat-shadow" aria-hidden="true" />
       {isDog && (
@@ -117,7 +150,16 @@ export default function AnimatedLearningScene({ category, name, fallbackEmoji, m
       )}
       <span className="flat-animation-set" key={`${name}-${motionCycle}-${isActive ? "play" : "rest"}`}>
         <span className={`main-emoji flat-art art-${illustration ?? "fallback"}`} aria-hidden="true">
-          {src ? <img className="flat-illustration" src={src} alt="" draggable={false} /> : <span className="flat-fallback">{fallbackEmoji}</span>}
+          {src ? (
+            animatedSrc ? (
+              <NotoLottieAnimation
+                animationSrc={animatedSrc}
+                fallbackSrc={src}
+                isPlaying={isActive}
+                playKey={motionCycle}
+              />
+            ) : <img className="flat-illustration" src={src} alt="" draggable={false} />
+          ) : <span className="flat-fallback">{fallbackEmoji}</span>}
         </span>
 
         <span className="motion-effects" aria-hidden="true">
@@ -157,7 +199,7 @@ export default function AnimatedLearningScene({ category, name, fallbackEmoji, m
           )}
         </span>
       </span>
-      <span className="model-2d-badge" aria-hidden="true">2D 动画</span>
+      <span className="model-2d-badge" aria-hidden="true">{animatedSrc ? "官方动态" : "2D 动画"}</span>
     </div>
   );
 }
