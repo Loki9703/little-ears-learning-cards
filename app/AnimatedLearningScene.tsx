@@ -93,7 +93,6 @@ const notoAnimationByName: Record<string, string> = {
   小汽车: "car",
   公交车: "bus",
   火车: "train",
-  挖掘机: "excavator",
   飞机: "airplane",
   摩托车: "motorcycle",
   自行车: "bicycle",
@@ -220,7 +219,7 @@ export default function AnimatedLearningScene({ category, name, fallbackEmoji, m
           <span className="context-particles"><i /><i /><i /></span>
         </span>
       )}
-      {animatedSrc && vehicleContext && (
+      {vehicleContext && (
         <span className={`noto-context vehicle-context context-${vehicleContext}`} aria-hidden="true">
           <i className="context-ground" />
           <i className="context-prop context-prop-one" />
@@ -248,11 +247,12 @@ export default function AnimatedLearningScene({ category, name, fallbackEmoji, m
               />
             ) : <img className="flat-illustration" src={src} alt="" draggable={false} />
           ) : <span className="flat-fallback">{fallbackEmoji}</span>}
+          {isFiretruck && motion === "spray" && <Dots className="water-stream truck-water" />}
         </span>
 
         <span className="motion-effects" aria-hidden="true">
           {dustyMotions.has(motion) && <Dots className="dust-puffs" />}
-          {motion === "spray" && <Dots className={`water-stream ${isElephant ? "elephant-water" : "truck-water"}`} />}
+          {motion === "spray" && !isFiretruck && <Dots className={`water-stream ${isElephant ? "elephant-water" : ""}`} />}
           {motion === "siren" && <Dots className="siren-lights" />}
           {motion === "chug" && <Dots className="smoke-puffs" />}
           {motion === "dig" && <Dots className="dirt-puffs" />}
