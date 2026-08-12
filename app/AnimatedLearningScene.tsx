@@ -2,7 +2,7 @@
 
 import NotoLottieAnimation from "./NotoLottieAnimation";
 
-type ModelCategory = "animals" | "vehicles" | "fruits";
+type ModelCategory = "animals" | "vehicles" | "fruits" | "dinosaurs";
 
 type Props = {
   category: ModelCategory;
@@ -74,6 +74,18 @@ const illustrationByName: Record<string, string> = {
   牛油果: "avocado",
 };
 
+const dinosaurIllustrationByName: Record<string, string> = {
+  霸王龙: "tyrannosaurus",
+  三角龙: "triceratops",
+  腕龙: "brachiosaurus",
+  剑龙: "stegosaurus",
+  迅猛龙: "velociraptor",
+  甲龙: "ankylosaurus",
+  副栉龙: "parasaurolophus",
+  棘龙: "spinosaurus",
+  无齿翼龙: "pteranodon",
+};
+
 const notoAnimationByName: Record<string, string> = {
   小狗: "dog",
   小鸟: "bird",
@@ -120,8 +132,8 @@ const notoAnimationByName: Record<string, string> = {
   牛油果: "avocado",
 };
 
-const dustyMotions = new Set(["run", "gallop", "drive", "zip", "pedal"]);
-const airyMotions = new Set(["fly", "soar", "hover"]);
+const dustyMotions = new Set(["run", "gallop", "drive", "zip", "pedal", "stomp", "charge", "prowl", "club", "sail-stride"]);
+const airyMotions = new Set(["fly", "soar", "hover", "glide"]);
 const wateryMotions = new Set(["waddle", "leap", "sail"]);
 const fruityMotions = new Set(["roll", "peel", "split", "jiggle", "sway", "pop", "bounce"]);
 
@@ -163,7 +175,9 @@ function Dots({ className }: { className: string }) {
 
 export default function AnimatedLearningScene({ category, name, fallbackEmoji, motion, isActive, motionCycle, motionVariant, playStage }: Props) {
   const illustration = illustrationByName[name];
-  const src = illustration ? `/illustrations/${illustration}.svg` : "";
+  const dinosaurIllustration = dinosaurIllustrationByName[name];
+  const assetSlug = dinosaurIllustration ?? illustration;
+  const src = dinosaurIllustration ? `/illustrations/dinosaurs/${dinosaurIllustration}.webp` : illustration ? `/illustrations/${illustration}.svg` : "";
   const notoAnimation = notoAnimationByName[name];
   const animatedSrc = notoAnimation ? `/animations/noto/${notoAnimation}.json` : "";
   const animalContext = animalContextByName[name];
@@ -177,9 +191,10 @@ export default function AnimatedLearningScene({ category, name, fallbackEmoji, m
   const isSplitFruit = motion === "split";
   const isElephant = name === "大象";
   const isHelicopter = name === "直升机";
+  const isDinosaur = category === "dinosaurs";
 
   return (
-    <div className={`flat-scene flat-scene-${category} scene-${illustration ?? "fallback"} variant-${motionVariant} stage-${playStage ?? (isActive ? "action" : "idle")}${animatedSrc ? " has-noto-animation" : ""}${isActive ? " is-active" : ""}`} aria-label={`${name}的二维卡通动画`}>
+    <div className={`flat-scene flat-scene-${category} scene-${assetSlug ?? "fallback"} variant-${motionVariant} stage-${playStage ?? (isActive ? "action" : "idle")}${animatedSrc ? " has-noto-animation" : ""}${isActive ? " is-active" : ""}`} aria-label={`${name}的二维卡通动画`}>
       <span className="flat-halo" aria-hidden="true" />
       <span className="flat-shadow" aria-hidden="true" />
       {isDog && (
@@ -235,8 +250,19 @@ export default function AnimatedLearningScene({ category, name, fallbackEmoji, m
           <span className="fruit-glints"><i>✦</i><i>✦</i><i>✦</i></span>
         </span>
       )}
+      {isDinosaur && (
+        <span className="dinosaur-world" aria-hidden="true">
+          <i className="dino-hill dino-hill-one" />
+          <i className="dino-hill dino-hill-two" />
+          <i className="dino-fern dino-fern-one" />
+          <i className="dino-fern dino-fern-two" />
+          <i className="dino-rock dino-rock-one" />
+          <i className="dino-rock dino-rock-two" />
+          <span className="dino-clouds"><i /><i /></span>
+        </span>
+      )}
       <span className="flat-animation-set" key={`${name}-${motionCycle}-${isActive ? "play" : "rest"}`}>
-        <span className={`main-emoji flat-art art-${illustration ?? "fallback"}`} aria-hidden="true">
+        <span className={`main-emoji flat-art art-${assetSlug ?? "fallback"}`} aria-hidden="true">
           {src ? (
             animatedSrc ? (
               <NotoLottieAnimation
@@ -265,6 +291,8 @@ export default function AnimatedLearningScene({ category, name, fallbackEmoji, m
           {motion === "sniff" && <span className="scent-curls"><i>﹏</i><i>﹏</i><i>﹏</i></span>}
           {wateryMotions.has(motion) && <span className="ripple-set"><i /><i /><i /></span>}
           {isHelicopter && <span className="rotor-effect"><i /><i /></span>}
+          {isDinosaur && motion !== "glide" && <span className="dino-footprints"><i /><i /><i /></span>}
+          {isDinosaur && ["graze", "crest-call"].includes(motion) && <span className="dino-leaves"><i>●</i><i>●</i><i>●</i></span>}
           {isBanana && (
             <span className="banana-reveal">
               <i className="banana-fruit" />
@@ -287,7 +315,7 @@ export default function AnimatedLearningScene({ category, name, fallbackEmoji, m
           )}
         </span>
       </span>
-      <span className="model-2d-badge" aria-hidden="true">{animatedSrc ? "官方动态" : "2D 动画"}</span>
+      <span className="model-2d-badge" aria-hidden="true">{isDinosaur ? "恐龙动画" : animatedSrc ? "官方动态" : "2D 动画"}</span>
     </div>
   );
 }

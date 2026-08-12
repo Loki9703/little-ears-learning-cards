@@ -131,7 +131,7 @@ button {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 7px;
   margin: 14px 0 12px;
   padding: 5px;
@@ -348,7 +348,8 @@ button {
 .train-world,
 .cat-playground,
 .rescue-scene,
-.fruit-table {
+.fruit-table,
+.dinosaur-world {
   position: absolute;
   z-index: 1;
   inset: 0;
@@ -1037,6 +1038,12 @@ button {
   height: clamp(134px, 38vw, 184px);
 }
 
+.flat-scene-dinosaurs .flat-art {
+  width: clamp(175px, 54vw, 245px);
+  height: clamp(132px, 39vw, 180px);
+  filter: drop-shadow(0 13px 8px rgba(72, 56, 31, .18));
+}
+
 .flat-illustration {
   display: block;
   width: 100%;
@@ -1189,6 +1196,15 @@ button {
 .is-animating.motion-jiggle .main-emoji { animation: motion-jiggle 2.5s ease-in-out both; }
 .is-animating.motion-sway .main-emoji { animation: motion-sway 2.7s ease-in-out both; }
 .is-animating.motion-pop .main-emoji { animation: motion-pop 2.5s cubic-bezier(.2,.85,.3,1) both; }
+.is-animating.motion-stomp .main-emoji { animation: dino-stomp 3.2s cubic-bezier(.2,.78,.28,1) both; }
+.is-animating.motion-charge .main-emoji { animation: dino-charge 3.2s cubic-bezier(.18,.82,.25,1) both; }
+.is-animating.motion-graze .main-emoji { animation: dino-graze 3.2s ease-in-out both; }
+.is-animating.motion-tail-swing .main-emoji { animation: dino-tail-swing 3.2s ease-in-out both; }
+.is-animating.motion-prowl .main-emoji { animation: dino-prowl 3.2s cubic-bezier(.2,.75,.25,1) both; }
+.is-animating.motion-club .main-emoji { animation: dino-club 3.2s ease-in-out both; }
+.is-animating.motion-crest-call .main-emoji { animation: dino-crest-call 3.2s ease-in-out both; }
+.is-animating.motion-sail-stride .main-emoji { animation: dino-sail-stride 3.2s ease-in-out both; }
+.is-animating.motion-glide .main-emoji { animation: dino-glide 3.2s cubic-bezier(.2,.72,.28,1) both; }
 
 .is-animating .flat-scene.has-noto-animation .main-emoji {
   animation: none !important;
@@ -1203,6 +1219,7 @@ button {
 .scene-firetruck.stage-idle .main-emoji { animation: idle-vehicle 4.2s ease-in-out infinite; }
 .scene-banana.stage-idle .main-emoji,
 .scene-watermelon.stage-idle .main-emoji { animation: idle-fruit 4.4s ease-in-out infinite; }
+.flat-scene-dinosaurs.stage-idle .main-emoji { animation: dino-idle 4.1s ease-in-out infinite; }
 .scene-banana.stage-idle .fruit-leaf,
 .scene-watermelon.stage-idle .fruit-leaf { animation: leaf-sway 2.8s ease-in-out infinite; }
 
@@ -1278,6 +1295,56 @@ button {
 .is-animating .dust-puffs i:nth-child(2) { animation-delay: .55s; }
 .is-animating .dust-puffs i:nth-child(3) { animation-delay: .75s; }
 
+.dino-footprints i {
+  position: absolute;
+  width: 17px;
+  height: 10px;
+  left: 31%;
+  bottom: 20px;
+  border-radius: 60% 40% 55% 45%;
+  background: rgba(103, 83, 55, .24);
+  opacity: 0;
+  transform: rotate(-13deg);
+}
+
+.dino-footprints i::before,
+.dino-footprints i::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 8px;
+  top: -4px;
+  border-radius: 70% 70% 25% 25%;
+  background: inherit;
+}
+
+.dino-footprints i::before { left: 0; transform: rotate(-24deg); }
+.dino-footprints i::after { right: 0; transform: rotate(24deg); }
+.dino-footprints i:nth-child(2) { left: 21%; transform: rotate(9deg) scale(.86); }
+.dino-footprints i:nth-child(3) { left: 12%; transform: rotate(-10deg) scale(.72); }
+.is-animating .dino-footprints i { animation: dino-footprint 1s ease-out .65s 2 alternate; }
+.is-animating .dino-footprints i:nth-child(2) { animation-delay: .9s; }
+.is-animating .dino-footprints i:nth-child(3) { animation-delay: 1.15s; }
+
+.dino-leaves i {
+  position: absolute;
+  right: 20%;
+  top: 27%;
+  color: #7ea45c;
+  font-size: 16px;
+  font-style: normal;
+  opacity: 0;
+}
+
+.dino-leaves i:nth-child(2) { right: 14%; top: 39%; font-size: 12px; }
+.dino-leaves i:nth-child(3) { right: 26%; top: 18%; font-size: 10px; }
+.is-animating .dino-leaves i { animation: dino-leaf-nibble .75s ease-in-out .7s 3 alternate; }
+.is-animating .dino-leaves i:nth-child(2) { animation-delay: .92s; }
+.is-animating .dino-leaves i:nth-child(3) { animation-delay: 1.14s; }
+
+.is-animating .flat-scene-dinosaurs .dino-fern { animation: dino-fern-rustle .7s ease-in-out .4s 4 alternate; }
+.is-animating .flat-scene-dinosaurs .dino-clouds i { animation: dino-cloud-drift 3.2s ease-in-out both; }
+
 .water-stream {
   position: absolute;
   width: 126px;
@@ -1312,6 +1379,106 @@ button {
   border-top-width: 8px;
   transform: rotate(-11deg) scaleX(.08);
 }
+
+.dinosaur-world {
+  overflow: visible;
+  background: linear-gradient(180deg, rgba(255,255,255,.18), transparent 60%);
+}
+
+.dinosaur-world::after {
+  content: "";
+  position: absolute;
+  width: 88%;
+  height: 38px;
+  left: 6%;
+  bottom: 12px;
+  border-radius: 50%;
+  background: rgba(127, 143, 82, .18);
+}
+
+.dino-hill {
+  position: absolute;
+  z-index: 0;
+  width: 130px;
+  height: 62px;
+  bottom: 24px;
+  border-radius: 55% 60% 20% 20%;
+  background: rgba(113, 157, 91, .18);
+}
+
+.dino-hill-one { left: -18px; transform: rotate(5deg); }
+.dino-hill-two { right: -21px; bottom: 30px; transform: scale(.82) rotate(-7deg); }
+
+.dino-fern {
+  position: absolute;
+  z-index: 1;
+  width: 7px;
+  height: 43px;
+  bottom: 22px;
+  border-radius: 999px 999px 3px 3px;
+  background: #779a5c;
+  transform-origin: bottom;
+}
+
+.dino-fern::before,
+.dino-fern::after {
+  content: "";
+  position: absolute;
+  width: 28px;
+  height: 12px;
+  top: 8px;
+  border-radius: 100% 10% 100% 10%;
+  background: #8aab68;
+  transform: rotate(-24deg);
+  transform-origin: right center;
+  box-shadow: 9px 13px 0 -1px #6f9454;
+}
+
+.dino-fern::after {
+  left: -21px;
+  transform: scaleX(-1) rotate(-24deg);
+}
+
+.dino-fern-one { left: 10%; transform: rotate(-4deg); }
+.dino-fern-two { right: 9%; height: 35px; transform: scale(.82) rotate(5deg); }
+
+.dino-rock {
+  position: absolute;
+  z-index: 1;
+  width: 31px;
+  height: 18px;
+  bottom: 20px;
+  border-radius: 58% 68% 35% 30%;
+  background: #aaa48d;
+  box-shadow: inset -8px -5px 0 rgba(88, 81, 66, .1);
+}
+
+.dino-rock-one { left: 23%; }
+.dino-rock-two { right: 20%; width: 21px; height: 13px; opacity: .75; }
+
+.dino-clouds i {
+  position: absolute;
+  z-index: 0;
+  width: 54px;
+  height: 15px;
+  left: 4%;
+  top: 20%;
+  border-radius: 999px;
+  background: rgba(255,255,255,.52);
+}
+
+.dino-clouds i::before {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  left: 13px;
+  bottom: 5px;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.dino-clouds i:nth-child(2) { left: auto; right: 2%; top: 10%; transform: scale(.7); opacity: .7; }
 
 .main-emoji .truck-water::before {
   content: "";
@@ -2166,6 +2333,102 @@ button {
   100% { opacity: 0; transform: translateY(3px) scale(.94); }
 }
 
+@keyframes dino-idle {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-3px) rotate(.6deg); }
+}
+
+@keyframes dino-stomp {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  18% { transform: translate(-14px, -8px) rotate(-2deg); }
+  31% { transform: translate(-6px, 2px) rotate(1deg); }
+  48% { transform: translate(12px, -7px) rotate(2deg); }
+  62% { transform: translate(18px, 2px) rotate(-1deg); }
+  80% { transform: translate(7px, -5px) rotate(1deg); }
+}
+
+@keyframes dino-charge {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  18% { transform: translateX(-34px) rotate(-4deg); }
+  38% { transform: translateX(-18px) rotate(3deg); }
+  68% { transform: translateX(35px) rotate(4deg); }
+  82% { transform: translateX(23px) rotate(-2deg); }
+}
+
+@keyframes dino-graze {
+  0%, 100% { transform: translateY(0) rotate(0); transform-origin: 58% 85%; }
+  30%, 62% { transform: translate(5px, 8px) rotate(5deg); transform-origin: 58% 85%; }
+  46% { transform: translate(2px, 5px) rotate(3deg); transform-origin: 58% 85%; }
+  80% { transform: translateY(-5px) rotate(-1deg); transform-origin: 58% 85%; }
+}
+
+@keyframes dino-tail-swing {
+  0%, 100% { transform: rotate(0); transform-origin: 58% 80%; }
+  24% { transform: translateX(-7px) rotate(-5deg); transform-origin: 58% 80%; }
+  48% { transform: translateX(9px) rotate(5deg); transform-origin: 58% 80%; }
+  72% { transform: translateX(-4px) rotate(-3deg); transform-origin: 58% 80%; }
+}
+
+@keyframes dino-prowl {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  16% { transform: translate(-24px, -4px) rotate(-2deg); }
+  31% { transform: translate(-13px, 2px) rotate(1deg); }
+  50% { transform: translate(5px, -5px) rotate(2deg); }
+  68% { transform: translate(28px, 1px) rotate(-1deg); }
+  84% { transform: translate(15px, -4px) rotate(1deg); }
+}
+
+@keyframes dino-club {
+  0%, 100% { transform: rotate(0); transform-origin: 45% 75%; }
+  25% { transform: translateX(-5px) rotate(-5deg); transform-origin: 45% 75%; }
+  42% { transform: translateX(7px) rotate(8deg); transform-origin: 45% 75%; }
+  58% { transform: translateX(-4px) rotate(-7deg); transform-origin: 45% 75%; }
+  76% { transform: translateX(3px) rotate(4deg); transform-origin: 45% 75%; }
+}
+
+@keyframes dino-crest-call {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  24% { transform: translateY(6px) rotate(2deg); }
+  46%, 68% { transform: translateY(-9px) rotate(-3deg) scale(1.025); }
+  82% { transform: translateY(-3px) rotate(1deg); }
+}
+
+@keyframes dino-sail-stride {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  20% { transform: translate(-20px, -4px) rotate(-2deg); }
+  38% { transform: translate(-8px, 2px) rotate(2deg); }
+  58% { transform: translate(19px, -5px) rotate(2deg); }
+  76% { transform: translate(28px, 2px) rotate(-2deg); }
+}
+
+@keyframes dino-glide {
+  0%, 100% { transform: translate(0, 3px) rotate(0) scale(.96); }
+  18% { transform: translate(-36px, -12px) rotate(-7deg) scale(.94); }
+  45% { transform: translate(-5px, -24px) rotate(1deg) scale(1.02); }
+  72% { transform: translate(36px, -9px) rotate(7deg) scale(.97); }
+  87% { transform: translate(19px, 2px) rotate(-2deg) scale(.98); }
+}
+
+@keyframes dino-footprint {
+  0% { opacity: 0; transform: translateY(-4px) scale(.55) rotate(-10deg); }
+  65%, 100% { opacity: .75; transform: translateY(0) scale(1) rotate(-10deg); }
+}
+
+@keyframes dino-leaf-nibble {
+  0% { opacity: 0; transform: translate(5px, 3px) rotate(0) scale(.6); }
+  100% { opacity: .9; transform: translate(-3px, -5px) rotate(22deg) scale(1); }
+}
+
+@keyframes dino-fern-rustle {
+  from { transform: rotate(-7deg); }
+  to { transform: rotate(8deg); }
+}
+
+@keyframes dino-cloud-drift {
+  from { transform: translateX(-8px); }
+  to { transform: translateX(16px); }
+}
+
 @keyframes motion-run {
   0% { opacity: 0; transform: translateX(-165%) translateY(8px) rotate(-8deg) scale(.72); }
   12% { opacity: 1; }
@@ -2616,6 +2879,12 @@ button {
   .lesson-steps { margin-top: 5px; }
   .controls { min-height: 48px; padding-top: 8px; }
   .round-button { width: 42px; height: 42px; font-size: 35px; }
+}
+
+@media (max-width: 380px) {
+  .category-switcher { gap: 4px; padding: 4px; }
+  .category-button { min-height: 46px; font-size: 14px; letter-spacing: .03em; }
+  .category-button span { margin-right: 3px; font-size: 17px; }
 }
 
 @media (min-width: 761px) {

@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import AnimatedLearningScene from "./AnimatedLearningScene";
 
-type CategoryKey = "animals" | "vehicles" | "fruits";
+type CategoryKey = "animals" | "vehicles" | "fruits" | "dinosaurs";
 type PlayStage = "name" | "sound" | "lesson";
-type MotionKey = "play" | "run" | "jump" | "waddle" | "nod" | "bounce" | "fly" | "flap" | "sniff" | "gallop" | "leap" | "spray" | "roar" | "drive" | "siren" | "chug" | "dig" | "soar" | "zip" | "pedal" | "sail" | "hover" | "roll" | "peel" | "split" | "jiggle" | "sway" | "pop";
+type MotionKey = "play" | "run" | "jump" | "waddle" | "nod" | "bounce" | "fly" | "flap" | "sniff" | "gallop" | "leap" | "spray" | "roar" | "drive" | "siren" | "chug" | "dig" | "soar" | "zip" | "pedal" | "sail" | "hover" | "roll" | "peel" | "split" | "jiggle" | "sway" | "pop" | "stomp" | "charge" | "graze" | "tail-swing" | "prowl" | "club" | "crest-call" | "sail-stride" | "glide";
 
 type CardItem = {
   name: string;
@@ -13,12 +13,17 @@ type CardItem = {
   emoji: string;
   sound: string;
   prompt: string;
-  audio: string;
-  effect: string;
-  effectDuration: number;
-  effectRepeats: number;
+  audio?: string;
+  effect?: string;
+  effectDuration?: number;
+  effectRepeats?: number;
   effectVolume?: number;
-  lesson: string;
+  lesson?: string;
+  narration?: {
+    name: string;
+    feature: string;
+    lesson: string;
+  };
   color: string;
   accent: string;
 };
@@ -98,6 +103,21 @@ const categories: Record<CategoryKey, { label: string; icon: string; items: Card
       { name: "牛油果", pinyin: "niú yóu guǒ", emoji: "🥑", sound: "绿绿软软", prompt: "中间有一颗大果核", audio: "/audio/avocado.mp3", effect: "/audio/features/avocado.mp3", effectDuration: 6200, effectRepeats: 1, effectVolume: 0.88, lesson: "/audio/lessons/avocado.mp3", color: "#DFEBC8", accent: "#5F823D" },
     ],
   },
+  dinosaurs: {
+    label: "恐龙",
+    icon: "🦕",
+    items: [
+      { name: "霸王龙", pinyin: "bà wáng lóng", emoji: "🦖", sound: "大头短手", prompt: "两条后腿跑得快", narration: { name: "霸王龙", feature: "霸王龙有大大的头和短短的前肢。", lesson: "它用强壮的后腿走路，长尾巴帮助身体保持平衡。" }, color: "#F7DFC3", accent: "#A95F35" },
+      { name: "三角龙", pinyin: "sān jiǎo lóng", emoji: "🦕", sound: "三只尖角", prompt: "头上像戴着大盾牌", narration: { name: "三角龙", feature: "三角龙头上有三只角，脖子后面还有大大的骨盾。", lesson: "它是吃植物的恐龙，用四条腿稳稳地走路。" }, color: "#DDECCB", accent: "#62864E" },
+      { name: "腕龙", pinyin: "wàn lóng", emoji: "🦕", sound: "脖子长长", prompt: "能吃到高高的树叶", narration: { name: "腕龙", feature: "腕龙的脖子长长的，前腿也比后腿高。", lesson: "它会抬起头，吃到高高树梢上的叶子。" }, color: "#E1EFD4", accent: "#5F884F" },
+      { name: "剑龙", pinyin: "jiàn lóng", emoji: "🦕", sound: "背板一排排", prompt: "尾巴还有四根尖刺", narration: { name: "剑龙", feature: "剑龙背上有两排大大的骨板。", lesson: "它吃植物，尾巴上的尖刺可以帮助保护自己。" }, color: "#E6E4F5", accent: "#7469A7" },
+      { name: "迅猛龙", pinyin: "xùn měng lóng", emoji: "🦖", sound: "轻巧又敏捷", prompt: "脚上有弯弯的爪子", narration: { name: "迅猛龙", feature: "迅猛龙身体轻巧，脚上有弯弯的大爪子。", lesson: "真正的迅猛龙没有电影里那么大，大约像一只火鸡。" }, color: "#F3E1C5", accent: "#9A6A37" },
+      { name: "甲龙", pinyin: "jiǎ lóng", emoji: "🦕", sound: "穿着铠甲", prompt: "尾巴像一把大锤", narration: { name: "甲龙", feature: "甲龙背上覆盖着硬硬的骨甲。", lesson: "遇到危险时，它会用像大锤一样的尾巴保护自己。" }, color: "#E0E8CF", accent: "#63794B" },
+      { name: "副栉龙", pinyin: "fù zhì lóng", emoji: "🦕", sound: "头冠长长", prompt: "像一根弯弯的管子", narration: { name: "副栉龙", feature: "副栉龙头上有一根长长的管状头冠。", lesson: "科学家猜想，它可能用头冠发出低低的声音。" }, color: "#F6DFC9", accent: "#B36743" },
+      { name: "棘龙", pinyin: "jí lóng", emoji: "🦖", sound: "背上高高的帆", prompt: "长嘴巴像鳄鱼", narration: { name: "棘龙", feature: "棘龙背上有高高的帆，嘴巴又长又窄。", lesson: "它喜欢在水边活动，会捕捉鱼类。" }, color: "#D8EAE8", accent: "#4E817D" },
+      { name: "无齿翼龙", pinyin: "wú chǐ yì lóng", emoji: "🪽", sound: "翅膀大大", prompt: "乘着风在天空滑翔", narration: { name: "无齿翼龙", feature: "无齿翼龙有大大的翅膀和长长的头冠。", lesson: "它不是恐龙，而是和恐龙生活在同一时代的飞行爬行动物。" }, color: "#DCEBFA", accent: "#557FA9" },
+    ],
+  },
 };
 
 const motionByName: Record<string, MotionKey> = {
@@ -157,6 +177,15 @@ const motionByName: Record<string, MotionKey> = {
   柠檬: "roll",
   甜瓜: "split",
   牛油果: "sway",
+  霸王龙: "stomp",
+  三角龙: "charge",
+  腕龙: "graze",
+  剑龙: "tail-swing",
+  迅猛龙: "prowl",
+  甲龙: "club",
+  副栉龙: "crest-call",
+  棘龙: "sail-stride",
+  无齿翼龙: "glide",
 };
 
 export default function Home() {
@@ -173,11 +202,12 @@ export default function Home() {
   const speakingTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const motionTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const audioPlayer = useRef<HTMLAudioElement | null>(null);
+  const speechResolve = useRef<(() => void) | null>(null);
   const playbackSession = useRef(0);
 
   const items = categories[category].items;
   const item = items[index];
-  const isFruit = category === "fruits";
+  const usesFeatureTeaching = category === "fruits" || category === "dinosaurs";
   const motion = motionByName[item.name] ?? "bounce";
 
   useEffect(() => {
@@ -186,12 +216,16 @@ export default function Home() {
       if (motionTimer.current) clearTimeout(motionTimer.current);
       playbackSession.current += 1;
       audioPlayer.current?.pause();
+      window.speechSynthesis?.cancel();
+      speechResolve.current?.();
     };
   }, []);
 
   const cancelPlayback = () => {
     playbackSession.current += 1;
     audioPlayer.current?.pause();
+    window.speechSynthesis?.cancel();
+    speechResolve.current?.();
     if (speakingTimer.current) clearTimeout(speakingTimer.current);
     setIsSpeaking(false);
     setPlayStage(null);
@@ -249,24 +283,69 @@ export default function Home() {
     })
   );
 
+  const speakText = (text: string, session: number) => (
+    new Promise<void>((resolve) => {
+      if (session !== playbackSession.current || !("speechSynthesis" in window)) {
+        resolve();
+        return;
+      }
+
+      let finished = false;
+      const finishSpeech = () => {
+        if (finished) return;
+        finished = true;
+        speechResolve.current = null;
+        if (speakingTimer.current) clearTimeout(speakingTimer.current);
+        resolve();
+      };
+      const utterance = new SpeechSynthesisUtterance(text);
+      const chineseVoices = window.speechSynthesis.getVoices().filter((voice) => voice.lang.toLowerCase().startsWith("zh"));
+      utterance.voice = chineseVoices.find((voice) => /xiaoxiao|xiaoyi|tingting|huihui|meijia|sinji/i.test(voice.name)) ?? chineseVoices[0] ?? null;
+      utterance.lang = "zh-CN";
+      utterance.rate = 0.82;
+      utterance.pitch = 1.12;
+      utterance.volume = 0.88;
+      utterance.onend = finishSpeech;
+      utterance.onerror = finishSpeech;
+      speechResolve.current = finishSpeech;
+      speakingTimer.current = setTimeout(finishSpeech, Math.max(5000, text.length * 700));
+      window.speechSynthesis.speak(utterance);
+    })
+  );
+
   const playAudio = async () => {
     if (!speakerOn || typeof window === "undefined") return;
     cancelPlayback();
     const session = playbackSession.current;
     setIsSpeaking(true);
 
+    if (item.narration) {
+      setPlayStage("name");
+      await speakText(item.narration.name, session);
+      if (session !== playbackSession.current) return;
+      setPlayStage("sound");
+      await speakText(item.narration.feature, session);
+      if (session !== playbackSession.current) return;
+      setPlayStage("lesson");
+      await speakText(item.narration.lesson, session);
+      if (session !== playbackSession.current) return;
+      setIsSpeaking(false);
+      setPlayStage(null);
+      return;
+    }
+
     setPlayStage("name");
-    await playClip(item.audio, 0.9, session);
+    await playClip(item.audio ?? "", 0.9, session);
     if (session !== playbackSession.current) return;
 
     setPlayStage("sound");
-    for (let repeat = 0; repeat < item.effectRepeats; repeat += 1) {
-      await playClip(item.effect, item.effectVolume ?? 0.55, session, item.effectDuration);
+    for (let repeat = 0; repeat < (item.effectRepeats ?? 0); repeat += 1) {
+      await playClip(item.effect ?? "", item.effectVolume ?? 0.55, session, item.effectDuration);
       if (session !== playbackSession.current) return;
     }
 
     setPlayStage("lesson");
-    await playClip(item.lesson, 0.88, session);
+    await playClip(item.lesson ?? "", 0.88, session);
     if (session !== playbackSession.current) return;
 
     setIsSpeaking(false);
@@ -389,11 +468,11 @@ export default function Home() {
           <span className="tiny-prompt">{item.prompt}</span>
           <span className={showHint ? "tap-hint" : "tap-hint subtle"}>
             <span className={isSpeaking ? "stage-icon" : "tap-icon"} aria-hidden="true">{isSpeaking ? "♪" : "☝️"}</span>
-            {playStage === "name" ? "正在认识名称" : playStage === "sound" ? (isFruit ? "正在认识水果特征" : "正在听真实声音") : playStage === "lesson" ? "正在学小知识" : isAnimating ? "看，小动画动起来啦！" : "点一点，看动画、听讲解"}
+            {playStage === "name" ? "正在认识名称" : playStage === "sound" ? (usesFeatureTeaching ? "正在认识外形特征" : "正在听真实声音") : playStage === "lesson" ? "正在学小知识" : isAnimating ? "看，小动画动起来啦！" : "点一点，看动画、听讲解"}
           </span>
           <span className="lesson-steps" aria-hidden="true">
             <span className={playStage === "name" ? "active" : ""}>① 名称</span>
-            <span className={playStage === "sound" ? "active" : ""}>② {isFruit ? "特征" : "声音"}</span>
+            <span className={playStage === "sound" ? "active" : ""}>② {usesFeatureTeaching ? "特征" : "声音"}</span>
             <span className={playStage === "lesson" ? "active" : ""}>③ 小知识</span>
           </span>
         </button>
