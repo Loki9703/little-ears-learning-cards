@@ -1,100 +1,87 @@
-# vinext-starter
+# 小耳朵点点乐
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+[简体中文](README.md) | [English](README.en.md)
 
-## Prerequisites
+面向 1 岁半至 2 岁幼儿的互动认知学习卡。孩子可以点击卡片观看 2D 动画，依次听名称、真实声音或水果特征，以及柔和的小知识讲解；也可以左右滑动认识下一种事物。
 
-- Node.js `>=22.13.0`
+[在线体验](https://little-ears-learning-20260802.mobinkhan48927.chatgpt.site/)
 
-## Quick Start
+![小耳朵点点乐界面预览](public/og-2d.png)
+
+## 主要功能
+
+- 动物、车辆、水果三个主题，共 56 张学习卡
+- 名称、声音或特征、小知识三段式语音教学
+- Google Animated Noto Emoji 动画与统一的 2D 场景效果
+- 点击播放完整教学，左右滑动或使用按钮切换卡片
+- 适配手机竖屏，同时支持桌面端与键盘方向键
+- 独立声音开关、进度提示和清晰的大尺寸触控区域
+- 支持 `prefers-reduced-motion`，为减少动态效果的系统偏好提供降级体验
+
+## 使用方式
+
+1. 在顶部选择“动物”“车辆”或“水果”。
+2. 点击卡片，依次听名称、声音或特征、小知识。
+3. 左右滑动卡片，或点击两侧按钮切换内容。
+4. 使用右上角声音按钮随时静音或恢复声音。
+
+## 技术栈
+
+- Next.js 16、React 19、TypeScript
+- vinext、Vite、Cloudflare Workers 兼容构建
+- Tailwind CSS 4 与项目自定义 CSS 动画
+- Lottie Web
+- OpenAI Sites 托管配置
+
+## 本地运行
+
+环境要求：Node.js `>=22.13.0`。
 
 ```bash
 npm install
 npm run dev
-npm run build
 ```
 
-This starter does not use `wrangler.jsonc`.
+开发服务启动后，根据终端提示打开本地地址。
 
-## Included Shape
+## 常用命令
 
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
+| 命令 | 说明 |
+| --- | --- |
+| `npm run dev` | 启动本地开发服务 |
+| `npm run build` | 生成生产构建 |
+| `npm run start` | 启动生产预览服务 |
+| `npm run lint` | 运行 ESLint 检查 |
+| `npm test` | 构建并运行项目测试 |
 
-## Workspace Auth Headers
+## 项目结构
 
-Signed-in visitors receive both `oai-authenticated-user-id` and `oai-authenticated-user-email`. Private Sites require every visitor to sign in; public Sites may also have anonymous visitors, for whom neither header is present.
+```text
+app/
+├── page.tsx                    # 学习卡数据与主要交互
+├── AnimatedLearningScene.tsx  # 2D 场景和动画编排
+├── NotoLottieAnimation.tsx    # Lottie 动画加载器
+├── globals.css                # 响应式布局与动画样式
+└── credits/page.tsx           # 素材来源与许可
 
-The user ID is stable for the same user on the same Site and different across Sites. Email and name are intended for display or contact purposes.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const userId = requestHeaders.get("oai-authenticated-user-id");
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+public/
+├── animations/noto/           # Animated Noto Emoji 动画
+├── illustrations/             # 2D 矢量插画
+└── audio/                     # 名称、效果与知识讲解语音
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+## 增加学习卡
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+1. 在 `app/page.tsx` 对应分类中增加卡片数据。
+2. 将名称语音、声音或特征语音、讲解语音放入 `public/audio/` 对应目录。
+3. 将插画或 Lottie 动画放入 `public/illustrations/` 或 `public/animations/noto/`。
+4. 如需专属场景动作，在 `app/AnimatedLearningScene.tsx` 和 `app/globals.css` 中补充映射与动画。
+5. 在手机竖屏、桌面端和减少动态效果模式下完成测试。
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+## 部署
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+项目包含 `.openai/hosting.json`，可发布到 OpenAI Sites。生产构建也兼容项目当前的 vinext/Cloudflare Workers 配置。
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+## 素材与许可
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
-
-## Useful Commands
-
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
-
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+大部分插画来自 [Google Noto Emoji](https://github.com/googlefonts/noto-emoji)，动态资源来自 [Google Animated Noto Emoji](https://googlefonts.github.io/noto-emoji-animation/)。挖掘机插画来自 Wikimedia Commons / Openclipart。第三方素材遵循各自的 Apache License 2.0、CC BY 4.0 或 CC0 1.0 许可；详细信息与随附许可文本请查看应用内的“素材来源与许可”页面以及 `public/illustrations/`。
