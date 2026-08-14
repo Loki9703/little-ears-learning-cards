@@ -26,17 +26,21 @@ test("server-renders the learning-card application", async () => {
   assert.match(html, />车辆<\/button>/);
   assert.match(html, />水果<\/button>/);
   assert.match(html, />恐龙<\/button>/);
+  assert.match(html, /aria-label="关闭小知识讲解"/);
   assert.match(html, /点一点，看动画、听讲解/);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site/);
 });
 
-test("keeps the dinosaur collection complete and animated", async () => {
-  const [page, scene, css, layout, assets] = await Promise.all([
+test("keeps the dinosaur collection complete, animated, and story-ready", async () => {
+  const [page, scene, css, layout, assets, storyAudio, callAudio, shortAudio] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/AnimatedLearningScene.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readdir(new URL("../public/illustrations/dinosaurs/", import.meta.url)),
+    readdir(new URL("../public/audio/dinosaurs/", import.meta.url)),
+    readdir(new URL("../public/audio/dinosaurs/calls/", import.meta.url)),
+    readdir(new URL("../public/audio/dinosaurs/short/", import.meta.url)),
   ]);
 
   assert.deepEqual(assets.sort(), [
@@ -53,6 +57,46 @@ test("keeps the dinosaur collection complete and animated", async () => {
   for (const name of ["霸王龙", "三角龙", "腕龙", "剑龙", "迅猛龙", "甲龙", "副栉龙", "棘龙", "无齿翼龙"]) {
     assert.match(page, new RegExp(`name: "${name}"`));
   }
+  assert.deepEqual(storyAudio.filter((asset) => asset.endsWith(".mp3")).sort(), [
+    "ankylosaurus-story.mp3",
+    "brachiosaurus-story.mp3",
+    "parasaurolophus-story.mp3",
+    "pteranodon-story.mp3",
+    "spinosaurus-story.mp3",
+    "stegosaurus-story.mp3",
+    "triceratops-story.mp3",
+    "tyrannosaurus-story.mp3",
+    "velociraptor-story.mp3",
+  ]);
+  for (const audio of storyAudio.filter((asset) => asset.endsWith(".mp3"))) {
+    assert.match(page, new RegExp(`/audio/dinosaurs/${audio.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`));
+  }
+  assert.deepEqual(callAudio.sort(), [
+    "parasaurolophus-scientific-call.mp3",
+    "tyrannosaurus-scientific-call.mp3",
+    "velociraptor-scientific-call.mp3",
+  ]);
+  for (const audio of callAudio) {
+    assert.match(page, new RegExp(`/audio/dinosaurs/calls/${audio.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`));
+  }
+  assert.deepEqual(shortAudio.sort(), [
+    "ankylosaurus-intro.mp3",
+    "brachiosaurus-intro.mp3",
+    "parasaurolophus-intro.mp3",
+    "pteranodon-intro.mp3",
+    "spinosaurus-intro.mp3",
+    "stegosaurus-intro.mp3",
+    "triceratops-intro.mp3",
+    "tyrannosaurus-intro.mp3",
+    "velociraptor-intro.mp3",
+  ]);
+  for (const audio of shortAudio) {
+    assert.match(page, new RegExp(`/audio/dinosaurs/short/${audio.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`));
+  }
+  assert.match(page, /little-ears-lesson-audio/);
+  assert.match(page, /关闭小知识讲解/);
+  assert.match(page, /if \(lessonOn\)/);
+  assert.match(page, /科学拟声 · 依据近缘动物与发声结构模拟/);
   assert.match(scene, /dinosaurIllustrationByName/);
   assert.match(scene, /dinosaur-world/);
   for (const motion of ["stomp", "charge", "graze", "tail-swing", "prowl", "club", "crest-call", "sail-stride", "glide"]) {

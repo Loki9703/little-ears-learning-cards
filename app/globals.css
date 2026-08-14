@@ -107,6 +107,82 @@ button {
   letter-spacing: .1em;
 }
 
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+}
+
+.lesson-toggle {
+  display: inline-flex;
+  align-items: center;
+  min-height: 46px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 16px;
+  background: rgba(255,255,255,.78);
+  color: #777264;
+  font-size: 12px;
+  font-weight: 900;
+  box-shadow: 0 7px 20px rgba(83, 68, 39, .07), inset 0 0 0 1px rgba(75, 71, 55, .06);
+  cursor: pointer;
+  transition: transform .16s ease, background .2s ease, color .2s ease;
+}
+
+.lesson-toggle.active {
+  background: #fff7d5;
+  color: #6f5a1e;
+}
+
+.lesson-toggle-icon {
+  margin-right: 4px;
+  font-size: 16px;
+}
+
+.lesson-toggle-label {
+  white-space: nowrap;
+}
+
+.lesson-toggle-state {
+  min-width: 12px;
+  margin-left: 3px;
+  color: currentColor;
+  font-size: 10px;
+  opacity: .68;
+}
+
+.lesson-switch {
+  position: relative;
+  width: 29px;
+  height: 18px;
+  margin-left: 5px;
+  border-radius: 999px;
+  background: #d8d3c7;
+  box-shadow: inset 0 1px 2px rgba(63,53,39,.15);
+  transition: background .2s ease;
+}
+
+.lesson-switch i {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  left: 2px;
+  top: 2px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(75,61,37,.22);
+  transition: transform .2s ease;
+}
+
+.lesson-toggle.active .lesson-switch {
+  background: #e4ae32;
+}
+
+.lesson-toggle.active .lesson-switch i {
+  transform: translateX(11px);
+}
+
 .sound-toggle {
   display: grid;
   place-items: center;
@@ -121,7 +197,12 @@ button {
   cursor: pointer;
 }
 
+.topbar-actions .sound-toggle {
+  margin-left: 0;
+}
+
 .sound-toggle:active,
+.lesson-toggle:active,
 .round-button:active,
 .category-button:active {
   transform: scale(.94);
@@ -1205,6 +1286,11 @@ button {
 .is-animating.motion-crest-call .main-emoji { animation: dino-crest-call 3.2s ease-in-out both; }
 .is-animating.motion-sail-stride .main-emoji { animation: dino-sail-stride 3.2s ease-in-out both; }
 .is-animating.motion-glide .main-emoji { animation: dino-glide 3.2s cubic-bezier(.2,.72,.28,1) both; }
+.is-speaking.motion-stomp .main-emoji { animation: dino-stomp 3.2s cubic-bezier(.2,.78,.28,1) infinite; }
+.is-speaking.motion-charge .main-emoji { animation: dino-charge 3.2s cubic-bezier(.18,.82,.25,1) infinite; }
+.is-speaking.motion-graze .main-emoji { animation: dino-graze 3.2s ease-in-out infinite; }
+.is-speaking.motion-prowl .main-emoji { animation: dino-prowl 3.2s cubic-bezier(.2,.75,.25,1) infinite; }
+.is-speaking.motion-crest-call .main-emoji { animation: dino-crest-call 3.2s ease-in-out infinite; }
 
 .is-animating .flat-scene.has-noto-animation .main-emoji {
   animation: none !important;
@@ -2281,6 +2367,21 @@ button {
   100% { opacity: 1; transform: translate(8px,0) rotate(5deg) scale(1); }
 }
 
+.science-sound-note {
+  display: inline-flex;
+  align-items: center;
+  min-height: 23px;
+  margin-top: 7px;
+  padding: 4px 9px;
+  border: 1px solid color-mix(in srgb, var(--accent-color) 30%, transparent);
+  border-radius: 999px;
+  background: rgba(255,255,255,.42);
+  color: color-mix(in srgb, var(--accent-color) 78%, #514a3d);
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: .025em;
+}
+
 @keyframes peeled-banana-bounce {
   0%, 28% { opacity: 0; transform: translateY(18px) scale(.72); }
   44% { opacity: 1; transform: translateY(-17px) scale(1.08); }
@@ -2869,12 +2970,14 @@ button {
   .app-shell { padding-top: max(9px, env(safe-area-inset-top)); }
   .topbar { min-height: 46px; }
   .brand-mark, .sound-toggle { width: 42px; height: 42px; }
+  .lesson-toggle { min-height: 42px; }
   .category-switcher { margin: 8px 0; }
   .category-button { min-height: 43px; }
   .learning-card { min-height: 330px; padding-top: 25px; }
   .flat-art { width: clamp(128px, 29vh, 175px); height: clamp(118px, 27vh, 156px); }
   .flat-scene { height: clamp(132px, 31vh, 176px); }
   .tiny-prompt { margin-top: 7px; }
+  .science-sound-note { margin-top: 4px; padding-block: 2px; }
   .tap-hint { margin-top: 9px; }
   .lesson-steps { margin-top: 5px; }
   .controls { min-height: 48px; padding-top: 8px; }
@@ -2882,6 +2985,11 @@ button {
 }
 
 @media (max-width: 380px) {
+  .topbar-actions { gap: 5px; }
+  .lesson-toggle { padding-inline: 7px; }
+  .lesson-toggle-icon,
+  .lesson-toggle-state { display: none; }
+  .lesson-switch { margin-left: 4px; }
   .category-switcher { gap: 4px; padding: 4px; }
   .category-button { min-height: 46px; font-size: 14px; letter-spacing: .03em; }
   .category-button span { margin-right: 3px; font-size: 17px; }
