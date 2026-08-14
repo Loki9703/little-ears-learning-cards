@@ -1249,9 +1249,7 @@ button {
   pointer-events: none;
 }
 
-.is-animating.motion-play .main-emoji { animation: dog-play 3.25s cubic-bezier(.2,.75,.28,1) both; }
 .is-animating.motion-run .main-emoji { animation: motion-run 2.7s cubic-bezier(.2,.8,.25,1) both; }
-.is-animating.motion-jump .main-emoji { animation: motion-jump 2.6s ease-in-out both; }
 .is-animating.motion-waddle .main-emoji { animation: motion-waddle 2.8s ease-in-out both; }
 .is-animating.motion-nod .main-emoji { animation: motion-nod 2.5s ease-in-out both; }
 .is-animating.motion-bounce .main-emoji { animation: motion-bounce 2.5s ease-in-out both; }
@@ -1309,12 +1307,6 @@ button {
 .scene-banana.stage-idle .fruit-leaf,
 .scene-watermelon.stage-idle .fruit-leaf { animation: leaf-sway 2.8s ease-in-out infinite; }
 
-.is-animating.motion-play .scene-dog.variant-1 .main-emoji { animation: dog-chase 3.25s cubic-bezier(.2,.75,.28,1) both; }
-.is-animating.motion-play .scene-dog.variant-2 .main-emoji { animation: dog-happy 3.25s ease-in-out both; }
-.is-animating.motion-jump .scene-cat.variant-0 .main-emoji { animation: cat-pounce 3.1s cubic-bezier(.2,.78,.25,1) both; }
-.is-animating.motion-jump .scene-cat.variant-1 .main-emoji { animation: cat-stretch 3.1s ease-in-out both; }
-.is-animating.motion-jump .scene-cat.variant-2 .main-emoji { animation: cat-double-jump 3.1s ease-in-out both; }
-
 .is-animating.motion-chug .scene-train .main-emoji {
   animation: train-on-track 3.35s cubic-bezier(.24,.72,.28,1) both;
 }
@@ -1335,24 +1327,11 @@ button {
   animation: scenery-pass 2.6s linear .2s both;
 }
 
-.is-animating.motion-play .dog-ball {
-  animation: ball-hop 1.8s ease-in-out .65s both;
-}
-
-.is-animating.motion-jump .scene-cat.variant-0 .yarn-ball { animation: yarn-roll 2.25s ease-in-out .45s both; }
-.is-animating.motion-jump .scene-cat.variant-1 .cat-cushion { animation: cushion-squish 2.5s ease-in-out .35s both; }
-.is-animating.motion-jump .scene-cat.variant-2 .cat-butterfly { animation: butterfly-loop 2.6s ease-in-out .2s both; }
-.is-animating.motion-jump .scene-cat.variant-2 .cat-butterfly b { animation: butterfly-wing .18s ease-in-out .2s 13 alternate; }
-
 .is-animating.motion-spray .scene-firetruck .rescue-road::after { animation: road-pass .42s linear .15s 7; }
 .is-speaking .scene-firetruck.stage-sound .rescue-flames { animation: flame-out 1.8s ease-out .35s both; }
 .is-speaking .scene-firetruck.stage-sound .rescue-splash i { animation: rescue-splash 1s ease-out .55s 2; }
 .is-speaking .scene-firetruck.stage-sound .rescue-splash i:nth-child(2) { animation-delay: .78s; }
 .is-speaking .scene-firetruck.stage-sound .rescue-splash i:nth-child(3) { animation-delay: 1s; }
-
-.is-animating.motion-play .scene-dog .flat-shadow {
-  animation: dog-shadow 3.25s ease-in-out both;
-}
 
 .dust-puffs i,
 .smoke-puffs i,
@@ -1729,6 +1708,22 @@ button {
 .is-animating.motion-run .paw-trail i:nth-child(2) { animation-delay: 1s; }
 .is-animating.motion-play .paw-trail i:nth-child(3),
 .is-animating.motion-run .paw-trail i:nth-child(3) { animation-delay: 1.25s; }
+
+.has-gsap-motion.is-active .main-emoji,
+.has-gsap-motion.is-active .flat-shadow,
+.has-gsap-motion.is-active .dog-ball,
+.has-gsap-motion.is-active .yarn-ball,
+.has-gsap-motion.is-active .cat-cushion,
+.has-gsap-motion.is-active .cat-butterfly,
+.has-gsap-motion.is-active .motion-sparkles i,
+.has-gsap-motion.is-active .paw-trail i {
+  will-change: transform, opacity;
+}
+
+.is-animating .has-gsap-motion .motion-sparkles i,
+.is-animating.motion-play .has-gsap-motion .paw-trail i {
+  animation: none !important;
+}
 
 .roar-rings {
   display: grid;
@@ -2220,80 +2215,6 @@ button {
   50% { transform: rotate(-9deg); }
 }
 
-@keyframes dog-chase {
-  0% { opacity: 0; transform: translateX(-105%) translateY(9px) rotate(-5deg) scale(.75); }
-  12% { opacity: 1; }
-  29% { transform: translateX(-45%) translateY(-22px) rotate(7deg) scale(.91,1.05); }
-  42% { transform: translateX(-16%) translateY(1px) rotate(-4deg) scale(1.08,.91); }
-  58% { transform: translateX(19%) translateY(-34px) rotate(8deg) scale(.97,1.06); }
-  72% { transform: translateX(11%) translateY(0) rotate(-3deg) scale(1.07,.92); }
-  86% { transform: translateX(-3%) translateY(-15px) rotate(-3deg); }
-  100% { opacity: 1; transform: translate(0,0) rotate(0) scale(1); }
-}
-
-@keyframes dog-happy {
-  0%, 100% { transform: translate(0,0) rotate(0) scale(1); }
-  12% { transform: translateY(7px) scale(1.08,.9); }
-  28% { transform: translate(-17px,-49px) rotate(-8deg) scale(.96,1.07); }
-  42% { transform: translate(-7px,1px) rotate(3deg) scale(1.09,.9); }
-  58% { transform: translate(17px,-34px) rotate(8deg) scale(.98,1.05); }
-  72% { transform: translate(7px,0) rotate(-3deg) scale(1.07,.92); }
-  86% { transform: translateY(-13px) rotate(-2deg); }
-}
-
-@keyframes cat-pounce {
-  0%, 9% { transform: translate(0,0) rotate(0) scale(1); }
-  20% { transform: translate(-15px,7px) rotate(-4deg) scale(1.12,.86); }
-  42% { transform: translate(-43px,-48px) rotate(-10deg) scale(.94,1.08); }
-  57% { transform: translate(-57px,1px) rotate(4deg) scale(1.1,.9); }
-  72% { transform: translate(-18px,-24px) rotate(8deg) scale(.98,1.04); }
-  88%, 100% { transform: translate(0,0) rotate(0) scale(1); }
-}
-
-@keyframes cat-stretch {
-  0%, 100% { transform: translate(0,0) rotate(0) scale(1); }
-  18% { transform: translateY(6px) rotate(-2deg) scale(1.13,.83); }
-  37%, 53% { transform: translate(15px,4px) rotate(5deg) scale(1.2,.78); }
-  68% { transform: translateY(-38px) rotate(-5deg) scale(.94,1.1); }
-  82% { transform: translateY(1px) rotate(2deg) scale(1.07,.93); }
-}
-
-@keyframes cat-double-jump {
-  0%, 100% { transform: translate(0,0) rotate(0) scale(1); }
-  12% { transform: translateY(6px) scale(1.08,.9); }
-  31% { transform: translate(30px,-63px) rotate(10deg) scale(.95,1.08); }
-  46% { transform: translate(43px,0) rotate(-4deg) scale(1.09,.9); }
-  63% { transform: translate(9px,-37px) rotate(-9deg) scale(.98,1.05); }
-  79% { transform: translate(-4px,0) rotate(3deg) scale(1.07,.93); }
-}
-
-@keyframes yarn-roll {
-  0%, 100% { transform: translateX(0) rotate(0); }
-  38% { transform: translateX(58px) rotate(220deg); }
-  62% { transform: translate(83px,-17px) rotate(340deg); }
-  82% { transform: translateX(38px) rotate(460deg); }
-}
-
-@keyframes cushion-squish {
-  0%, 100% { transform: rotate(-4deg) scale(1); }
-  42%, 58% { transform: rotate(-2deg) scale(1.12,.78); }
-  72% { transform: rotate(-5deg) scale(.97,1.08); }
-}
-
-@keyframes butterfly-loop {
-  0% { opacity: 0; transform: translate(-70px,55px) rotate(-15deg) scale(.7); }
-  16% { opacity: 1; }
-  40% { transform: translate(-30px,7px) rotate(9deg) scale(1); }
-  65% { transform: translate(18px,26px) rotate(-8deg) scale(.92); }
-  84% { opacity: 1; transform: translate(-8px,-4px) rotate(4deg) scale(1); }
-  100% { opacity: 0; transform: translate(22px,-25px) rotate(8deg) scale(.8); }
-}
-
-@keyframes butterfly-wing {
-  from { scale: .3 1; }
-  to { scale: 1 1; }
-}
-
 @keyframes train-arrive {
   0% { opacity: 0; transform: translateX(-122%) scale(.77); }
   12% { opacity: 1; }
@@ -2537,32 +2458,6 @@ button {
   46% { transform: translateX(-42%) translateY(2px) rotate(-5deg) scale(.96); }
   64% { transform: translateX(-12%) translateY(-15px) rotate(4deg) scale(1); }
   80%, 100% { opacity: 1; transform: translateX(0) translateY(0) rotate(0) scale(1); }
-}
-
-@keyframes dog-play {
-  0% { opacity: 0; transform: translateX(-120%) translateY(12px) rotate(-7deg) scale(.72); }
-  11% { opacity: 1; }
-  25% { transform: translateX(-48%) translateY(-25px) rotate(7deg) scale(.9,1.03); }
-  36% { transform: translateX(-15%) translateY(3px) rotate(-3deg) scale(1.08,.9); }
-  52% { transform: translateX(2%) translateY(-58px) rotate(5deg) scale(.96,1.08); }
-  65% { transform: translateX(8%) translateY(2px) rotate(-2deg) scale(1.1,.89); }
-  78% { transform: translateX(-3%) translateY(-31px) rotate(-5deg) scale(.98,1.04); }
-  90% { transform: translateX(0) translateY(1px) rotate(2deg) scale(1.05,.94); }
-  100% { opacity: 1; transform: translate(0,0) rotate(0) scale(1); }
-}
-
-@keyframes dog-shadow {
-  0%, 100% { opacity: .65; transform: scaleX(1); }
-  25%, 52%, 78% { opacity: .24; transform: scaleX(.55); }
-  36%, 65%, 90% { opacity: .75; transform: scaleX(.9); }
-}
-
-@keyframes ball-hop {
-  0%, 100% { transform: translate(0,0) rotate(-12deg); }
-  26% { transform: translate(-25px,-36px) rotate(80deg); }
-  47% { transform: translate(-47px,0) rotate(170deg) scale(1.06,.92); }
-  68% { transform: translate(-29px,-19px) rotate(230deg); }
-  84% { transform: translate(-10px,0) rotate(310deg) scale(1.03,.95); }
 }
 
 @keyframes train-on-track {

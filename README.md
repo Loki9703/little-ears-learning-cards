@@ -30,6 +30,7 @@
 - Next.js 16、React 19、TypeScript
 - vinext、Vite、Cloudflare Workers 兼容构建
 - Tailwind CSS 4 与项目自定义 CSS 动画
+- GSAP 与 `@gsap/react`（小狗、小猫场景时间轴试点）
 - Lottie Web
 - OpenAI Sites 托管配置
 
@@ -61,6 +62,7 @@ app/
 ├── page.tsx                    # 学习卡数据与主要交互
 ├── AnimatedLearningScene.tsx  # 2D 场景和动画编排
 ├── NotoLottieAnimation.tsx    # Lottie 动画加载器
+├── useGsapAnimalTimeline.ts   # 小狗、小猫的 GSAP 场景时间轴
 ├── globals.css                # 响应式布局与动画样式
 └── credits/page.tsx           # 素材来源与许可
 
@@ -75,7 +77,7 @@ public/
 1. 在 `app/page.tsx` 对应分类中增加卡片数据。
 2. 将名称语音、声音或特征语音、讲解语音放入 `public/audio/` 对应目录。
 3. 将插画或 Lottie 动画放入 `public/illustrations/` 或 `public/animations/noto/`。
-4. 如需专属场景动作，在 `app/AnimatedLearningScene.tsx` 和 `app/globals.css` 中补充映射与动画。
+4. 简单循环动作可在 `app/globals.css` 中补充；需要角色、道具和效果同步的场景，在 `app/useGsapAnimalTimeline.ts` 中增加 GSAP 时间轴。
 5. 在手机竖屏、桌面端和减少动态效果模式下完成测试。
 
 ## 部署

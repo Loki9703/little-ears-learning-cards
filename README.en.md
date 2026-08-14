@@ -30,6 +30,7 @@ An interactive recognition-card app designed for toddlers around 18 to 24 months
 - Next.js 16, React 19, and TypeScript
 - vinext, Vite, and a Cloudflare Workers-compatible build
 - Tailwind CSS 4 plus custom CSS animation
+- GSAP and `@gsap/react` for the dog and cat scene-timeline pilot
 - Lottie Web
 - OpenAI Sites hosting configuration
 
@@ -61,6 +62,7 @@ app/
 ├── page.tsx                    # Card data and primary interactions
 ├── AnimatedLearningScene.tsx  # 2D scenes and motion choreography
 ├── NotoLottieAnimation.tsx    # Lottie animation loader
+├── useGsapAnimalTimeline.ts   # GSAP scene timelines for the dog and cat
 ├── globals.css                # Responsive layout and animation styles
 └── credits/page.tsx           # Asset credits and licenses
 
@@ -75,7 +77,7 @@ public/
 1. Add the card data to the appropriate category in `app/page.tsx`.
 2. Add the name, sound or characteristic, and lesson audio under `public/audio/`.
 3. Add the illustration or Lottie asset under `public/illustrations/` or `public/animations/noto/`.
-4. For a custom scene, add its mapping and motion in `app/AnimatedLearningScene.tsx` and `app/globals.css`.
+4. Add simple looping motion in `app/globals.css`; add synchronized character, prop, and effect choreography in `app/useGsapAnimalTimeline.ts`.
 5. Test the card on portrait mobile, desktop, and reduced-motion settings.
 
 ## Deployment

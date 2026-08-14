@@ -1,6 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import NotoLottieAnimation from "./NotoLottieAnimation";
+import { hasGsapAnimalTimeline, useGsapAnimalTimeline } from "./useGsapAnimalTimeline";
 
 type ModelCategory = "animals" | "vehicles" | "fruits" | "dinosaurs";
 
@@ -174,6 +176,7 @@ function Dots({ className }: { className: string }) {
 }
 
 export default function AnimatedLearningScene({ category, name, fallbackEmoji, motion, isActive, motionCycle, motionVariant, playStage }: Props) {
+  const sceneRef = useRef<HTMLDivElement | null>(null);
   const illustration = illustrationByName[name];
   const dinosaurIllustration = dinosaurIllustrationByName[name];
   const assetSlug = dinosaurIllustration ?? illustration;
@@ -192,9 +195,12 @@ export default function AnimatedLearningScene({ category, name, fallbackEmoji, m
   const isElephant = name === "大象";
   const isHelicopter = name === "直升机";
   const isDinosaur = category === "dinosaurs";
+  const hasGsapMotion = hasGsapAnimalTimeline(name);
+
+  useGsapAnimalTimeline(sceneRef, { name, isActive, motionCycle, motionVariant });
 
   return (
-    <div className={`flat-scene flat-scene-${category} scene-${assetSlug ?? "fallback"} variant-${motionVariant} stage-${playStage ?? (isActive ? "action" : "idle")}${animatedSrc ? " has-noto-animation" : ""}${isActive ? " is-active" : ""}`} aria-label={`${name}的二维卡通动画`}>
+    <div ref={sceneRef} className={`flat-scene flat-scene-${category} scene-${assetSlug ?? "fallback"} variant-${motionVariant} stage-${playStage ?? (isActive ? "action" : "idle")}${animatedSrc ? " has-noto-animation" : ""}${hasGsapMotion ? " has-gsap-motion" : ""}${isActive ? " is-active" : ""}`} aria-label={`${name}的二维卡通动画`}>
       <span className="flat-halo" aria-hidden="true" />
       <span className="flat-shadow" aria-hidden="true" />
       {isDog && (

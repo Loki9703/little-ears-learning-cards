@@ -105,3 +105,24 @@ test("keeps the dinosaur collection complete, animated, and story-ready", async 
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.match(layout, /常见水果和恐龙/);
 });
+
+test("keeps the GSAP animal pilot scoped, replayable, and motion-safe", async () => {
+  const [packageJson, scene, timeline, css] = await Promise.all([
+    readFile(new URL("../package.json", import.meta.url), "utf8"),
+    readFile(new URL("../app/AnimatedLearningScene.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/useGsapAnimalTimeline.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(packageJson, /"@gsap\/react"/);
+  assert.match(packageJson, /"gsap"/);
+  assert.match(scene, /useGsapAnimalTimeline/);
+  assert.match(scene, /has-gsap-motion/);
+  assert.match(timeline, /new Set\(\["小狗", "小猫"\]\)/);
+  assert.match(timeline, /motionCycle/);
+  assert.match(timeline, /gsap\.matchMedia\(\)/);
+  assert.match(timeline, /prefers-reduced-motion: no-preference/);
+  assert.match(timeline, /revertOnUpdate: true/);
+  assert.match(css, /has-gsap-motion\.is-active/);
+  assert.doesNotMatch(css, /@keyframes (dog-play|cat-pounce|ball-hop)/);
+});
