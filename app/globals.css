@@ -500,6 +500,77 @@ button {
   z-index: auto;
 }
 
+.flat-scene:is(.scene-train, .scene-locomotive) {
+  width: min(100%, 390px);
+}
+
+.scene-train .art-train,
+.scene-locomotive .art-locomotive {
+  width: 100%;
+  height: 100%;
+  animation: none !important;
+}
+
+.train-consist {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 22px;
+  transform-origin: 50% 90%;
+}
+
+.train-engine {
+  position: relative;
+  flex: 0 0 36%;
+  aspect-ratio: 1;
+}
+
+.train-carriage {
+  position: relative;
+  flex: 0 0 33%;
+  aspect-ratio: 1;
+  margin-left: -1%;
+  transform-origin: 50% 94%;
+}
+
+.train-home {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.train-journey-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.train-journey-layer * { pointer-events: none !important; }
+
+.train-journey-actor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  display: block;
+  will-change: transform;
+  filter: drop-shadow(0 8px 6px rgba(61, 71, 71, .16));
+}
+
+.train-journey-layer .train-track { bottom: auto; }
+.train-on-journey .train-track,
+.train-on-journey .flat-shadow { visibility: hidden; }
+
+.train-journey-layer .smoke-puffs i {
+  animation: smoke-rise 1.35s ease-out infinite;
+}
+.train-journey-layer .smoke-puffs i:nth-child(2) { animation-delay: .45s; }
+.train-journey-layer .smoke-puffs i:nth-child(3) { animation-delay: .9s; }
+
 .train-hill {
   position: absolute;
   width: 118px;
@@ -550,18 +621,6 @@ button {
   box-shadow: 0 7px 0 rgba(89, 70, 47, .1);
   transform: perspective(90px) rotateX(46deg);
   transform-origin: center bottom;
-}
-
-.train-tunnel {
-  position: absolute;
-  z-index: 4;
-  width: 76px;
-  height: 92px;
-  left: -18px;
-  bottom: 28px;
-  border-radius: 54px 54px 0 0;
-  background: radial-gradient(ellipse at 52% 100%, #443a3a 0 43%, #8e674e 44% 58%, #b18461 59% 72%, transparent 73%);
-  filter: drop-shadow(5px 6px 4px rgba(77, 55, 39, .14));
 }
 
 .cat-playground::before {
@@ -711,35 +770,25 @@ button {
 .rescue-flames {
   position: absolute;
   z-index: 1;
-  width: 55px;
-  height: 31px;
-  right: 9px;
-  top: 16px;
+  width: 78px;
+  height: 82px;
+  right: calc(1% - 3px);
+  bottom: 110px;
+  transform-origin: 50% 96%;
+  filter: drop-shadow(0 0 7px rgba(255, 119, 28, .32));
+  pointer-events: none;
 }
 
-.rescue-flames i {
-  position: absolute;
-  width: 18px;
-  height: 29px;
-  left: 17px;
-  bottom: 0;
-  border-radius: 70% 30% 65% 35%;
-  background: linear-gradient(#ffdb5b 0 38%, #f36c42 39%);
-  transform: rotate(8deg);
-  transform-origin: bottom;
-  animation: flame-flicker .52s ease-in-out infinite alternate;
-}
-
-.rescue-flames i:first-child { left: 2px; height: 20px; animation-delay: -.2s; }
-.rescue-flames i:last-child { left: 35px; height: 23px; transform: rotate(-9deg); animation-delay: -.35s; }
+.scene-firetruck.rescue-spraying .rescue-flames { animation: flame-out 2.2s ease-in both; }
+.scene-firetruck.rescue-out .rescue-flames { opacity: 0; }
 
 .rescue-splash {
   position: absolute;
   z-index: 4;
-  width: 54px;
-  height: 60px;
-  right: 12px;
-  top: 14px;
+  width: 78px;
+  height: 82px;
+  right: calc(1% - 3px);
+  bottom: 108px;
 }
 
 .rescue-splash i {
@@ -1133,6 +1182,137 @@ button {
   user-select: none;
 }
 
+.cat-illustration {
+  overflow: visible;
+}
+
+.cat-leg {
+  transform-box: fill-box;
+  transform-origin: 50% 0%;
+}
+
+.cat-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: creature-blink 5.7s ease-in-out infinite;
+}
+
+.cat-ear {
+  transform-box: fill-box;
+  transform-origin: 55% 100%;
+  animation: cat-listen 6.8s ease-in-out infinite;
+}
+
+.scene-cat.is-active .cat-ear { animation-duration: 2.4s; }
+
+.animal-actor {
+  position: relative;
+  display: block;
+  height: 100%;
+  max-width: 100%;
+  aspect-ratio: 1;
+  margin-inline: auto;
+  transform-origin: 50% 88%;
+  will-change: transform;
+}
+
+.animal-artwork,
+.animal-puppet-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.animal-puppet .animal-artwork { transform: scale(.92); }
+.animal-puppet-canvas { opacity: 0; }
+.animal-puppet.is-ready .animal-puppet-canvas { opacity: 1; }
+.animal-puppet.is-ready .animal-artwork { visibility: hidden; }
+.animal-puppet.is-ready .cat-eye,
+.animal-puppet.is-ready .cat-ear { animation: none; }
+.has-animal-motion .main-emoji { animation: none !important; }
+.has-animal-motion .flat-shadow { transition: none; }
+.is-animating .has-animal-motion .ripple-set i { animation-duration: 1.2s; animation-iteration-count: 4; }
+.is-animating .has-animal-motion .context-pond .context-ground { animation-iteration-count: 4; }
+
+.dinosaur-puppet {
+  position: relative;
+  display: block;
+  height: 100%;
+  max-width: 100%;
+  aspect-ratio: 1;
+  margin-inline: auto;
+}
+
+.dinosaur-puppet-fallback,
+.dinosaur-puppet-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.dinosaur-puppet-fallback { transform: scale(.92); }
+.dinosaur-puppet-canvas { opacity: 0; }
+.dinosaur-puppet.is-ready .dinosaur-puppet-canvas { opacity: 1; }
+.dinosaur-puppet.is-ready .dinosaur-puppet-fallback { visibility: hidden; }
+.has-dinosaur-motion .main-emoji,
+.has-dinosaur-motion .dinosaur-puppet {
+  animation: none !important;
+}
+.has-dinosaur-motion .dinosaur-puppet { transform-origin: 50% 86%; }
+.has-dinosaur-motion .flat-shadow { transition: none; }
+.is-animating .has-dinosaur-motion .dust-puffs i {
+  animation: dust-float .8s ease-out 1.35s 3;
+}
+.is-animating .has-dinosaur-motion .dust-puffs i:nth-child(2) { animation-delay: 1.65s; }
+.is-animating .has-dinosaur-motion .dust-puffs i:nth-child(3) { animation-delay: 2.75s; }
+.is-animating .has-dinosaur-motion .dino-footprints i { animation-delay: 1.4s; }
+.is-animating .has-dinosaur-motion .dino-footprints i:nth-child(2) { animation-delay: 1.9s; }
+.is-animating .has-dinosaur-motion .dino-footprints i:nth-child(3) { animation-delay: 2.8s; }
+.flat-scene-dinosaurs:not(.is-active) .dinosaur-puppet:not(.is-ready) {
+  transform-origin: 50% 88%;
+  animation: idle-breathe 5.6s ease-in-out infinite;
+}
+
+.banana-illustration {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.banana-svg-fruit,
+.banana-svg-peel {
+  transform-box: fill-box;
+  will-change: transform;
+}
+
+.banana-svg-fruit { transform-origin: 50% 88%; }
+.banana-svg-peel-back { transform-origin: 8% 38%; }
+.banana-svg-peel-left { transform-origin: 72% 10%; }
+.banana-svg-peel-right { transform-origin: 12% 10%; }
+
+.is-animating.motion-peel .banana-svg-fruit {
+  animation: banana-fruit-natural-lift 3s cubic-bezier(.22,.72,.26,1) both;
+}
+
+.is-animating.motion-peel .banana-svg-peel-back {
+  animation: banana-peel-back-natural 3s cubic-bezier(.22,.72,.26,1) both;
+}
+
+.is-animating.motion-peel .banana-svg-peel-left {
+  animation: banana-peel-left-natural 3s cubic-bezier(.22,.72,.26,1) both;
+}
+
+.is-animating.motion-peel .banana-svg-peel-right {
+  animation: banana-peel-right-natural 3s cubic-bezier(.22,.72,.26,1) both;
+}
+
 .noto-lottie-wrap,
 .noto-lottie-layer,
 .noto-lottie-fallback {
@@ -1270,7 +1450,7 @@ button {
 .is-animating.motion-sail .main-emoji { animation: motion-sail 3.1s ease-in-out both; }
 .is-animating.motion-hover .main-emoji { animation: motion-hover 3s ease-in-out both; }
 .is-animating.motion-roll .main-emoji { animation: motion-roll 2.7s cubic-bezier(.2,.8,.25,1) both; }
-.is-animating.motion-peel .main-emoji { animation: banana-original 3s ease-in-out both; }
+.is-animating.motion-peel .main-emoji { animation: banana-natural-peel 3s ease-in-out both; }
 .is-animating.motion-split .main-emoji { animation: fruit-original-split 2.8s ease-in-out both; }
 .is-animating.motion-jiggle .main-emoji { animation: motion-jiggle 2.5s ease-in-out both; }
 .is-animating.motion-sway .main-emoji { animation: motion-sway 2.7s ease-in-out both; }
@@ -1294,16 +1474,62 @@ button {
   animation: none !important;
 }
 
-.scene-dog.stage-idle .main-emoji,
-.scene-cat.stage-idle .main-emoji {
-  animation: idle-breathe 3.8s ease-in-out infinite;
+.flat-scene-animals:not(.is-active) .main-emoji {
+  transform-origin: 50% 88%;
+  animation: idle-breathe 4.6s ease-in-out infinite;
 }
+
+.airplane-home { display: block; width: 100%; height: 100%; }
+.scene-airplane .main-emoji { animation: none !important; }
+.scene-airplane.airplane-in-flight .flat-shadow,
+.airplane-in-flight .air-lines { opacity: 0; }
+.airplane-flight-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow: hidden;
+  pointer-events: none;
+}
+.airplane-flight-layer * { pointer-events: none !important; }
+.airplane-flight-actor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  visibility: hidden;
+  transform-origin: center;
+  will-change: transform;
+  filter: drop-shadow(0 12px 12px rgba(43, 80, 128, .2));
+}
+
+.scene-excavator .main-emoji { animation: none !important; }
+.excavator-illustration { overflow: visible; }
+.scene-excavator .context-prop-one {
+  left: 2%;
+  right: auto;
+  width: 76px;
+  height: 27px;
+  bottom: 26px;
+  animation: none !important;
+}
+.scene-excavator .context-prop-two { left: auto; right: 7%; }
+
+.scene-turtle:not(.is-active) .main-emoji,
+.scene-elephant:not(.is-active) .main-emoji { animation-duration: 6s; }
+
+.scene-fish:not(.is-active) .main-emoji,
+.scene-duck:not(.is-active) .main-emoji { animation: creature-swim 5s ease-in-out infinite; }
+
+.scene-bird:not(.is-active) .main-emoji,
+.scene-butterfly:not(.is-active) .main-emoji,
+.scene-bee:not(.is-active) .main-emoji { animation: creature-hover 4.2s ease-in-out infinite; }
 
 .scene-train.stage-idle .main-emoji { animation: idle-engine 3.2s ease-in-out infinite; }
 .scene-firetruck.stage-idle .main-emoji { animation: idle-vehicle 4.2s ease-in-out infinite; }
 .scene-banana.stage-idle .main-emoji,
 .scene-watermelon.stage-idle .main-emoji { animation: idle-fruit 4.4s ease-in-out infinite; }
-.flat-scene-dinosaurs.stage-idle .main-emoji { animation: dino-idle 4.1s ease-in-out infinite; }
+.flat-scene-dinosaurs:not(.is-active) .main-emoji { animation: none; }
+.scene-pteranodon:not(.is-active) .main-emoji { animation: creature-hover 5.2s ease-in-out infinite; }
 .scene-banana.stage-idle .fruit-leaf,
 .scene-watermelon.stage-idle .fruit-leaf { animation: leaf-sway 2.8s ease-in-out infinite; }
 
@@ -1328,10 +1554,9 @@ button {
 }
 
 .is-animating.motion-spray .scene-firetruck .rescue-road::after { animation: road-pass .42s linear .15s 7; }
-.is-speaking .scene-firetruck.stage-sound .rescue-flames { animation: flame-out 1.8s ease-out .35s both; }
-.is-speaking .scene-firetruck.stage-sound .rescue-splash i { animation: rescue-splash 1s ease-out .55s 2; }
-.is-speaking .scene-firetruck.stage-sound .rescue-splash i:nth-child(2) { animation-delay: .78s; }
-.is-speaking .scene-firetruck.stage-sound .rescue-splash i:nth-child(3) { animation-delay: 1s; }
+.is-animating .scene-firetruck:is(.rescue-spraying, .rescue-out) .rescue-splash i { animation: rescue-splash 1s ease-out .25s 2; }
+.is-animating .scene-firetruck:is(.rescue-spraying, .rescue-out) .rescue-splash i:nth-child(2) { animation-delay: .48s; }
+.is-animating .scene-firetruck:is(.rescue-spraying, .rescue-out) .rescue-splash i:nth-child(3) { animation-delay: .7s; }
 
 .dust-puffs i,
 .smoke-puffs i,
@@ -1558,10 +1783,10 @@ button {
   box-shadow: inset 0 2px 0 rgba(255,255,255,.52);
 }
 
-.is-speaking .scene-firetruck.stage-sound .truck-water { animation: water-arc 2.6s ease-out .15s both; }
-.is-speaking .scene-firetruck.stage-sound .truck-water i { animation: water-drop .75s ease-out .5s 3; }
-.is-speaking .scene-firetruck.stage-sound .truck-water i:nth-child(2) { animation-delay: .75s; }
-.is-speaking .scene-firetruck.stage-sound .truck-water i:nth-child(3) { animation-delay: 1s; }
+.is-animating .scene-firetruck:is(.rescue-spraying, .rescue-out) .truck-water { animation: water-arc 2.6s ease-out 0s both; }
+.is-animating .scene-firetruck:is(.rescue-spraying, .rescue-out) .truck-water i { animation: water-drop .75s ease-out .25s 3; }
+.is-animating .scene-firetruck:is(.rescue-spraying, .rescue-out) .truck-water i:nth-child(2) { animation-delay: .5s; }
+.is-animating .scene-firetruck:is(.rescue-spraying, .rescue-out) .truck-water i:nth-child(3) { animation-delay: .75s; }
 
 .siren-lights {
   position: absolute;
@@ -1596,6 +1821,9 @@ button {
 
 .smoke-puffs i:nth-child(2) { width: 20px; height: 20px; left: 35%; top: 8%; }
 .smoke-puffs i:nth-child(3) { width: 14px; height: 14px; left: 29%; top: 2%; }
+.train-engine .smoke-puffs i { left: 25%; top: 10%; }
+.train-engine .smoke-puffs i:nth-child(2) { left: 17%; top: 3%; }
+.train-engine .smoke-puffs i:nth-child(3) { left: 10%; top: -3%; }
 .is-speaking .scene-train.stage-sound .smoke-puffs i { animation: smoke-rise 1.35s ease-out .15s 3; }
 .is-speaking .scene-train.stage-sound .smoke-puffs i:nth-child(2) { animation-delay: .45s; }
 .is-speaking .scene-train.stage-sound .smoke-puffs i:nth-child(3) { animation-delay: .75s; }
@@ -1644,44 +1872,11 @@ button {
 .is-animating .motion-sparkles i:nth-child(2) { animation-delay: .85s; }
 .is-animating .motion-sparkles i:nth-child(3) { animation-delay: 1.1s; }
 
-.banana-shell {
-  position: absolute;
-  z-index: 4;
-  width: 95px;
-  height: 52px;
-  left: 50%;
-  top: 48%;
-  border: 20px solid #ffd84f;
-  border-top-color: transparent;
-  border-left-color: transparent;
-  border-radius: 50%;
-  opacity: 0;
-  transform: translate(-50%, -50%) rotate(24deg);
-}
-
-.banana-peel {
-  position: absolute;
-  z-index: 4;
-  width: 17px;
-  height: 72px;
-  left: 50%;
-  top: 38%;
-  border-radius: 10px 10px 80% 80%;
-  background: linear-gradient(90deg, #e6ad22, #ffe071 48%, #e6ad22);
-  opacity: 0;
-  transform-origin: 50% 8%;
-}
-
-.is-animating .banana-shell { animation: banana-shell-open 1.5s ease-in-out both; }
-.is-animating .peel-left { animation: banana-peel-left 1.6s ease-out .65s both; }
-.is-animating .peel-right { animation: banana-peel-right 1.6s ease-out .65s both; }
-
 .paw-trail,
 .roar-rings,
 .scent-curls,
 .ripple-set,
 .rotor-effect,
-.banana-reveal,
 .watermelon-open,
 .split-reveal {
   position: absolute;
@@ -1715,13 +1910,22 @@ button {
 .has-gsap-motion.is-active .yarn-ball,
 .has-gsap-motion.is-active .cat-cushion,
 .has-gsap-motion.is-active .cat-butterfly,
+.has-gsap-motion.is-active .cat-leg,
+.has-gsap-motion.is-active .dinosaur-puppet,
 .has-gsap-motion.is-active .motion-sparkles i,
-.has-gsap-motion.is-active .paw-trail i {
+.has-gsap-motion.is-active .paw-trail i,
+.has-gsap-motion.is-active .dino-footprints i {
   will-change: transform, opacity;
 }
 
 .is-animating .has-gsap-motion .motion-sparkles i,
-.is-animating.motion-play .has-gsap-motion .paw-trail i {
+.is-animating.motion-play .has-gsap-motion .paw-trail i,
+.is-animating .has-gsap-motion .dino-footprints i {
+  animation: none !important;
+}
+
+.is-animating .has-gsap-motion.scene-tyrannosaurus .main-emoji,
+.is-speaking .has-gsap-motion.scene-tyrannosaurus .main-emoji {
   animation: none !important;
 }
 
@@ -1794,87 +1998,6 @@ button {
 
 .is-animating.motion-hover .rotor-effect i { animation: rotor-spin .18s linear .2s 15; }
 
-.banana-reveal {
-  display: grid;
-  place-items: center;
-  opacity: 0;
-}
-
-.banana-fruit {
-  position: absolute;
-  z-index: 3;
-  box-sizing: border-box;
-  width: 112px;
-  height: 74px;
-  left: 50%;
-  top: 43px;
-  border: 21px solid #fff1b4;
-  border-top-color: transparent;
-  border-radius: 50%;
-  background: transparent;
-  filter: drop-shadow(0 10px 7px rgba(83,65,31,.12));
-  transform: translateX(-50%) rotate(-10deg);
-  transform-origin: 50% 76%;
-}
-
-.banana-fruit::before {
-  content: "";
-  position: absolute;
-  width: 16px;
-  height: 23px;
-  right: -17px;
-  top: 3px;
-  border: 3px solid #dfb954;
-  border-radius: 45% 55% 38% 62%;
-  background: linear-gradient(90deg, #fff8ce, #ead48e);
-  transform: rotate(-22deg);
-}
-
-.banana-fruit::after {
-  content: "";
-  position: absolute;
-  width: 58px;
-  height: 26px;
-  left: 7px;
-  bottom: -13px;
-  border-bottom: 3px solid rgba(213,175,76,.38);
-  border-radius: 50%;
-}
-
-.banana-reveal .banana-peel {
-  z-index: 2;
-  width: 27px;
-  height: 86px;
-  left: 50%;
-  top: 111px;
-  border: 2px solid #d59b18;
-  border-radius: 12px 12px 72% 38% / 8px 8px 82% 92%;
-  background: linear-gradient(90deg, #e9b31f, #ffe16b 50%, #d89e15);
-  opacity: 1;
-  transform-origin: 50% 4%;
-}
-
-.banana-reveal .banana-peel::after {
-  content: "";
-  position: absolute;
-  width: 5px;
-  height: 64px;
-  left: 9px;
-  top: 8px;
-  border-radius: 50%;
-  background: rgba(255,244,166,.66);
-}
-
-.banana-peel-one { transform: translateX(-50%) translateY(12px) rotate(5deg); }
-.banana-peel-two { transform: translateX(-50%) translate(25px,7px) rotate(56deg); }
-.banana-peel-three { transform: translateX(-50%) translate(-25px,7px) rotate(-56deg); }
-.is-animating.motion-peel .banana-reveal { animation: peeled-banana-show 3s ease-in-out both; }
-.is-animating.motion-peel .banana-fruit { animation: banana-fruit-rise 3s ease-in-out both; }
-.is-animating.motion-peel .banana-peel-one { animation: peel-open-middle 3s ease-in-out both; }
-.is-animating.motion-peel .banana-peel-two { animation: peel-open-right 3s ease-in-out both; }
-.is-animating.motion-peel .banana-peel-three { animation: peel-open-left 3s ease-in-out both; }
-.is-animating.motion-peel .scene-banana.variant-1 .banana-reveal { animation: peeled-banana-side 3s ease-in-out both; }
-.is-animating.motion-peel .scene-banana.variant-2 .banana-reveal { animation: peeled-banana-bounce 3s ease-in-out both; }
 .is-animating.motion-peel .scene-banana .fruit-leaf { animation: leaf-reaction 1.8s ease-in-out .7s both; }
 
 .watermelon-open {
@@ -1919,13 +2042,10 @@ button {
 .is-animating.motion-split .scene-watermelon.variant-2 .watermelon-open { animation: watermelon-picnic 3s ease-in-out both; }
 .is-animating.motion-split .scene-watermelon .fruit-leaf { animation: leaf-reaction 1.8s ease-in-out .55s both; }
 
-.is-speaking .scene-banana.stage-sound .main-emoji,
 .is-speaking .scene-watermelon.stage-sound .main-emoji { opacity: 0; }
-.is-speaking .scene-banana.stage-sound .banana-reveal,
 .is-speaking .scene-watermelon.stage-sound .watermelon-open { opacity: 1; }
 .is-speaking .scene-watermelon.stage-sound .melon-left { transform: translateX(-42px) rotate(-12deg); }
 .is-speaking .scene-watermelon.stage-sound .melon-right { transform: translateX(42px) rotate(12deg); }
-.is-speaking .scene-firetruck.stage-lesson .rescue-flames { opacity: 0; }
 
 .split-reveal {
   display: grid;
@@ -2265,49 +2385,18 @@ button {
   to { background-position-x: -58px; }
 }
 
-@keyframes flame-flicker {
-  from { transform: rotate(-7deg) scale(.88,1); filter: brightness(.96); }
-  to { transform: rotate(9deg) scale(1.06,.86); filter: brightness(1.12); }
-}
-
 @keyframes flame-out {
-  0%, 34% { opacity: 1; transform: translateY(0) scale(1); }
-  60% { opacity: .64; transform: translateY(4px) scale(.75,.62); }
-  100% { opacity: 0; transform: translateY(10px) scale(.18); }
+  0%, 12% { opacity: 1; transform: scale(1); }
+  35% { opacity: .92; transform: scale(.91, .78) skewX(-4deg); }
+  54% { opacity: .8; transform: scale(.79, .62) skewX(3deg); }
+  76% { opacity: .5; transform: scale(.58, .36) skewX(-3deg); }
+  100% { opacity: 0; transform: scale(.2, .06); }
 }
 
 @keyframes rescue-splash {
   0% { opacity: 0; transform: translate(0,0) scale(.4); }
   28% { opacity: 1; }
   100% { opacity: 0; transform: translate(7px,22px) scale(1.15); }
-}
-
-@keyframes peeled-banana-side {
-  0%, 27% { opacity: 0; transform: translate(-18px,14px) rotate(-8deg) scale(.75); }
-  43%, 82% { opacity: 1; transform: translate(8px,0) rotate(5deg) scale(1); }
-  100% { opacity: 1; transform: translate(8px,0) rotate(5deg) scale(1); }
-}
-
-.science-sound-note {
-  display: inline-flex;
-  align-items: center;
-  min-height: 23px;
-  margin-top: 7px;
-  padding: 4px 9px;
-  border: 1px solid color-mix(in srgb, var(--accent-color) 30%, transparent);
-  border-radius: 999px;
-  background: rgba(255,255,255,.42);
-  color: color-mix(in srgb, var(--accent-color) 78%, #514a3d);
-  font-size: 10px;
-  font-weight: 850;
-  letter-spacing: .025em;
-}
-
-@keyframes peeled-banana-bounce {
-  0%, 28% { opacity: 0; transform: translateY(18px) scale(.72); }
-  44% { opacity: 1; transform: translateY(-17px) scale(1.08); }
-  58%, 82% { opacity: 1; transform: translateY(0) scale(1); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes leaf-reaction {
@@ -2358,6 +2447,30 @@ button {
 @keyframes dino-idle {
   0%, 100% { transform: translateY(0) rotate(0); }
   50% { transform: translateY(-3px) rotate(.6deg); }
+}
+
+@keyframes creature-blink {
+  0%, 77%, 83%, 100% { transform: scaleY(1); }
+  80% { transform: scaleY(.1); }
+}
+
+@keyframes cat-listen {
+  0%, 66%, 86%, 100% { transform: rotate(0); }
+  71% { transform: rotate(-9deg); }
+  77% { transform: rotate(5deg); }
+  82% { transform: rotate(-3deg); }
+}
+
+@keyframes creature-swim {
+  0%, 100% { transform: translate(0, 0) rotate(-1deg); }
+  35% { transform: translate(6px, -2px) rotate(1deg); }
+  70% { transform: translate(-4px, 1px) rotate(-1deg); }
+}
+
+@keyframes creature-hover {
+  0%, 100% { transform: translate(0, 0) rotate(-1deg); }
+  35% { transform: translate(4px, -7px) rotate(2deg); }
+  70% { transform: translate(-3px, -3px) rotate(-2deg); }
 }
 
 @keyframes dino-stomp {
@@ -2655,13 +2768,6 @@ button {
   100% { opacity: 1; transform: translateX(0) rotate(0) scale(1); }
 }
 
-@keyframes motion-peeled-fruit {
-  0%, 38% { opacity: 0; transform: translateY(12px) rotate(-15deg) scale(.62); }
-  58% { opacity: 1; transform: translateY(-18px) rotate(8deg) scale(1.12); }
-  72% { transform: translateY(2px) rotate(-4deg) scale(.98); }
-  86%, 100% { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
-}
-
 @keyframes motion-split {
   0%, 100% { transform: translateX(0) scale(1); }
   18% { transform: translateX(0) scale(.9,1.08); }
@@ -2739,26 +2845,6 @@ button {
   to { opacity: 1; transform: scale(1.2) rotate(12deg); }
 }
 
-@keyframes banana-shell-open {
-  0%, 42% { opacity: 1; transform: translate(-50%,-50%) rotate(24deg) scale(1); }
-  70% { opacity: 1; transform: translate(-56%,-32%) rotate(48deg) scale(.85); }
-  100% { opacity: 0; transform: translate(-70%,20%) rotate(105deg) scale(.55); }
-}
-
-@keyframes banana-peel-left {
-  0% { opacity: 0; transform: translate(-50%,0) rotate(0) scaleY(.25); }
-  20% { opacity: 1; }
-  65% { opacity: 1; transform: translate(-50%,0) rotate(62deg) scaleY(1); }
-  100% { opacity: 0; transform: translate(-70%,22px) rotate(82deg) scaleY(.85); }
-}
-
-@keyframes banana-peel-right {
-  0% { opacity: 0; transform: translate(-50%,0) rotate(0) scaleY(.25); }
-  20% { opacity: 1; }
-  65% { opacity: 1; transform: translate(-50%,0) rotate(-62deg) scaleY(1); }
-  100% { opacity: 0; transform: translate(-30%,22px) rotate(-82deg) scaleY(.85); }
-}
-
 @keyframes paw-appear {
   from { opacity: 0; transform: translateY(6px) rotate(-25deg) scale(.55); }
   to { opacity: .78; transform: translateY(0) rotate(-25deg) scale(1); }
@@ -2787,38 +2873,44 @@ button {
   to { opacity: .78; transform: rotate(calc(var(--rotor-offset) + 360deg)) scaleX(1); }
 }
 
-@keyframes banana-original {
-  0%, 23% { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
-  38% { opacity: 0; transform: translateY(8px) rotate(-9deg) scale(.82); }
-  82% { opacity: 0; transform: translateY(8px) rotate(-9deg) scale(.82); }
-  100% { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
+@keyframes banana-natural-peel {
+  0%, 20% { transform: translateY(0) rotate(0) scale(1); }
+  36% { transform: translateY(2px) rotate(-1.2deg) scale(.985,1.015); }
+  54% { transform: translateY(-5px) rotate(1.8deg) scale(1.025,.98); }
+  70% { transform: translateY(1px) rotate(-.6deg) scale(.995,1.005); }
+  86%, 100% { transform: translateY(0) rotate(0) scale(1); }
 }
 
-@keyframes peeled-banana-show {
-  0%, 28% { opacity: 0; transform: translateY(12px) scale(.76); }
-  42%, 82% { opacity: 1; transform: translateY(0) scale(1); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes banana-fruit-natural-lift {
+  0%, 24% { transform: translateY(0) rotate(0); }
+  39% { transform: translateY(2px) rotate(.8deg); }
+  55% { transform: translateY(-7px) rotate(-2.5deg); }
+  69% { transform: translateY(1px) rotate(.6deg); }
+  84%, 100% { transform: translateY(0) rotate(0); }
 }
 
-@keyframes banana-fruit-rise {
-  0%, 28% { transform: translateX(-50%) translateY(26px) rotate(-5deg) scale(.66); }
-  48% { transform: translateX(-50%) translateY(-9px) rotate(-12deg) scale(1.04); }
-  62%, 100% { transform: translateX(-50%) translateY(0) rotate(-10deg) scale(1); }
+@keyframes banana-peel-back-natural {
+  0%, 26% { transform: rotate(0) scale(1); }
+  42% { transform: rotate(-8deg) scale(.88,.96); }
+  57% { transform: rotate(4deg) scale(1.02,1); }
+  72% { transform: rotate(-1deg) scale(.995,1); }
+  86%, 100% { transform: rotate(0) scale(1); }
 }
 
-@keyframes peel-open-middle {
-  0%, 30% { transform: translateX(-50%) rotate(0) scaleY(.4); }
-  55%, 100% { transform: translateX(-50%) translateY(12px) rotate(5deg) scaleY(1); }
+@keyframes banana-peel-left-natural {
+  0%, 24% { transform: rotate(0) scale(1); }
+  40% { transform: rotate(-7deg) scale(.94,.84); }
+  58% { transform: rotate(4.5deg) scale(1.015,1.03); }
+  73% { transform: rotate(-1.2deg) scale(.998,1); }
+  87%, 100% { transform: rotate(0) scale(1); }
 }
 
-@keyframes peel-open-right {
-  0%, 30% { transform: translateX(-50%) rotate(0) scaleY(.4); }
-  55%, 100% { transform: translateX(-50%) translate(25px,7px) rotate(56deg) scaleY(1); }
-}
-
-@keyframes peel-open-left {
-  0%, 30% { transform: translateX(-50%) rotate(0) scaleY(.4); }
-  55%, 100% { transform: translateX(-50%) translate(-25px,7px) rotate(-56deg) scaleY(1); }
+@keyframes banana-peel-right-natural {
+  0%, 28% { transform: rotate(0) scale(1); }
+  44% { transform: rotate(8deg) scale(.95,.86); }
+  61% { transform: rotate(-3.5deg) scale(1.012,1.025); }
+  76% { transform: rotate(.9deg) scale(.998,1); }
+  90%, 100% { transform: rotate(0) scale(1); }
 }
 
 @keyframes fruit-original-split {
@@ -2872,7 +2964,6 @@ button {
   .flat-art { width: clamp(128px, 29vh, 175px); height: clamp(118px, 27vh, 156px); }
   .flat-scene { height: clamp(132px, 31vh, 176px); }
   .tiny-prompt { margin-top: 7px; }
-  .science-sound-note { margin-top: 4px; padding-block: 2px; }
   .tap-hint { margin-top: 9px; }
   .lesson-steps { margin-top: 5px; }
   .controls { min-height: 48px; padding-top: 8px; }

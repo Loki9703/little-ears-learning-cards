@@ -10,7 +10,7 @@
 
 ## 主要功能
 
-- 动物、车辆、水果、恐龙四个主题，共 65 张学习卡
+- 动物、车辆、水果、恐龙四个主题，共 76 张学习卡
 - 名称、声音或特征、小知识三段式语音教学
 - Google Animated Noto Emoji、原创恐龙插画与统一的 2D 场景效果
 - 点击播放完整教学，左右滑动或使用按钮切换卡片
@@ -30,7 +30,8 @@
 - Next.js 16、React 19、TypeScript
 - vinext、Vite、Cloudflare Workers 兼容构建
 - Tailwind CSS 4 与项目自定义 CSS 动画
-- GSAP 与 `@gsap/react`（小狗、小猫场景时间轴试点）
+- 动物使用按习性编排的往返、转身和表情动作；小猫、小鸭、小牛、小羊、大象增加原图关节动画
+- GSAP 与 `@gsap/react`（小狗、小猫的球、毛线和蝴蝶道具）
 - Lottie Web
 - OpenAI Sites 托管配置
 
@@ -62,7 +63,9 @@ app/
 ├── page.tsx                    # 学习卡数据与主要交互
 ├── AnimatedLearningScene.tsx  # 2D 场景和动画编排
 ├── NotoLottieAnimation.tsx    # Lottie 动画加载器
-├── useGsapAnimalTimeline.ts   # 小狗、小猫的 GSAP 场景时间轴
+├── AnimalIllustration.tsx     # 动物动作时钟、关节渲染和静态回退
+├── animalMotion.ts            # 20 种动物的步态、表情和关节配置
+├── useGsapAnimalTimeline.ts   # 小狗、小猫的 GSAP 道具时间轴
 ├── globals.css                # 响应式布局与动画样式
 └── credits/page.tsx           # 素材来源与许可
 
@@ -77,7 +80,7 @@ public/
 1. 在 `app/page.tsx` 对应分类中增加卡片数据。
 2. 将名称语音、声音或特征语音、讲解语音放入 `public/audio/` 对应目录。
 3. 将插画或 Lottie 动画放入 `public/illustrations/` 或 `public/animations/noto/`。
-4. 简单循环动作可在 `app/globals.css` 中补充；需要角色、道具和效果同步的场景，在 `app/useGsapAnimalTimeline.ts` 中增加 GSAP 时间轴。
+4. 动物步态和表情在 `app/animalMotion.ts` 中配置；恐龙在 `app/dinosaurMotion.ts` 中配置。配套道具在 `app/useGsapAnimalTimeline.ts` 中编排，避免重复控制角色身体和阴影。其他简单动作可在 `app/globals.css` 中补充。
 5. 在手机竖屏、桌面端和减少动态效果模式下完成测试。
 
 ## 部署

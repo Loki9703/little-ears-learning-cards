@@ -2,6 +2,11 @@
 
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import AnimatedLearningScene from "./AnimatedLearningScene";
+import { DINOSAUR_ACTION_SECONDS } from "./dinosaurMotion";
+import { ANIMAL_ACTION_SECONDS } from "./animalMotion";
+import { EXCAVATOR_ACTION_SECONDS } from "./excavatorMotion";
+import { AIRPLANE_FLIGHT_SECONDS } from "./airplaneFlight";
+import { TRAIN_JOURNEY_SECONDS } from "./trainJourney";
 
 type CategoryKey = "animals" | "vehicles" | "fruits" | "dinosaurs";
 type PlayStage = "name" | "sound" | "lesson";
@@ -22,15 +27,6 @@ type CardItem = {
   lesson?: string;
   storyAudio?: string;
   storyDuration?: number;
-  shortAudio?: string;
-  shortDuration?: number;
-  scientificCall?: string;
-  callDuration?: number;
-  narration?: {
-    name: string;
-    feature: string;
-    lesson: string;
-  };
   color: string;
   accent: string;
 };
@@ -69,7 +65,7 @@ const categories: Record<CategoryKey, { label: string; icon: string; items: Card
       { name: "小汽车", pinyin: "xiǎo qì chē", emoji: "🚗", sound: "嘀嘀！", prompt: "小汽车开走啦", audio: "/audio/car.mp3", effect: "/audio/effects/car.mp3", effectDuration: 1500, effectRepeats: 2, lesson: "/audio/lessons/car.mp3", color: "#FFE0D7", accent: "#E85D45" },
       { name: "公交车", pinyin: "gōng jiāo chē", emoji: "🚌", sound: "嘟嘟！", prompt: "大家一起坐公交", audio: "/audio/bus.mp3", effect: "/audio/effects/bus.mp3", effectDuration: 2000, effectRepeats: 1, lesson: "/audio/lessons/bus.mp3", color: "#FFF0BA", accent: "#D69024" },
       { name: "消防车", pinyin: "xiāo fáng chē", emoji: "🚒", sound: "呜哇呜哇！", prompt: "消防车去帮忙", audio: "/audio/firetruck.mp3", effect: "/audio/effects/firetruck.mp3", effectDuration: 4800, effectRepeats: 1, lesson: "/audio/lessons/firetruck.mp3", color: "#FFDCDD", accent: "#DC4E50" },
-      { name: "火车", pinyin: "huǒ chē", emoji: "🚂", sound: "呜——呜——！", prompt: "火车钻山洞", audio: "/audio/train.mp3", effect: "/audio/effects/train.mp3", effectDuration: 2200, effectRepeats: 2, lesson: "/audio/lessons/train.mp3", color: "#DDF5FF", accent: "#328EAB" },
+      { name: "火车", pinyin: "huǒ chē", emoji: "🚂", sound: "呜——呜——！", prompt: "小火车出发啦", audio: "/audio/train.mp3", effect: "/audio/effects/train.mp3", effectDuration: 2200, effectRepeats: 2, lesson: "/audio/lessons/train.mp3", color: "#DDF5FF", accent: "#328EAB" },
       { name: "挖掘机", pinyin: "wā jué jī", emoji: "🚜", sound: "轰隆隆！", prompt: "挖掘机挖呀挖", audio: "/audio/excavator.mp3", effect: "/audio/effects/excavator.mp3", effectDuration: 5200, effectRepeats: 1, lesson: "/audio/lessons/excavator.mp3", color: "#F5E2BB", accent: "#B47724" },
       { name: "飞机", pinyin: "fēi jī", emoji: "✈️", sound: "嗡嗡！", prompt: "飞机飞上云朵", audio: "/audio/airplane.mp3", effect: "/audio/effects/airplane.mp3", effectDuration: 5500, effectRepeats: 1, lesson: "/audio/lessons/airplane.mp3", color: "#DDEBFF", accent: "#557AC5" },
       { name: "救护车", pinyin: "jiù hù chē", emoji: "🚑", sound: "呜哇呜哇！", prompt: "救护车去医院", audio: "/audio/ambulance.mp3", effect: "/audio/effects/ambulance.mp3", effectDuration: 4800, effectRepeats: 1, effectVolume: 0.46, lesson: "/audio/lessons/ambulance.mp3", color: "#E1F4ED", accent: "#3E9B78" },
@@ -114,15 +110,26 @@ const categories: Record<CategoryKey, { label: string; icon: string; items: Card
     label: "恐龙",
     icon: "🦕",
     items: [
-      { name: "霸王龙", pinyin: "bà wáng lóng", emoji: "🦖", sound: "低沉轰鸣", prompt: "两条后腿跑得快", scientificCall: "/audio/dinosaurs/calls/tyrannosaurus-scientific-call.mp3", callDuration: 2750, storyAudio: "/audio/dinosaurs/tyrannosaurus-story.mp3", storyDuration: 11900, shortAudio: "/audio/dinosaurs/short/tyrannosaurus-intro.mp3", shortDuration: 5320, color: "#F7DFC3", accent: "#A95F35" },
-      { name: "三角龙", pinyin: "sān jiǎo lóng", emoji: "🦕", sound: "三只尖角", prompt: "头上像戴着大盾牌", storyAudio: "/audio/dinosaurs/triceratops-story.mp3", storyDuration: 11880, shortAudio: "/audio/dinosaurs/short/triceratops-intro.mp3", shortDuration: 7220, color: "#DDECCB", accent: "#62864E" },
-      { name: "腕龙", pinyin: "wàn lóng", emoji: "🦕", sound: "脖子长长", prompt: "能吃到高高的树叶", storyAudio: "/audio/dinosaurs/brachiosaurus-story.mp3", storyDuration: 10460, shortAudio: "/audio/dinosaurs/short/brachiosaurus-intro.mp3", shortDuration: 5350, color: "#E1EFD4", accent: "#5F884F" },
-      { name: "剑龙", pinyin: "jiàn lóng", emoji: "🦕", sound: "背板一排排", prompt: "尾巴还有四根尖刺", storyAudio: "/audio/dinosaurs/stegosaurus-story.mp3", storyDuration: 10150, shortAudio: "/audio/dinosaurs/short/stegosaurus-intro.mp3", shortDuration: 6860, color: "#E6E4F5", accent: "#7469A7" },
-      { name: "迅猛龙", pinyin: "xùn měng lóng", emoji: "🦖", sound: "啾叫与气声", prompt: "脚上有弯弯的爪子", scientificCall: "/audio/dinosaurs/calls/velociraptor-scientific-call.mp3", callDuration: 2350, storyAudio: "/audio/dinosaurs/velociraptor-story.mp3", storyDuration: 16510, shortAudio: "/audio/dinosaurs/short/velociraptor-intro.mp3", shortDuration: 6120, color: "#F3E1C5", accent: "#9A6A37" },
-      { name: "甲龙", pinyin: "jiǎ lóng", emoji: "🦕", sound: "穿着铠甲", prompt: "尾巴像一把大锤", storyAudio: "/audio/dinosaurs/ankylosaurus-story.mp3", storyDuration: 9910, shortAudio: "/audio/dinosaurs/short/ankylosaurus-intro.mp3", shortDuration: 5590, color: "#E0E8CF", accent: "#63794B" },
-      { name: "副栉龙", pinyin: "fù zhì lóng", emoji: "🦕", sound: "低沉号角声", prompt: "像一根弯弯的管子", scientificCall: "/audio/dinosaurs/calls/parasaurolophus-scientific-call.mp3", callDuration: 3050, storyAudio: "/audio/dinosaurs/parasaurolophus-story.mp3", storyDuration: 14130, shortAudio: "/audio/dinosaurs/short/parasaurolophus-intro.mp3", shortDuration: 5180, color: "#F6DFC9", accent: "#B36743" },
-      { name: "棘龙", pinyin: "jí lóng", emoji: "🦖", sound: "背上高高的帆", prompt: "长嘴巴像鳄鱼", storyAudio: "/audio/dinosaurs/spinosaurus-story.mp3", storyDuration: 9600, shortAudio: "/audio/dinosaurs/short/spinosaurus-intro.mp3", shortDuration: 5660, color: "#D8EAE8", accent: "#4E817D" },
-      { name: "无齿翼龙", pinyin: "wú chǐ yì lóng", emoji: "🪽", sound: "翅膀大大", prompt: "乘着风在天空滑翔", storyAudio: "/audio/dinosaurs/pteranodon-story.mp3", storyDuration: 12530, shortAudio: "/audio/dinosaurs/short/pteranodon-intro.mp3", shortDuration: 6460, color: "#DCEBFA", accent: "#557FA9" },
+      { name: "霸王龙", pinyin: "bà wáng lóng", emoji: "🦖", sound: "脑袋大大", prompt: "两条后腿跑得快", audio: "/audio/dinosaurs/names/tyrannosaurus-name.wav", storyAudio: "/audio/dinosaurs/tyrannosaurus-story.mp3", storyDuration: 11900, color: "#F7DFC3", accent: "#A95F35" },
+      { name: "三角龙", pinyin: "sān jiǎo lóng", emoji: "🦕", sound: "三只尖角", prompt: "头上像戴着大盾牌", audio: "/audio/dinosaurs/names/triceratops-name.wav", storyAudio: "/audio/dinosaurs/triceratops-story.mp3", storyDuration: 11880, color: "#DDECCB", accent: "#62864E" },
+      { name: "腕龙", pinyin: "wàn lóng", emoji: "🦕", sound: "脖子长长", prompt: "能吃到高高的树叶", audio: "/audio/dinosaurs/names/brachiosaurus-name.wav", storyAudio: "/audio/dinosaurs/brachiosaurus-story.mp3", storyDuration: 10460, color: "#E1EFD4", accent: "#5F884F" },
+      { name: "剑龙", pinyin: "jiàn lóng", emoji: "🦕", sound: "背板一排排", prompt: "尾巴还有四根尖刺", audio: "/audio/dinosaurs/names/stegosaurus-name.wav", storyAudio: "/audio/dinosaurs/stegosaurus-story.mp3", storyDuration: 10150, color: "#E6E4F5", accent: "#7469A7" },
+      { name: "迅猛龙", pinyin: "xùn měng lóng", emoji: "🦖", sound: "尾巴长长", prompt: "脚上有弯弯的爪子", audio: "/audio/dinosaurs/names/velociraptor-name.wav", storyAudio: "/audio/dinosaurs/velociraptor-story.mp3", storyDuration: 16510, color: "#F3E1C5", accent: "#9A6A37" },
+      { name: "甲龙", pinyin: "jiǎ lóng", emoji: "🦕", sound: "穿着铠甲", prompt: "尾巴像一把大锤", audio: "/audio/dinosaurs/names/ankylosaurus-name.wav", storyAudio: "/audio/dinosaurs/ankylosaurus-story.mp3", storyDuration: 9910, color: "#E0E8CF", accent: "#63794B" },
+      { name: "副栉龙", pinyin: "fù zhì lóng", emoji: "🦕", sound: "头冠长长", prompt: "像一根弯弯的管子", audio: "/audio/dinosaurs/names/parasaurolophus-name.wav", storyAudio: "/audio/dinosaurs/parasaurolophus-story.mp3", storyDuration: 14130, color: "#F6DFC9", accent: "#B36743" },
+      { name: "棘龙", pinyin: "jí lóng", emoji: "🦖", sound: "背上高高的帆", prompt: "长嘴巴像鳄鱼", audio: "/audio/dinosaurs/names/spinosaurus-name.wav", storyAudio: "/audio/dinosaurs/spinosaurus-story.mp3", storyDuration: 9600, color: "#D8EAE8", accent: "#4E817D" },
+      { name: "无齿翼龙", pinyin: "wú chǐ yì lóng", emoji: "🪽", sound: "翅膀大大", prompt: "乘着风在天空滑翔", audio: "/audio/dinosaurs/names/pteranodon-name.wav", storyAudio: "/audio/dinosaurs/pteranodon-story.mp3", storyDuration: 12530, color: "#DCEBFA", accent: "#557FA9" },
+      { name: "雷龙", pinyin: "léi lóng", emoji: "🦕", sound: "身体壮壮", prompt: "尾巴像长长的鞭子", audio: "/audio/dinosaurs/names/brontosaurus-name.wav", storyAudio: "/audio/dinosaurs/brontosaurus-story.mp3", storyDuration: 12432, color: "#E3E9CF", accent: "#718044" },
+      { name: "梁龙", pinyin: "liáng lóng", emoji: "🦕", sound: "身体长长", prompt: "尾巴又细又长", audio: "/audio/dinosaurs/names/diplodocus-name.wav", storyAudio: "/audio/dinosaurs/diplodocus-story.mp3", storyDuration: 12312, color: "#D7ECF2", accent: "#4D8395" },
+      { name: "异特龙", pinyin: "yì tè lóng", emoji: "🦖", sound: "三根手指", prompt: "用两条后腿走路", audio: "/audio/dinosaurs/names/allosaurus-name.wav", storyAudio: "/audio/dinosaurs/allosaurus-story.mp3", storyDuration: 14040, color: "#F5E0C1", accent: "#A76B32" },
+      { name: "双冠龙", pinyin: "shuāng guān lóng", emoji: "🦖", sound: "头顶双冠", prompt: "两片头冠真醒目", audio: "/audio/dinosaurs/names/dilophosaurus-name.wav", storyAudio: "/audio/dinosaurs/dilophosaurus-story.mp3", storyDuration: 14496, color: "#F8DDD0", accent: "#B85E42" },
+      { name: "食肉牛龙", pinyin: "shí ròu niú lóng", emoji: "🦖", sound: "眼上有角", prompt: "前肢小小的", audio: "/audio/dinosaurs/names/carnotaurus-name.wav", storyAudio: "/audio/dinosaurs/carnotaurus-story.mp3", storyDuration: 13920, color: "#F3D4CD", accent: "#A9493D" },
+      { name: "禽龙", pinyin: "qín lóng", emoji: "🦕", sound: "拇指尖尖", prompt: "嘴巴像小鸟的喙", audio: "/audio/dinosaurs/names/iguanodon-name.wav", storyAudio: "/audio/dinosaurs/iguanodon-story.mp3", storyDuration: 13344, color: "#DFEACB", accent: "#62824A" },
+      { name: "肿头龙", pinyin: "zhǒng tóu lóng", emoji: "🦕", sound: "头顶圆圆", prompt: "头骨又厚又结实", audio: "/audio/dinosaurs/names/pachycephalosaurus-name.wav", storyAudio: "/audio/dinosaurs/pachycephalosaurus-story.mp3", storyDuration: 11760, color: "#F8E7B9", accent: "#A87B2E" },
+      { name: "镰刀龙", pinyin: "lián dāo lóng", emoji: "🦖", sound: "爪子长长", prompt: "前爪像弯弯的镰刀", audio: "/audio/dinosaurs/names/therizinosaurus-name.wav", storyAudio: "/audio/dinosaurs/therizinosaurus-story.mp3", storyDuration: 13104, color: "#E6DCF2", accent: "#7860A0" },
+      { name: "鸭嘴龙", pinyin: "yā zuǐ lóng", emoji: "🦕", sound: "嘴巴扁扁", prompt: "像鸭嘴一样宽", audio: "/audio/dinosaurs/names/hadrosaurus-name.wav", storyAudio: "/audio/dinosaurs/hadrosaurus-story.mp3", storyDuration: 13944, color: "#D7ECE5", accent: "#4C8573" },
+      { name: "恐爪龙", pinyin: "kǒng zhǎo lóng", emoji: "🦖", sound: "脚爪弯弯", prompt: "后脚有大镰刀爪", audio: "/audio/dinosaurs/names/deinonychus-name.wav", storyAudio: "/audio/dinosaurs/deinonychus-story.mp3", storyDuration: 13824, color: "#DCE4F4", accent: "#536FA2" },
+      { name: "阿根廷龙", pinyin: "ā gēn tíng lóng", emoji: "🦕", sound: "身体巨大", prompt: "四条腿像大柱子", audio: "/audio/dinosaurs/names/argentinosaurus-name.wav", storyAudio: "/audio/dinosaurs/argentinosaurus-story.mp3", storyDuration: 15360, color: "#E1E5EA", accent: "#687586" },
     ],
   },
 };
@@ -193,13 +200,24 @@ const motionByName: Record<string, MotionKey> = {
   副栉龙: "crest-call",
   棘龙: "sail-stride",
   无齿翼龙: "glide",
+  雷龙: "graze",
+  梁龙: "tail-swing",
+  异特龙: "prowl",
+  双冠龙: "prowl",
+  食肉牛龙: "charge",
+  禽龙: "graze",
+  肿头龙: "charge",
+  镰刀龙: "tail-swing",
+  鸭嘴龙: "graze",
+  恐爪龙: "prowl",
+  阿根廷龙: "stomp",
 };
 
 export default function Home() {
   const [category, setCategory] = useState<CategoryKey>("animals");
   const [index, setIndex] = useState(0);
   const [speakerOn, setSpeakerOn] = useState(true);
-  const [lessonOn, setLessonOn] = useState(true);
+  const [lessonOn, setLessonOn] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [motionCycle, setMotionCycle] = useState(0);
@@ -212,18 +230,18 @@ export default function Home() {
   const stageTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const audioPlayer = useRef<HTMLAudioElement | null>(null);
   const audioResolve = useRef<(() => void) | null>(null);
-  const speechResolve = useRef<(() => void) | null>(null);
   const playbackSession = useRef(0);
 
   const items = categories[category].items;
   const item = items[index];
   const usesFeatureTeaching = category === "fruits" || category === "dinosaurs";
+  const isNameOnlyMode = category === "dinosaurs" && !lessonOn;
   const motion = motionByName[item.name] ?? "bounce";
 
   useEffect(() => {
-    let savedLessonOn = true;
+    let savedLessonOn = false;
     try {
-      savedLessonOn = window.localStorage.getItem(LESSON_PREFERENCE_KEY) !== "off";
+      savedLessonOn = window.localStorage.getItem(LESSON_PREFERENCE_KEY) === "on";
     } catch {
       // Storage may be unavailable in privacy-restricted browsers; keep the safe default.
     }
@@ -239,8 +257,6 @@ export default function Home() {
       playbackSession.current += 1;
       audioPlayer.current?.pause();
       audioResolve.current?.();
-      window.speechSynthesis?.cancel();
-      speechResolve.current?.();
     };
   }, []);
 
@@ -248,8 +264,6 @@ export default function Home() {
     playbackSession.current += 1;
     audioPlayer.current?.pause();
     audioResolve.current?.();
-    window.speechSynthesis?.cancel();
-    speechResolve.current?.();
     if (speakingTimer.current) clearTimeout(speakingTimer.current);
     stageTimers.current.forEach(clearTimeout);
     stageTimers.current = [];
@@ -281,12 +295,12 @@ export default function Home() {
     setIsAnimating(true);
     setShowHint(false);
     window.navigator.vibrate?.(28);
-    const activeStoryDuration = lessonOn ? item.storyDuration : item.shortDuration;
-    const teachingDuration = activeStoryDuration
-      ? activeStoryDuration + (item.callDuration ?? 0) + (item.scientificCall ? 420 : 0)
-      : item.scientificCall
-        ? (item.callDuration ?? 2500) + 12200
-        : 3600;
+    const motionDuration = category === "dinosaurs" ? DINOSAUR_ACTION_SECONDS * 1000
+      : category === "animals" ? ANIMAL_ACTION_SECONDS * 1000
+      : item.name === "挖掘机" ? EXCAVATOR_ACTION_SECONDS * 1000
+      : item.name === "飞机" ? AIRPLANE_FLIGHT_SECONDS * 1000
+      : item.name === "火车" || item.name === "蒸汽火车" ? TRAIN_JOURNEY_SECONDS * 1000 : 3600;
+    const teachingDuration = lessonOn ? Math.max(item.storyDuration ?? 3600, motionDuration) : motionDuration;
     motionTimer.current = setTimeout(() => setIsAnimating(false), teachingDuration + 250);
   };
 
@@ -331,89 +345,33 @@ export default function Home() {
     })
   );
 
-  const speakText = (text: string, session: number) => (
-    new Promise<void>((resolve) => {
-      if (session !== playbackSession.current || !("speechSynthesis" in window)) {
-        resolve();
-        return;
-      }
-
-      let finished = false;
-      const finishSpeech = () => {
-        if (finished) return;
-        finished = true;
-        speechResolve.current = null;
-        if (speakingTimer.current) clearTimeout(speakingTimer.current);
-        resolve();
-      };
-      const utterance = new SpeechSynthesisUtterance(text);
-      const chineseVoices = window.speechSynthesis.getVoices().filter((voice) => voice.lang.toLowerCase().startsWith("zh"));
-      utterance.voice = chineseVoices.find((voice) => /xiaoxiao|xiaoyi|tingting|huihui|meijia|sinji/i.test(voice.name)) ?? chineseVoices[0] ?? null;
-      utterance.lang = "zh-CN";
-      utterance.rate = 0.82;
-      utterance.pitch = 1.12;
-      utterance.volume = 0.88;
-      utterance.onend = finishSpeech;
-      utterance.onerror = finishSpeech;
-      speechResolve.current = finishSpeech;
-      speakingTimer.current = setTimeout(finishSpeech, Math.max(5000, text.length * 700));
-      window.speechSynthesis.speak(utterance);
-    })
-  );
-
   const playAudio = async () => {
     if (!speakerOn || typeof window === "undefined") return;
     cancelPlayback();
     const session = playbackSession.current;
     setIsSpeaking(true);
 
-    if (item.scientificCall) {
-      setPlayStage("sound");
-      await playClip(item.scientificCall, 1, session);
-      if (session !== playbackSession.current) return;
-      await new Promise<void>((resolve) => setTimeout(resolve, 380));
-      if (session !== playbackSession.current) return;
-    }
-
-    const activeStoryAudio = lessonOn ? item.storyAudio : item.shortAudio;
-    const activeStoryDuration = lessonOn ? item.storyDuration : item.shortDuration;
-    if (activeStoryAudio) {
+    if (!lessonOn && category === "dinosaurs") {
       setPlayStage("name");
-      if (lessonOn) {
-        stageTimers.current.push(setTimeout(() => {
-          if (session === playbackSession.current) setPlayStage(item.scientificCall ? "lesson" : "sound");
-        }, Math.min(2300, (activeStoryDuration ?? 10000) * 0.22)));
-        if (!item.scientificCall) {
-          stageTimers.current.push(setTimeout(() => {
-            if (session === playbackSession.current) setPlayStage("lesson");
-          }, Math.min(6100, (activeStoryDuration ?? 10000) * 0.56)));
-        }
-      } else if (!item.scientificCall) {
-        stageTimers.current.push(setTimeout(() => {
-          if (session === playbackSession.current) setPlayStage("sound");
-        }, Math.min(2200, (activeStoryDuration ?? 5000) * 0.38)));
-      }
-      await playClip(activeStoryAudio, 0.94, session);
-      stageTimers.current.forEach(clearTimeout);
-      stageTimers.current = [];
+      await playClip(item.audio ?? "", 0.94, session);
       if (session !== playbackSession.current) return;
       setIsSpeaking(false);
       setPlayStage(null);
       return;
     }
 
-    if (item.narration) {
+    if (item.storyAudio) {
       setPlayStage("name");
-      await speakText(item.narration.name, session);
+      stageTimers.current.push(setTimeout(() => {
+        if (session === playbackSession.current) setPlayStage("sound");
+      }, Math.min(2300, (item.storyDuration ?? 10000) * 0.22)));
+      stageTimers.current.push(setTimeout(() => {
+        if (session === playbackSession.current) setPlayStage("lesson");
+      }, Math.min(6100, (item.storyDuration ?? 10000) * 0.56)));
+      await playClip(item.storyAudio, 0.94, session);
+      stageTimers.current.forEach(clearTimeout);
+      stageTimers.current = [];
       if (session !== playbackSession.current) return;
-      setPlayStage("sound");
-      await speakText(item.narration.feature, session);
-      if (session !== playbackSession.current) return;
-      if (lessonOn) {
-        setPlayStage("lesson");
-        await speakText(item.narration.lesson, session);
-        if (session !== playbackSession.current) return;
-      }
       setIsSpeaking(false);
       setPlayStage(null);
       return;
@@ -543,7 +501,7 @@ export default function Home() {
           onPointerUp={handlePointerUp}
           onPointerCancel={() => { pointerStart.current = null; }}
           onClick={handleCardClick}
-          aria-label={`${item.name}，点一下看动画并听${lessonOn ? "完整教学" : "名称和声音"}，左右滑动换卡片`}
+          aria-label={`${item.name}，点一下看动画并听${lessonOn ? "完整教学" : isNameOnlyMode ? "名称" : usesFeatureTeaching ? "名称和特征" : "名称和声音"}，左右滑动换卡片`}
         >
           <span className="card-number">{String(index + 1).padStart(2, "0")}</span>
           <span className="scene-cloud cloud-one" aria-hidden="true" />
@@ -560,32 +518,21 @@ export default function Home() {
             playStage={playStage}
           />
           <span className={isSpeaking ? "sound-bubble visible" : "sound-bubble"} aria-hidden="true">
-            {playStage === "name" ? "听名字" : playStage === "lesson" ? (item.scientificCall ? "听讲解" : "小知识") : item.scientificCall ? `科学拟声 · ${item.sound}` : item.sound}
+            {playStage === "name" ? "听名字" : playStage === "lesson" ? "小知识" : item.sound}
           </span>
           <span className="word-group">
             <strong>{item.name}</strong>
             <span className="pinyin">{item.pinyin}</span>
           </span>
           <span className="tiny-prompt">{item.prompt}</span>
-          {item.scientificCall && <span className="science-sound-note">科学拟声 · 依据近缘动物与发声结构模拟</span>}
           <span className={showHint ? "tap-hint" : "tap-hint subtle"}>
             <span className={isSpeaking ? "stage-icon" : "tap-icon"} aria-hidden="true">{isSpeaking ? "♪" : "☝️"}</span>
-            {playStage === "name" ? "正在认识名称" : playStage === "sound" ? (item.scientificCall ? "正在听科学拟声" : usesFeatureTeaching ? "正在认识外形特征" : "正在听真实声音") : playStage === "lesson" ? (item.scientificCall ? "正在听柔和讲解" : "正在学小知识") : isAnimating ? "看，小动画动起来啦！" : lessonOn ? (item.scientificCall ? "点一点，听拟声和讲解" : item.storyAudio ? "点一点，听有声小故事" : "点一点，看动画、听讲解") : item.scientificCall ? "点一点，听拟声和名称" : usesFeatureTeaching ? "点一点，听名字和特征" : "点一点，听名字和声音"}
+            {playStage === "name" ? "正在认识名称" : playStage === "sound" ? (usesFeatureTeaching ? "正在认识外形特征" : "正在听真实声音") : playStage === "lesson" ? "正在学小知识" : isAnimating ? "看，小动画动起来啦！" : lessonOn ? (item.storyAudio ? "点一点，听有声小故事" : "点一点，看动画、听讲解") : isNameOnlyMode ? "点一点，听名字" : usesFeatureTeaching ? "点一点，听名字和特征" : "点一点，听名字和声音"}
           </span>
           <span className="lesson-steps" aria-hidden="true">
-            {item.scientificCall ? (
-              <>
-                <span className={playStage === "sound" ? "active" : ""}>① 拟声</span>
-                <span className={playStage === "name" ? "active" : ""}>② 名称</span>
-                {lessonOn && <span className={playStage === "lesson" ? "active" : ""}>③ 讲解</span>}
-              </>
-            ) : (
-              <>
-                <span className={playStage === "name" ? "active" : ""}>① 名称</span>
-                <span className={playStage === "sound" ? "active" : ""}>② {usesFeatureTeaching ? "特征" : "声音"}</span>
-                {lessonOn && <span className={playStage === "lesson" ? "active" : ""}>③ 小知识</span>}
-              </>
-            )}
+            <span className={playStage === "name" ? "active" : ""}>① 名称</span>
+            {!isNameOnlyMode && <span className={playStage === "sound" ? "active" : ""}>② {usesFeatureTeaching ? "特征" : "声音"}</span>}
+            {lessonOn && <span className={playStage === "lesson" ? "active" : ""}>③ 小知识</span>}
           </span>
         </button>
       </section>
@@ -601,7 +548,7 @@ export default function Home() {
         <button className="round-button" type="button" onClick={() => changeCard(1)} aria-label="下一张">›</button>
       </footer>
       <p className="swipe-tip"><span aria-hidden="true">↔</span> 左右滑动换一张</p>
-      <a className="model-credit-link" href="/credits" target="_blank" rel="noreferrer">内容来源、许可与拟声说明</a>
+      <a className="model-credit-link" href="/credits" target="_blank" rel="noreferrer">内容来源与许可说明</a>
     </main>
   );
 }

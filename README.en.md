@@ -10,7 +10,7 @@ An interactive recognition-card app designed for toddlers around 18 to 24 months
 
 ## Features
 
-- 65 learning cards across animals, vehicles, fruits, and dinosaurs
+- 76 learning cards across animals, vehicles, fruits, and dinosaurs
 - Three-stage audio lessons: name, sound or characteristic, and a short fact
 - Google Animated Noto Emoji, original dinosaur illustrations, and custom 2D scenes
 - Tap-to-play lessons, swipe navigation, and previous/next controls
@@ -30,7 +30,8 @@ An interactive recognition-card app designed for toddlers around 18 to 24 months
 - Next.js 16, React 19, and TypeScript
 - vinext, Vite, and a Cloudflare Workers-compatible build
 - Tailwind CSS 4 plus custom CSS animation
-- GSAP and `@gsap/react` for the dog and cat scene-timeline pilot
+- Species-specific animal movement, turns, and expressions, with articulated original artwork for the cat, duck, cow, sheep, and elephant
+- GSAP and `@gsap/react` for the dog and cat's ball, yarn, and butterfly props
 - Lottie Web
 - OpenAI Sites hosting configuration
 
@@ -62,7 +63,9 @@ app/
 ├── page.tsx                    # Card data and primary interactions
 ├── AnimatedLearningScene.tsx  # 2D scenes and motion choreography
 ├── NotoLottieAnimation.tsx    # Lottie animation loader
-├── useGsapAnimalTimeline.ts   # GSAP scene timelines for the dog and cat
+├── AnimalIllustration.tsx     # Animal clock, joint rendering, and static fallback
+├── animalMotion.ts            # Gaits, expressions, and rigs for 20 animals
+├── useGsapAnimalTimeline.ts   # GSAP prop timelines for the dog and cat
 ├── globals.css                # Responsive layout and animation styles
 └── credits/page.tsx           # Asset credits and licenses
 
